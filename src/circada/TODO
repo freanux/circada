@@ -1,0 +1,13 @@
+TODO frontend:
+--------------
+* in NAV-mode, navigate with tab to treeview, nicklist and window bar
+* statusbar, print connection name, instead of server
+* fishy entrywidget, if solely 2 characters wide glyphs are used and horizontally scrolled.
+* configurable ecoding order
+* lower tui paintings
+
+DONE:
+-----
+* wire connection lost event
+* /clear to wipe out all window actions
+* max entries in window, delete deepest entries. default to 10000 entries
