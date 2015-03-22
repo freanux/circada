@@ -52,7 +52,7 @@ void Mutex::unlock() {
 }
 
 ScopeMutex::ScopeMutex(Mutex *mtx) : mtx(mtx) {
-	this->mtx->lock();
+    this->mtx->lock();
 }
 
 ScopeMutex::~ScopeMutex() {

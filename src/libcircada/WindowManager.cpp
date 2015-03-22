@@ -72,22 +72,22 @@ SessionWindow *WindowManager::get_window(Session *s, const std::string& name) {
         }
     }
 
-	return 0;
+    return 0;
 }
 
 SessionWindow *WindowManager::get_window(const DCC *dcc, const std::string& nick) {
     ScopeMutex lock(&mtx);
 
-	if (dcc) {
+    if (dcc) {
         SessionWindow::List::iterator it;
 
-		/* find corresponding active dcc window */
-		for (it = windows.begin(); it != windows.end(); it++) {
-			SessionWindow *w = *it;
-			if (w->get_dcc() == dcc) {
-				return w;
-			}
-		}
+        /* find corresponding active dcc window */
+        for (it = windows.begin(); it != windows.end(); it++) {
+            SessionWindow *w = *it;
+            if (w->get_dcc() == dcc) {
+                return w;
+            }
+        }
 
         /* then look for an old dcc window with this nick */
         if (nick.length()) {
@@ -99,9 +99,9 @@ SessionWindow *WindowManager::get_window(const DCC *dcc, const std::string& nick
                 }
             }
         }
-	}
+    }
 
-	return 0;
+    return 0;
 }
 
 SessionWindow *WindowManager::create_application_window(Events *evt, const std::string& name, const std::string& topic) {
@@ -138,24 +138,24 @@ SessionWindow *WindowManager::create_window(Events *evt, Session *s, ServerNickP
         }
     }
 
-	return w;
+    return w;
 }
 
 SessionWindow *WindowManager::create_window(Events *evt, const DCC *dcc, const std::string& my_nick, const std::string& his_nick) {
-	SessionWindow *w = get_window(dcc, his_nick);
+    SessionWindow *w = get_window(dcc, his_nick);
 
-	if (!w) {
+    if (!w) {
         ScopeMutex lock(&mtx);
-		w = new SessionWindow(0, dcc, his_nick, 0);
-		windows.push_back(w);
-		evt->open_window(0, w);
-		evt->window_action(0, w);
-		w->add_nick(my_nick, false);
-		w->add_nick(his_nick, false);
-		evt->new_nicklist(0, w);
-	}
+        w = new SessionWindow(0, dcc, his_nick, 0);
+        windows.push_back(w);
+        evt->open_window(0, w);
+        evt->window_action(0, w);
+        w->add_nick(my_nick, false);
+        w->add_nick(his_nick, false);
+        evt->new_nicklist(0, w);
+    }
 
-	return w;
+    return w;
 }
 
 void WindowManager::detach_window(const DCC *dcc) {
@@ -178,18 +178,18 @@ void WindowManager::destroy_window(Events *evt, SessionWindow *w) {
 }
 
 void WindowManager::destroy_window_nolock(Events *evt, SessionWindow *w) {
-	if (w) {
-		for (SessionWindow::List::iterator it = windows.begin(); it != windows.end(); it++) {
-			if (*it == w) {
+    if (w) {
+        for (SessionWindow::List::iterator it = windows.begin(); it != windows.end(); it++) {
+            if (*it == w) {
                 if (evt) {
                     evt->close_window(w->get_session(), w);
                 }
-				windows.erase(it);
-				delete w;
-				break;
-			}
-		}
-	}
+                windows.erase(it);
+                delete w;
+                break;
+            }
+        }
+    }
 }
 
 void WindowManager::destroy_all_windows_in_session(Events *evt, Session *s) {
@@ -213,8 +213,8 @@ void WindowManager::destroy_all_windows_in_session(Events *evt, Session *s) {
 void WindowManager::destroy_all_windows() {
     ScopeMutex lock(&mtx);
     while (windows.size()) {
-		destroy_window_nolock(0, windows[0]);
-	}
+        destroy_window_nolock(0, windows[0]);
+    }
 }
 
 } /* namespace Circada */

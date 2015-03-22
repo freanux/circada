@@ -31,23 +31,23 @@ LineFetcher::LineFetcher(const std::string& eol) : eol(eol) { }
 LineFetcher::~LineFetcher() { }
 
 void LineFetcher::flush() {
-	data.clear();
+    data.clear();
 }
 
 size_t LineFetcher::fetch(Socket& socket, Lines& lines) throw (LineFetcherException) {
-	size_t rlen, pos, cnt;
-	char buffer[1024];
-	std::string str;
+    size_t rlen, pos, cnt;
+    char buffer[1024];
+    std::string str;
 
-	cnt = 0;
-	std::memset(buffer, 0, sizeof(buffer));
-	try {
-		rlen = socket.receive(buffer, sizeof(buffer) - 1);
-		if (rlen) {
-			data.append(buffer);
+    cnt = 0;
+    std::memset(buffer, 0, sizeof(buffer));
+    try {
+        rlen = socket.receive(buffer, sizeof(buffer) - 1);
+        if (rlen) {
+            data.append(buffer);
 
-			/* if no eol marker is defined, try to find one now */
-			if (!eol.length()) {
+            /* if no eol marker is defined, try to find one now */
+            if (!eol.length()) {
                 if (data.find("\r\n") != std::string::npos) {
                     eol = "\r\n";
                 } else if (data.find("\r") != std::string::npos) {
@@ -55,7 +55,7 @@ size_t LineFetcher::fetch(Socket& socket, Lines& lines) throw (LineFetcherExcept
                 } else if (data.find("\n") != std::string::npos) {
                     eol = "\n";
                 }
-			}
+            }
 
             /* if eol is defined, parse buffer */
             if (eol.length()) {
@@ -66,12 +66,12 @@ size_t LineFetcher::fetch(Socket& socket, Lines& lines) throw (LineFetcherExcept
                     cnt++;
                 }
             }
-		}
-	} catch (const SocketException& e) {
-		throw LineFetcherException(e.what());
-	}
+        }
+    } catch (const SocketException& e) {
+        throw LineFetcherException(e.what());
+    }
 
-	return cnt;
+    return cnt;
 }
 
 } /* namespace Circada */

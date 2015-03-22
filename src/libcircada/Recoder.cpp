@@ -30,33 +30,33 @@ const int Recoder::RecodeMaxBuffer = 1024;
 Recoder::Recoder(const Encodings& encodings) : encodings(encodings) { }
 
 void Recoder::recode(std::string& text) const {
-	const char *srcbuf = text.c_str();
-	char dstbuf[RecodeMaxBuffer];
+    const char *srcbuf = text.c_str();
+    char dstbuf[RecodeMaxBuffer];
 
     /* try to recode text with all encodings first */
-	size_t sz = encodings.size();
-	if (sz) {
-		for (size_t i = 0; i < sz; i++) {
-			char *psrc = const_cast<char *>(srcbuf);
-			char *pdst = dstbuf;
-			size_t srclen = text.length();
-			size_t dstlen = RecodeMaxBuffer;
-			iconv_t conv = iconv_open("UTF-8", encodings[i].c_str());
-			if (conv) {
-				memset(dstbuf, 0, RecodeMaxBuffer);
-				//size_t bytes = iconv(conv, (char **)&psrc, &srclen, (char **)&pdst, &dstlen);
-				size_t bytes = iconv(conv, static_cast<char **>(&psrc), &srclen, static_cast<char **>(&pdst), &dstlen);
-				iconv_close(conv);
-				if (bytes < std::string::npos) {
-					text.assign(dstbuf);
-					return;
-				}
-			}
-		}
-	}
+    size_t sz = encodings.size();
+    if (sz) {
+        for (size_t i = 0; i < sz; i++) {
+            char *psrc = const_cast<char *>(srcbuf);
+            char *pdst = dstbuf;
+            size_t srclen = text.length();
+            size_t dstlen = RecodeMaxBuffer;
+            iconv_t conv = iconv_open("UTF-8", encodings[i].c_str());
+            if (conv) {
+                memset(dstbuf, 0, RecodeMaxBuffer);
+                //size_t bytes = iconv(conv, (char **)&psrc, &srclen, (char **)&pdst, &dstlen);
+                size_t bytes = iconv(conv, static_cast<char **>(&psrc), &srclen, static_cast<char **>(&pdst), &dstlen);
+                iconv_close(conv);
+                if (bytes < std::string::npos) {
+                    text.assign(dstbuf);
+                    return;
+                }
+            }
+        }
+    }
 
-	/* ok, failed -> now, replace unrecognized characters with question marks */
-	char *psrc = const_cast<char *>(srcbuf);
+    /* ok, failed -> now, replace unrecognized characters with question marks */
+    char *psrc = const_cast<char *>(srcbuf);
     char *pdst = dstbuf;
     size_t srclen = text.length();
     size_t dstlen = RecodeMaxBuffer;

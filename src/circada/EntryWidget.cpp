@@ -74,15 +74,15 @@ void EntryWidget::configure(const std::string& label, int posx, int posy, int wi
         this->label = label;
         this->label_length = get_utf8_length(label);
     }
-	this->posx = posx;
-	this->posy = posy;
-	this->width = width;
-	this->maxlen = maxlen;
+    this->posx = posx;
+    this->posy = posy;
+    this->width = width;
+    this->maxlen = maxlen;
 
-	win_label = newwin(1, this->label_length + 1, posy, posx);
-	win_input = newpad(1, (width > static_cast<int>(maxlen) ? width : maxlen) + 1);
+    win_label = newwin(1, this->label_length + 1, posy, posx);
+    win_input = newpad(1, (width > static_cast<int>(maxlen) ? width : maxlen) + 1);
 
-	this->configured = true;
+    this->configured = true;
 }
 
 void EntryWidget::set_label(const std::string& label) {
@@ -214,30 +214,30 @@ void EntryWidget::draw() {
 
         /* draw info bar */
         if (info_left.length() + info_selected.length() + info_right.length()) {
-			waddch(win_input, ' ');
-			int draw_from = 0;
-			int sz = get_utf8_length(info_left);
-			int w = width / 2 - (2 * maxlen);
-			if (sz > w) {
-				draw_from = sz - w - 1;
-				if (draw_from > sz) draw_from = sz - 1;
-				if (draw_from < 0) draw_from = 0;
-			}
-			UTF8Iterator utf8_it(info_left.begin(), draw_from);
+            waddch(win_input, ' ');
+            int draw_from = 0;
+            int sz = get_utf8_length(info_left);
+            int w = width / 2 - (2 * maxlen);
+            if (sz > w) {
+                draw_from = sz - w - 1;
+                if (draw_from > sz) draw_from = sz - 1;
+                if (draw_from < 0) draw_from = 0;
+            }
+            UTF8Iterator utf8_it(info_left.begin(), draw_from);
             int draw_from_utf8 = utf8_it.get_string_iterator() - info_left.begin();
-			wattron(win_input, COLOR_PAIR(Formatter::get_color_code(FormatterColorDarkWhite, FormatterColorBrightBlack)));
-			waddstr(win_input, info_left.substr(draw_from_utf8).c_str());
-			wattron(win_input, COLOR_PAIR(Formatter::get_color_code(FormatterColorDarkBlack, FormatterColorBrightWhite)));
-			waddstr(win_input, info_selected.c_str());
-			wattron(win_input, COLOR_PAIR(Formatter::get_color_code(FormatterColorDarkWhite, FormatterColorBrightBlack)));
-			waddstr(win_input, info_right.c_str());
-			int ty, tx;
-			getyx(win_input, ty, tx);
-			for (int i = tx; i < width; i++) {
+            wattron(win_input, COLOR_PAIR(Formatter::get_color_code(FormatterColorDarkWhite, FormatterColorBrightBlack)));
+            waddstr(win_input, info_left.substr(draw_from_utf8).c_str());
+            wattron(win_input, COLOR_PAIR(Formatter::get_color_code(FormatterColorDarkBlack, FormatterColorBrightWhite)));
+            waddstr(win_input, info_selected.c_str());
+            wattron(win_input, COLOR_PAIR(Formatter::get_color_code(FormatterColorDarkWhite, FormatterColorBrightBlack)));
+            waddstr(win_input, info_right.c_str());
+            int ty, tx;
+            getyx(win_input, ty, tx);
+            for (int i = tx; i < width; i++) {
                 mvwaddch(win_input, ty, i, ' ');
-			}
-			wattron(win_input, COLOR_PAIR(Formatter::get_color_code(FormatterColorBrightWhite, FormatterColorDarkBlack)));
-		}
+            }
+            wattron(win_input, COLOR_PAIR(Formatter::get_color_code(FormatterColorBrightWhite, FormatterColorDarkBlack)));
+        }
 
         /* refreshing label and input box */
         wrefresh(win_label);
@@ -246,9 +246,9 @@ void EntryWidget::draw() {
 }
 
 void EntryWidget::set_cursor() {
-	int sz = label_length + 1;
-	int diff;
-	int real_curx = 0;
+    int sz = label_length + 1;
+    int diff;
+    int real_curx = 0;
 
     int i = 0;
     UTF8Iterator it(content.begin());
@@ -258,14 +258,14 @@ void EntryWidget::set_cursor() {
         i++;
     }
 
-	diff = real_curx - ofsx - (width - sz - 1);
-	if (diff > 0) ofsx += diff;
+    diff = real_curx - ofsx - (width - sz - 1);
+    if (diff > 0) ofsx += diff;
 
-	diff = real_curx - ofsx;
-	if (diff < 0) ofsx += diff;
+    diff = real_curx - ofsx;
+    if (diff < 0) ofsx += diff;
 
-	wmove(win_input, 0, real_curx);
-	prefresh(win_input, 0, ofsx, posy, posx + label_length + 1, posy + 1, width - 1);
+    wmove(win_input, 0, real_curx);
+    prefresh(win_input, 0, ofsx, posy, posx + label_length + 1, posy + 1, width - 1);
 }
 
 void EntryWidget::set_parser(Circada::Parser *parser) {
@@ -339,12 +339,12 @@ void EntryWidget::set_numbers_only(bool state) {
 }
 
 void EntryWidget::set_info_bar(const std::string& info_left, const std::string& info_selected, const std::string& info_right, bool redraw) {
-	this->info_left = info_left;
-	this->info_selected = info_selected;
-	this->info_right = info_right;
-	if (redraw) {
-		draw();
-	}
+    this->info_left = info_left;
+    this->info_selected = info_selected;
+    this->info_right = info_right;
+    if (redraw) {
+        draw();
+    }
 }
 
 void EntryWidget::reset_mru_tab() {

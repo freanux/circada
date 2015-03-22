@@ -47,76 +47,76 @@ DCCManager::DCCManager(Configuration& config, Events& evt, WindowManager& win_mg
 DCCManager::~DCCManager() {
     destroying = true;
     ScopeMutex lock(&mtx);
-	while (dccs.size()) {
-		DCC *dcc = dccs[0];
-		destroy_dcc_nolock(dcc);
-	}
+    while (dccs.size()) {
+        DCC *dcc = dccs[0];
+        destroy_dcc_nolock(dcc);
+    }
 }
 
 DCC *DCCManager::create_chat_in(Session *s, const std::string& nick) throw (DCCManagerException) {
     /* we are offering a chat, we create an incoming socket */
-	DCCChatIn *dcc = 0;
-	try {
-		dcc = new DCCChatIn(s, *this, nick);
-		dcc->start();
-	} catch (const std::exception& e) {
-		if (dcc) delete dcc;
-		throw DCCManagerException(e.what());
-	}
+    DCCChatIn *dcc = 0;
+    try {
+        dcc = new DCCChatIn(s, *this, nick);
+        dcc->start();
+    } catch (const std::exception& e) {
+        if (dcc) delete dcc;
+        throw DCCManagerException(e.what());
+    }
 
-	ScopeMutex lock(&mtx);
-	dccs.push_back(dcc);
+    ScopeMutex lock(&mtx);
+    dccs.push_back(dcc);
 
-	return dcc;
+    return dcc;
 }
 
 DCC *DCCManager::create_xfer_in(Session *s, const std::string& nick, const std::string& filename, std::string& out_filename, u32& filesize) throw (DCCManagerException) {
     /* we are offering a file, we create an incoming socket */
-	DCCXferIn *dcc = 0;
-	try {
-	    get_fileinfo(filename, out_filename, filesize);
-		dcc = new DCCXferIn(s, *this, nick, filename, filesize);
-		dcc->start();
-	} catch (const std::exception& e) {
-		if (dcc) delete dcc;
-		throw DCCManagerException(e.what());
-	}
+    DCCXferIn *dcc = 0;
+    try {
+        get_fileinfo(filename, out_filename, filesize);
+        dcc = new DCCXferIn(s, *this, nick, filename, filesize);
+        dcc->start();
+    } catch (const std::exception& e) {
+        if (dcc) delete dcc;
+        throw DCCManagerException(e.what());
+    }
 
-	ScopeMutex lock(&mtx);
-	dccs.push_back(dcc);
+    ScopeMutex lock(&mtx);
+    dccs.push_back(dcc);
 
-	return dcc;
+    return dcc;
 }
 
 DCC *DCCManager::create_chat_out(Session *s, const std::string& nick, unsigned long address, unsigned short port) throw (DCCManagerException) {
     /* we can connect to an offered socket */
-	DCCChatOut *dcc = 0;
-	try {
-		dcc = new DCCChatOut(s, *this, nick, address, port);
-	} catch (const std::exception& e) {
-		throw DCCManagerException(e.what());
-	}
+    DCCChatOut *dcc = 0;
+    try {
+        dcc = new DCCChatOut(s, *this, nick, address, port);
+    } catch (const std::exception& e) {
+        throw DCCManagerException(e.what());
+    }
 
-	ScopeMutex lock(&mtx);
-	dccs.push_back(dcc);
+    ScopeMutex lock(&mtx);
+    dccs.push_back(dcc);
 
-	return dcc;
+    return dcc;
 }
 
 DCC *DCCManager::create_xfer_out(Session *s, const std::string& nick, const std::string& filename, u32 filesize, unsigned long address, unsigned short port) throw (DCCManagerException)
 {
     /* we can connect to an offered socket */
-	DCCXferOut *dcc = 0;
-	try {
-		dcc = new DCCXferOut(s, *this, nick, filename, filesize, address, port);
-	} catch (const std::exception& e) {
-		throw DCCManagerException(e.what());
-	}
+    DCCXferOut *dcc = 0;
+    try {
+        dcc = new DCCXferOut(s, *this, nick, filename, filesize, address, port);
+    } catch (const std::exception& e) {
+        throw DCCManagerException(e.what());
+    }
 
-	ScopeMutex lock(&mtx);
-	dccs.push_back(dcc);
+    ScopeMutex lock(&mtx);
+    dccs.push_back(dcc);
 
-	return dcc;
+    return dcc;
 }
 
 void DCCManager::dcc_change_his_nick(Session *s, const std::string& old_nick, const std::string& new_nick) {
@@ -147,12 +147,12 @@ void DCCManager::detach_dcc_from_irc_server(const DCC *dcc) {
     ScopeMutex lock(&mtx);
 
     for (DCC::List::iterator it = dccs.begin(); it != dccs.end(); it++) {
-		DCC *tmp_dcc = *it;
-		if (tmp_dcc == dcc) {
+        DCC *tmp_dcc = *it;
+        if (tmp_dcc == dcc) {
             tmp_dcc->reset_session();
-			break;
-		}
-	}
+            break;
+        }
+    }
 }
 
 void DCCManager::destroy_all_dccs_in_session(Session *s) {
@@ -179,18 +179,18 @@ void DCCManager::destroy_dcc(const DCC *dcc) {
 void DCCManager::destroy_dcc_nolock(const DCC *dcc) {
     DCC *my_dcc = const_cast<DCC *>(dcc);
     my_dcc->set_will_be_killed();
-	my_dcc->stop();
-	win_mgr.detach_window(my_dcc);
+    my_dcc->stop();
+    win_mgr.detach_window(my_dcc);
 
-	for (DCC::List::iterator it = dccs.begin(); it != dccs.end(); it++) {
-		DCC *tmp_dcc = *it;
-		if (tmp_dcc == my_dcc) {
-			dccs.erase(it);
-			break;
-		}
-	}
+    for (DCC::List::iterator it = dccs.begin(); it != dccs.end(); it++) {
+        DCC *tmp_dcc = *it;
+        if (tmp_dcc == my_dcc) {
+            dccs.erase(it);
+            break;
+        }
+    }
 
-	delete my_dcc;
+    delete my_dcc;
 }
 
 DCC::List& DCCManager::get_dccs() {

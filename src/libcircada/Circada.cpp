@@ -28,9 +28,9 @@ IrcClient::IrcClient(Configuration& config) : IrcServerSide(config), config(conf
 
 IrcClient::~IrcClient() {
     ScopeMutex lock(&mtx);
-	while (sessions.size()) {
-		destroy_session_nolock(sessions[0]);
-	}
+    while (sessions.size()) {
+        destroy_session_nolock(sessions[0]);
+    }
 }
 
 Window *IrcClient::create_application_window(const std::string& name, const std::string& topic) {
@@ -45,27 +45,27 @@ Window *IrcClient::get_application_window() {
 Session *IrcClient::create_session(const SessionOptions& options) throw (CircadaException) {
     Session *s = 0;
 
-	try {
-		s = new Session(config, this, options);
-		ScopeMutex lock(&mtx);
-		sessions.push_back(s);
-	} catch (const std::exception& e) {
-		if (s) delete s;
-		throw CircadaException(e.what());
-	}
+    try {
+        s = new Session(config, this, options);
+        ScopeMutex lock(&mtx);
+        sessions.push_back(s);
+    } catch (const std::exception& e) {
+        if (s) delete s;
+        throw CircadaException(e.what());
+    }
 
-	return s;
+    return s;
 }
 
 void IrcClient::destroy_session(Session *s) throw (CircadaException) {
-	ScopeMutex lock(&mtx);
-	destroy_session_nolock(s);
+    ScopeMutex lock(&mtx);
+    destroy_session_nolock(s);
 }
 
 size_t IrcClient::get_session_count() {
-	ScopeMutex lock(&mtx);
+    ScopeMutex lock(&mtx);
 
-	return sessions.size();
+    return sessions.size();
 }
 
 DCCHandle::List IrcClient::get_dcc_list() {
@@ -128,26 +128,26 @@ DCCXferHandle IrcClient::get_xfer_handle(DCCHandle dcc) throw (DCCOperationNotPe
 }
 
 void IrcClient::destroy_session_nolock(Session *s) throw (CircadaException) {
-	for (Session::List::iterator it = sessions.begin(); it != sessions.end(); it++) {
-		if ((*it) == s) {
-			sessions.erase(it);
-			s->disconnect();
-			delete s;
-			break;
-		}
-	}
+    for (Session::List::iterator it = sessions.begin(); it != sessions.end(); it++) {
+        if ((*it) == s) {
+            sessions.erase(it);
+            s->disconnect();
+            delete s;
+            break;
+        }
+    }
 }
 
 void IrcClient::suicide(Session *s) {
-	ScopeMutex lock(&mtx);
-	for (Session::List::iterator it = sessions.begin(); it != sessions.end(); it++) {
-		if ((*it) == s) {
-			sessions.erase(it);
-			Suicidal *suicial = reinterpret_cast<Suicidal *>(s);
-			suicial->suicide();
-			break;
-		}
-	}
+    ScopeMutex lock(&mtx);
+    for (Session::List::iterator it = sessions.begin(); it != sessions.end(); it++) {
+        if ((*it) == s) {
+            sessions.erase(it);
+            Suicidal *suicial = reinterpret_cast<Suicidal *>(s);
+            suicial->suicide();
+            break;
+        }
+    }
 }
 
 Window *IrcClient::query(Session *s, const std::string& nick) throw (CircadaException) {

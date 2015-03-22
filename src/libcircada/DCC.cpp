@@ -52,15 +52,15 @@ DCCIO::DCCIO(DCCDirection direction, unsigned long address, unsigned short port)
 DCCIO::~DCCIO() { }
 
 unsigned long DCCIO::get_address() const {
-	return address;
+    return address;
 }
 
 unsigned short DCCIO::get_port() const {
-	return port;
+    return port;
 }
 
 Socket& DCCIO::get_socket() {
-	return socket;
+    return socket;
 }
 
 DCCDirection DCCIO::get_direction() const {
@@ -76,11 +76,11 @@ void DCCIO::stop() {
 }
 
 void DCCIO::set_port(unsigned short port) {
-	this->port = port;
+    this->port = port;
 }
 
 void DCCIO::set_address(unsigned long address) {
-	this->address = address;
+    this->address = address;
 }
 
 /******************************************************************************
@@ -93,15 +93,15 @@ DCC::DCC(Session *s, DCCManager& mgr, DCCIO& io, DCCType type, const std::string
 DCC::~DCC() { }
 
 DCCIO& DCC::get_dccio() const {
-	return io;
+    return io;
 }
 
 DCCType DCC::get_type() const {
-	return type;
+    return type;
 }
 
 bool DCC::is_running() const {
-	return running;
+    return running;
 }
 
 bool DCC::is_connected() const {
@@ -113,11 +113,11 @@ void DCC::finished() {
 
 }
 const std::string& DCC::get_my_nick() const {
-	return my_nick;
+    return my_nick;
 }
 
 const std::string& DCC::get_his_nick() const {
-	return his_nick;
+    return his_nick;
 }
 
 Session *DCC::get_session() const {
@@ -145,49 +145,49 @@ bool DCC::get_will_be_killed() const {
 }
 
 void DCC::start() throw (DCCException) {
-	if (!running) {
-		running = true;
-		if (!thread_start()) {
-			throw DCCException("Starting thread failed.");
-		}
-	}
+    if (!running) {
+        running = true;
+        if (!thread_start()) {
+            throw DCCException("Starting thread failed.");
+        }
+    }
 }
 
 void DCC::stop() {
-	if (running) {
-		running = false;
-		try {
-		    io.stop();
-			io.get_socket().close();
-		} catch (const DCCException& e) {
-			/* chomp */
-		}
-		thread_join();
-	}
+    if (running) {
+        running = false;
+        try {
+            io.stop();
+            io.get_socket().close();
+        } catch (const DCCException& e) {
+            /* chomp */
+        }
+        thread_join();
+    }
 }
 
 void DCC::thread() {
-	try {
-	    int to = atoi(mgr.get_configuration().get_value("", "dcc_timeout", "300").c_str());
-	    io.set_timeout(to);
-		io.connect();
-		connected = true;
-		begin_handler();
-		while (running) {
-			process_or_idle();
-		}
-		connected = false;
-		end_handler();
-	} catch (const DCCTimedoutException& e) {
-	    connected = false;
+    try {
+        int to = atoi(mgr.get_configuration().get_value("", "dcc_timeout", "300").c_str());
+        io.set_timeout(to);
+        io.connect();
+        connected = true;
+        begin_handler();
+        while (running) {
+            process_or_idle();
+        }
+        connected = false;
+        end_handler();
+    } catch (const DCCTimedoutException& e) {
+        connected = false;
         mgr.dcc_mgr_timedout(this, e.what());
-	} catch (const DCCChatStoppedException& e) {
-	    connected = false;
+    } catch (const DCCChatStoppedException& e) {
+        connected = false;
         mgr.dcc_mgr_chat_ended(this, e.what());
-	} catch (const DCCException& e) {
-	    connected = false;
-		mgr.dcc_mgr_failed(this, e.what());
-	}
+    } catch (const DCCException& e) {
+        connected = false;
+        mgr.dcc_mgr_failed(this, e.what());
+    }
 }
 
 /******************************************************************************
@@ -196,36 +196,36 @@ void DCC::thread() {
 DCCIn::DCCIn() throw (DCCException)
     : DCCIO(DCCDirectionIncoming, 0, 0), listening(false)
 {
-	socket.listen(0);
-	try {
-		set_port(socket.get_port());
-		set_address(socket.get_address());
-	} catch (const SocketException& e) {
-		throw DCCException(e.what());
-	}
+    socket.listen(0);
+    try {
+        set_port(socket.get_port());
+        set_address(socket.get_address());
+    } catch (const SocketException& e) {
+        throw DCCException(e.what());
+    }
 }
 
 DCCIn::~DCCIn() { }
 
 void DCCIn::connect() throw (DCCException) {
-	try {
-	    int timeout_counter = 0;
-		while (iorunning) {
+    try {
+        int timeout_counter = 0;
+        while (iorunning) {
             if (timeout_counter >= timeout * 10) {
                 throw DCCTimedoutException();
             }
-			if (socket.activity(0, 100000)) {
-				socket.accept(socket);
-				break;
-			}
-			timeout_counter++;
-		}
-		if (!iorunning) {
+            if (socket.activity(0, 100000)) {
+                socket.accept(socket);
+                break;
+            }
+            timeout_counter++;
+        }
+        if (!iorunning) {
             throw DCCException("Operation aborted.");
-		}
-	} catch (const SocketException& e) {
-		throw DCCException(e.what());
-	}
+        }
+    } catch (const SocketException& e) {
+        throw DCCException(e.what());
+    }
 }
 
 /******************************************************************************
@@ -260,12 +260,12 @@ void DCCChat::begin_handler() {
 }
 
 void DCCChat::process_or_idle() throw (DCCException) {
-	try {
-		Socket& socket = get_dccio().get_socket();
-		if (socket.activity(0, 100000)) {
-			LineFetcher::Lines lines;
-			fetcher.fetch(socket, lines);
-			for (LineFetcher::Lines::iterator it = lines.begin(); it != lines.end(); it++) {
+    try {
+        Socket& socket = get_dccio().get_socket();
+        if (socket.activity(0, 100000)) {
+            LineFetcher::Lines lines;
+            fetcher.fetch(socket, lines);
+            for (LineFetcher::Lines::iterator it = lines.begin(); it != lines.end(); it++) {
                 std::string& line = *it;
                 std::string ctcp;
                 if (line.length() && line[0] == '\01') {
@@ -279,21 +279,21 @@ void DCCChat::process_or_idle() throw (DCCException) {
                         }
                     }
                 }
-				mgr.dcc_mgr_message(this, get_his_nick(), ctcp, line);
-			}
-		}
-	} catch (const SocketException& e) {
-		throw DCCChatStoppedException(e.what());
-	}
+                mgr.dcc_mgr_message(this, get_his_nick(), ctcp, line);
+            }
+        }
+    } catch (const SocketException& e) {
+        throw DCCChatStoppedException(e.what());
+    }
 }
 
 void DCCChat::send(const std::string& msg) throw (DCCException) {
-	try {
+    try {
         Socket& socket = get_dccio().get_socket();
         socket.send(msg + "\r\n");
-	} catch (const SocketException& e) {
-		throw DCCException(e.what());
-	}
+    } catch (const SocketException& e) {
+        throw DCCException(e.what());
+    }
 }
 
 /******************************************************************************
@@ -321,7 +321,7 @@ void DCCXfer::end_handler() {
 }
 
 const std::string& DCCXfer::get_filename() const {
-	return filename;
+    return filename;
 }
 
 void DCCXfer::set_resume_position(u32 startpos) {
@@ -366,7 +366,7 @@ u32 DCCXferIn::get_total_sent() const {
 }
 
 void DCCXferIn::process_or_idle() throw (DCCException) {
-	try {
+    try {
         switch (state) {
             case XferStateStart:
             {
@@ -415,9 +415,9 @@ void DCCXferIn::process_or_idle() throw (DCCException) {
                 break;
             }
         }
-	} catch (const Exception& e) {
-		throw DCCException(e.what());
-	}
+    } catch (const Exception& e) {
+        throw DCCException(e.what());
+    }
 }
 
 /******************************************************************************
@@ -430,7 +430,7 @@ DCCXferOut::DCCXferOut(Session *s, DCCManager& mgr, const std::string& nick,
 DCCXferOut::~DCCXferOut() { }
 
 void DCCXferOut::process_or_idle() throw (DCCException) {
-	try {
+    try {
         switch (state) {
             case XferStateStart:
             {
@@ -505,8 +505,8 @@ void DCCXferOut::process_or_idle() throw (DCCException) {
                 break;
             }
         }
-	} catch (const SocketException& e) {
-	    /* sender closes socket, if file successfully transferred */
+    } catch (const SocketException& e) {
+        /* sender closes socket, if file successfully transferred */
         if ((filesize && total_acknowledged >= filesize) || !filesize) {
             successful = true;
             remove(part_filename.c_str());
@@ -517,9 +517,9 @@ void DCCXferOut::process_or_idle() throw (DCCException) {
         } else {
             throw DCCException(e.what());
         }
-	} catch (const Exception& e) {
-		throw DCCException(e.what());
-	}
+    } catch (const Exception& e) {
+        throw DCCException(e.what());
+    }
 }
 
 /******************************************************************************

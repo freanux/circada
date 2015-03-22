@@ -26,29 +26,29 @@
 namespace Circada {
 
 bool Nick::is_nick_in_text(const std::string& nick, const std::string& text) {
-	if (is_equal(nick, text)) return true;
-	if (text.find(" " + nick) != std::string::npos) return true;
-	if (text.find(nick + " ") != std::string::npos) return true;
-	if (text.find("~" + nick) != std::string::npos) return true;
-	if (text.find(nick + "~") != std::string::npos) return true;
-	if (text.find(nick + ":") != std::string::npos) return true;
-	if (text.find(nick + ",") != std::string::npos) return true;
+    if (is_equal(nick, text)) return true;
+    if (text.find(" " + nick) != std::string::npos) return true;
+    if (text.find(nick + " ") != std::string::npos) return true;
+    if (text.find("~" + nick) != std::string::npos) return true;
+    if (text.find(nick + "~") != std::string::npos) return true;
+    if (text.find(nick + ":") != std::string::npos) return true;
+    if (text.find(nick + ",") != std::string::npos) return true;
 
-	return false;
+    return false;
 }
 
 Nick::Nick(const std::string& nick, ServerNickPrefix *snp) {
-	this->snp = snp;
-	set_nick(nick);
+    this->snp = snp;
+    set_nick(nick);
 }
 
 bool Nick::operator<(const Nick& rhs) const {
-	return (strcasecmp(sortnick.c_str(), rhs.sortnick.c_str()) < 0);
+    return (strcasecmp(sortnick.c_str(), rhs.sortnick.c_str()) < 0);
 }
 
 void Nick::set_flags(const std::string& new_flags) {
-	flags.set_flags(new_flags);
-	set_sortnick();
+    flags.set_flags(new_flags);
+    set_sortnick();
 }
 
 char Nick::get_flag() {
@@ -64,7 +64,7 @@ char Nick::get_flag() {
         }
     }
 
-	return ' ';
+    return ' ';
 }
 
 void Nick::set_nick(const std::string& nick) {
@@ -84,11 +84,11 @@ void Nick::set_nick(const std::string& nick) {
     } else {
         this->nick = nick;
     }
-	set_sortnick();
+    set_sortnick();
 }
 
 const std::string& Nick::get_nick() {
-	return nick;
+    return nick;
 }
 
 void Nick::set_sortnick() {

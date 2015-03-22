@@ -36,22 +36,22 @@ Application::Application(Configuration& config) throw (ApplicationException)
     setlocale(LC_ALL, "");
 
     /* setup ncurses */
-	win_main = initscr();
+    win_main = initscr();
     start_color();
-	use_default_colors();
-	raw();
-	noecho();
-	set_escdelay(0);
+    use_default_colors();
+    raw();
+    noecho();
+    set_escdelay(0);
 
     /* setup standard colors */
-	for (int i = 0; i < 256; i++) {
-		int fg = i & 0x0f;
-		int bg = i >> 4;
-		if (!bg) bg = -1;
-		init_pair(i, fg, bg);
-	}
+    for (int i = 0; i < 256; i++) {
+        int fg = i & 0x0f;
+        int bg = i >> 4;
+        if (!bg) bg = -1;
+        init_pair(i, fg, bg);
+    }
     /* setup standard incoming encoding rules. outgoing is always UTF-8 */
-	encodings.push_back("UTF-8");
+    encodings.push_back("UTF-8");
     encodings.push_back("CP1252");
     encodings.push_back("ISO-8859-1");
 
@@ -60,7 +60,7 @@ Application::Application(Configuration& config) throw (ApplicationException)
     number_widget.set_numbers_only(true);
 
     /* resize all widgets */
-	configure();
+    configure();
 
     /* create application window */
     create_application_window(get_project_name(), get_project_name());
@@ -76,7 +76,7 @@ Application::~Application() {
 void Application::run() throw (ApplicationException) {
     time_t old_time = 0;
     running = true;
-	while (running) {
+    while (running) {
         time_t new_time = time(0);
         if (new_time != old_time) {
             old_time = new_time;
@@ -246,7 +246,7 @@ void Application::run() throw (ApplicationException) {
                     break;
             }
         }
-	}
+    }
 }
 
 void Application::configure() {
@@ -383,12 +383,12 @@ void Application::set_cursor() {
 
 void Application::update_input_infobar() {
     /* the caller has to lock mutex */
-	std::string l, s, r;
-	if (selected_window) {
+    std::string l, s, r;
+    if (selected_window) {
         size_t sz = windows.size();
         char buf[16];
-		bool left = true;
-		for (size_t i = 0; i < sz; i++) {
+        bool left = true;
+        for (size_t i = 0; i < sz; i++) {
             ScreenWindow *sw = windows[i];
             const std::string *name = &sw->get_circada_window()->get_name();
             sprintf(buf, "%lu", i + 1);
@@ -406,10 +406,10 @@ void Application::update_input_infobar() {
                 r += buf;
                 r += " " + *name + " ";
             }
-		}
-		number_widget.set_info_bar(l, s, r, input_numbers);
-	}
-	build_window_tree();
+        }
+        number_widget.set_info_bar(l, s, r, input_numbers);
+    }
+    build_window_tree();
 }
 
 void Application::append_welcome_message(ScreenWindow *w) {
@@ -519,16 +519,16 @@ void Application::split(const std::string& from, Params& into, int max_params) {
     std::string str = from;
     size_t pos = 0;
     int parmcount = 0;
-	while (str.length()) {
-		parmcount++;
-		if ((pos = str.find(" ", 0)) != std::string::npos && (!max_params || parmcount < max_params)) {
-			into.push_back(str.substr(0, pos));
-			str = str.substr(pos + 1);
-		} else {
-			into.push_back(str);
-			break;
-		}
-	}
+    while (str.length()) {
+        parmcount++;
+        if ((pos = str.find(" ", 0)) != std::string::npos && (!max_params || parmcount < max_params)) {
+            into.push_back(str.substr(0, pos));
+            str = str.substr(pos + 1);
+        } else {
+            into.push_back(str);
+            break;
+        }
+    }
 }
 
 void Application::execute_connect(const std::string& params) {
@@ -1007,24 +1007,24 @@ void Application::send_dcc_abort(Window *w, DCCHandle dcc, const std::string& re
 
 void Application::build_window_tree() {
     /* calculate width */
-	size_t maxlen = 0;
-	size_t sz = windows.size();
-	size_t len;
-	for (size_t i = 0; i < sz; i++) {
+    size_t maxlen = 0;
+    size_t sz = windows.size();
+    size_t len;
+    for (size_t i = 0; i < sz; i++) {
         ScreenWindow *sw = windows[i];
-		if (sw->get_circada_window()->get_window_type() != WindowTypeServer) {
-			len = sw->get_circada_window()->get_name().length() + 4;
-		} else {
-			len = sw->get_circada_session()->get_server().length() + 2;
-		}
-		if (len > maxlen) {
-			maxlen = len;
-		}
-	}
+        if (sw->get_circada_window()->get_window_type() != WindowTypeServer) {
+            len = sw->get_circada_window()->get_name().length() + 4;
+        } else {
+            len = sw->get_circada_session()->get_server().length() + 2;
+        }
+        if (len > maxlen) {
+            maxlen = len;
+        }
+    }
 
-	/* build tree */
-	TreeViewWidget::TreeView& tv = treeview_widget.get_treeview();
-	tv.clear();
+    /* build tree */
+    TreeViewWidget::TreeView& tv = treeview_widget.get_treeview();
+    tv.clear();
     std::string sep;
 
     /* application windows first */
@@ -1052,14 +1052,14 @@ void Application::build_window_tree() {
         if (w->get_window_type() == WindowTypeServer) {
             tv.push_back(TreeViewEntry(sw, false, "+-", w->get_name()));
 
-			bool last_server = true;
-			for (ScreenWindow::List::iterator lit = it + 1; lit != windows.end(); lit++) {
-			    ScreenWindow *sw = *lit;
-			    if (sw->get_circada_window()->get_window_type() == WindowTypeServer) {
-			        last_server = false;
+            bool last_server = true;
+            for (ScreenWindow::List::iterator lit = it + 1; lit != windows.end(); lit++) {
+                ScreenWindow *sw = *lit;
+                if (sw->get_circada_window()->get_window_type() == WindowTypeServer) {
+                    last_server = false;
                     break;
-			    }
-			}
+                }
+            }
 
             Session *s = sw->get_circada_session();
             for (ScreenWindow::List::iterator sit = windows.begin(); sit != windows.end(); sit++) {

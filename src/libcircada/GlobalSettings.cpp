@@ -29,27 +29,27 @@ GlobalSettings::GlobalSettings()
 GlobalSettings::~GlobalSettings() { }
 
 const std::string& GlobalSettings::get_project_name() {
-	ScopeMutex lock(&settings_mtx);
-	return project_name;
+    ScopeMutex lock(&settings_mtx);
+    return project_name;
 }
 
 const std::string& GlobalSettings::get_project_version() {
-	ScopeMutex lock(&settings_mtx);
-	return project_version;
+    ScopeMutex lock(&settings_mtx);
+    return project_version;
 }
 
 const std::string& GlobalSettings::get_quit_message() {
-	return quit_message;
+    return quit_message;
 }
 
 bool GlobalSettings::get_injection() {
-	ScopeMutex lock(&settings_mtx);
-	return this->inject_messages;
+    ScopeMutex lock(&settings_mtx);
+    return this->inject_messages;
 }
 
 Encodings& GlobalSettings::get_encodings() {
-	ScopeMutex lock(&settings_mtx);
-	return encodings;
+    ScopeMutex lock(&settings_mtx);
+    return encodings;
 }
 
 } /* namespace Circada */

@@ -126,7 +126,7 @@ Formatter::Formatter() : current_color(1) {
 Formatter::~Formatter() { }
 
 unsigned char Formatter::get_color_code(int fg, int bg) {
-	return (bg << 4) + fg;
+    return (bg << 4) + fg;
 }
 
 void Formatter::parse(const Circada::Message& m, std::string& line) {

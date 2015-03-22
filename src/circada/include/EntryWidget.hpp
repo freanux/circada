@@ -94,12 +94,12 @@ private:
     std::string label;
     std::string content;
     int label_length;
-	int posx, posy;
-	int width;
-	int maxlen;
-	std::string info_left;
-	std::string info_selected;
-	std::string info_right;
+    int posx, posy;
+    int width;
+    int maxlen;
+    std::string info_left;
+    std::string info_selected;
+    std::string info_right;
 
     void reset_mru_tab();
     void delete_ncurses_object();

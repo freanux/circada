@@ -82,9 +82,9 @@ bool ScreenWindowComparer::operator()(ScreenWindow* const& lhs, ScreenWindow* co
 
 void ScreenWindow::cleanup() {
     int max_messages = atoi(config.get_value("", "window_max_entries", "10000").c_str());
-	if (max_messages) {
-		while (static_cast<int>(lines.size()) > max_messages) {
-			lines.erase(lines.begin());
-		}
-	}
+    if (max_messages) {
+        while (static_cast<int>(lines.size()) > max_messages) {
+            lines.erase(lines.begin());
+        }
+    }
 }

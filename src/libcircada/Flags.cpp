@@ -23,52 +23,52 @@
 namespace Circada {
 
 Flags::Flags() : possible_flags(POSSIBLE_FLAGS) {
-	clear();
+    clear();
 }
 
 Flags::~Flags() { }
 
 std::string Flags::get_flags() {
-	std::string tmp;
+    std::string tmp;
 
-	for (size_t i = 0; i < FLAGS_MAX_SIZE; i++) {
-		if (flags[i] == '1') {
-			tmp.push_back(possible_flags[i]);
-		}
-	}
+    for (size_t i = 0; i < FLAGS_MAX_SIZE; i++) {
+        if (flags[i] == '1') {
+            tmp.push_back(possible_flags[i]);
+        }
+    }
 
-	return (tmp.length() ? "+" + tmp : "");
+    return (tmp.length() ? "+" + tmp : "");
 }
 
 void Flags::set_flags(const std::string& new_flags) {
-	char set = '1';
+    char set = '1';
 
-	size_t sz = new_flags.size();
-	size_t pos;
-	for (size_t i = 0; i < sz; i++) {
-		if (new_flags[i] == '+') {
-			set = '1';
-		} else if (new_flags[i] == '-') {
-			set = '0';
-		} else if ((pos = possible_flags.find(new_flags[i])) != std::string::npos) {
-			flags[pos] = set;
-		}
-	}
+    size_t sz = new_flags.size();
+    size_t pos;
+    for (size_t i = 0; i < sz; i++) {
+        if (new_flags[i] == '+') {
+            set = '1';
+        } else if (new_flags[i] == '-') {
+            set = '0';
+        } else if ((pos = possible_flags.find(new_flags[i])) != std::string::npos) {
+            flags[pos] = set;
+        }
+    }
 }
 
 void Flags::clear() {
-	for (size_t i = 0; i < FLAGS_MAX_SIZE; i++) {
-		flags[i] = '0';
-	}
+    for (size_t i = 0; i < FLAGS_MAX_SIZE; i++) {
+        flags[i] = '0';
+    }
 }
 
 bool Flags::is_flag_set(char flag) {
-	size_t pos = possible_flags.find(flag);
-	if (pos != std::string::npos) {
-		return (flags[pos] == '1');
-	}
+    size_t pos = possible_flags.find(flag);
+    if (pos != std::string::npos) {
+        return (flags[pos] == '1');
+    }
 
-	return false;
+    return false;
 }
 
 } /* namespace Circada */

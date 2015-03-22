@@ -45,9 +45,9 @@ std::string Environment::get_home_directory() throw (EnvironmentException) {
 }
 
 std::string Environment::get_uname() throw (EnvironmentException) {
-	struct utsname ud;
-	uname(&ud);
-	return std::string(ud.sysname);
+    struct utsname ud;
+    uname(&ud);
+    return std::string(ud.sysname);
 }
 
 } /* namespace Circada */

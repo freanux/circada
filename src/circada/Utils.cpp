@@ -25,12 +25,12 @@ static const int RecodeMaxSize = 1024;
 
 size_t to_wstring(const std::string& from, std::wstring& to) {
     wchar_t buffer[RecodeMaxSize];
-	size_t rv;
+    size_t rv;
 
-	rv = mbstowcs(buffer, from.c_str(), RecodeMaxSize - 1);
-	to.assign(buffer);
+    rv = mbstowcs(buffer, from.c_str(), RecodeMaxSize - 1);
+    to.assign(buffer);
 
-	return rv;
+    return rv;
 }
 
 int get_display_width(const std::string& utf8_sequence) {
