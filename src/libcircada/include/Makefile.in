@@ -80,9 +80,12 @@ build_triplet = @build@
 host_triplet = @host@
 subdir = src/libcircada/include
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
-	$(nobase_include_HEADERS)
+	$(am__nobase_include_HEADERS_DIST)
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/configure.ac
+am__aclocal_m4_deps = $(top_srcdir)/m4/libtool.m4 \
+	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
+	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
+	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
@@ -107,6 +110,19 @@ am__can_run_installinfo = \
     n|no|NO) false;; \
     *) (install-info --version) >/dev/null 2>&1;; \
   esac
+am__nobase_include_HEADERS_DIST = Circada/CircadaException.hpp \
+	Circada/Circada.hpp Circada/Configuration.hpp Circada/DCC.hpp \
+	Circada/DCCManager.hpp Circada/Environment.hpp \
+	Circada/Events.hpp Circada/Exception.hpp Circada/Flags.hpp \
+	Circada/Global.hpp Circada/GlobalSettings.hpp \
+	Circada/Internals.hpp Circada/IOSync.hpp \
+	Circada/IrcClientSide.hpp Circada/IrcServerSide.hpp \
+	Circada/LineFetcher.hpp Circada/Message.hpp Circada/Mutex.hpp \
+	Circada/Nick.hpp Circada/Parser.hpp Circada/Recoder.hpp \
+	Circada/RFC2812.hpp Circada/Session.hpp \
+	Circada/SessionOptions.hpp Circada/Socket.hpp \
+	Circada/Thread.hpp Circada/Types.hpp Circada/Utils.hpp \
+	Circada/Window.hpp Circada/WindowManager.hpp
 am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
 am__vpath_adj = case $$p in \
     $(srcdir)/*) f=`echo "$$p" | sed "s|^$$srcdirstrip/||"`;; \
@@ -275,7 +291,7 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-nobase_include_HEADERS = Circada/CircadaException.hpp Circada/Circada.hpp Circada/Configuration.hpp Circada/DCC.hpp Circada/DCCManager.hpp Circada/Environment.hpp Circada/Events.hpp Circada/Exception.hpp Circada/Flags.hpp Circada/Global.hpp Circada/GlobalSettings.hpp Circada/Internals.hpp Circada/IOSync.hpp Circada/IrcClientSide.hpp Circada/IrcServerSide.hpp Circada/LineFetcher.hpp Circada/Message.hpp Circada/Mutex.hpp Circada/Nick.hpp Circada/Parser.hpp Circada/Recoder.hpp Circada/RFC2812.hpp Circada/Session.hpp Circada/SessionOptions.hpp Circada/Socket.hpp Circada/Thread.hpp Circada/Types.hpp Circada/Utils.hpp Circada/Window.hpp Circada/WindowManager.hpp
+@BUILD_LIBRARY_TRUE@nobase_include_HEADERS = Circada/CircadaException.hpp Circada/Circada.hpp Circada/Configuration.hpp Circada/DCC.hpp Circada/DCCManager.hpp Circada/Environment.hpp Circada/Events.hpp Circada/Exception.hpp Circada/Flags.hpp Circada/Global.hpp Circada/GlobalSettings.hpp Circada/Internals.hpp Circada/IOSync.hpp Circada/IrcClientSide.hpp Circada/IrcServerSide.hpp Circada/LineFetcher.hpp Circada/Message.hpp Circada/Mutex.hpp Circada/Nick.hpp Circada/Parser.hpp Circada/Recoder.hpp Circada/RFC2812.hpp Circada/Session.hpp Circada/SessionOptions.hpp Circada/Socket.hpp Circada/Thread.hpp Circada/Types.hpp Circada/Utils.hpp Circada/Window.hpp Circada/WindowManager.hpp
 all: all-am
 
 .SUFFIXES:

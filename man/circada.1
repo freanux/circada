@@ -1,0 +1,34 @@
+.TH CIRCADA 1 "March 2015" "circada 0.4" "IRC messaging system"
+.SH NAME
+circada \- fullfeatured IRC terminal client for UNIX systems
+.SH SYNOPSIS
+.B circada
+.SH DESCRIPTION
+Circada is a fullfeatured IRC client using ncurses. Circada provides connecting multiple IRC servers.
+.SH CONFIGURATION
+The configuration is a simple key=value file. The configuration file is stored in your home directory under
+.I ~/.circada
+and you should not edit this file directly unless you know what you do. You can change your settings with following commands:
+.TP
+.B /get
+.I <variable>
+to print out the current content.
+.TP
+.B /set
+.I <variable> <value>
+to set the variable to the corresponding variable. Leave the value blank, if you want to delete this variable.
+.SH COMMANDS
+.TP
+.B /connect
+.I <server or configuration>
+to connect to an IRC server.
+.TP
+.B /disconnect
+to disconnect current link to the IRC server.
+.TP
+.B /quit
+to quit Circada.
+.SH MORE INFORMATIONS
+Please read the README file for more informations.
+.SH AUTHORS
+Circada its manual were written by Philippe Widmer <pw@earthwave.ch>, and are licensed under the terms of GPLv3 licenses.

@@ -82,7 +82,10 @@ subdir = src/libcircada
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/depcomp TODO
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/configure.ac
+am__aclocal_m4_deps = $(top_srcdir)/m4/libtool.m4 \
+	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
+	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
+	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
@@ -116,7 +119,7 @@ am__uninstall_files_from_dir = { \
          $(am__cd) "$$dir" && rm -f $$files; }; \
   }
 am__installdirs = "$(DESTDIR)$(libdir)"
-LTLIBRARIES = $(lib_LTLIBRARIES)
+LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 libcircada_la_DEPENDENCIES =
 am_libcircada_la_OBJECTS = libcircada_la-Circada.lo \
 	libcircada_la-Configuration.lo libcircada_la-DCC.lo \
@@ -141,6 +144,8 @@ libcircada_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CXXLD) \
 	$(libcircada_la_CXXFLAGS) $(CXXFLAGS) $(libcircada_la_LDFLAGS) \
 	$(LDFLAGS) -o $@
+@BUILD_LIBRARY_FALSE@am_libcircada_la_rpath =
+@BUILD_LIBRARY_TRUE@am_libcircada_la_rpath = -rpath $(libdir)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -321,7 +326,8 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-lib_LTLIBRARIES = libcircada.la
+@BUILD_LIBRARY_TRUE@lib_LTLIBRARIES = libcircada.la
+@BUILD_LIBRARY_FALSE@noinst_LTLIBRARIES = libcircada.la
 libcircada_la_SOURCES = Circada.cpp Configuration.cpp DCC.cpp DCCManager.cpp Environment.cpp Exception.cpp Flags.cpp GlobalSettings.cpp IOSync.cpp IrcClientSide.cpp IrcServerSide.cpp LineFetcher.cpp Message.cpp Mutex.cpp Nick.cpp ParserCommands.cpp Parser.cpp Recoder.cpp Session.cpp SessionOptions.cpp SessionProtocol.cpp Socket.cpp Thread.cpp Utils.cpp Window.cpp WindowManager.cpp
 libcircada_la_CXXFLAGS = -I./include
 libcircada_la_LDFLAGS = -release 0.0.1
@@ -396,8 +402,19 @@ clean-libLTLIBRARIES:
 	  rm -f $${locs}; \
 	}
 
+clean-noinstLTLIBRARIES:
+	-test -z "$(noinst_LTLIBRARIES)" || rm -f $(noinst_LTLIBRARIES)
+	@list='$(noinst_LTLIBRARIES)'; \
+	locs=`for p in $$list; do echo $$p; done | \
+	      sed 's|^[^/]*$$|.|; s|/[^/]*$$||; s|$$|/so_locations|' | \
+	      sort -u`; \
+	test -z "$$locs" || { \
+	  echo rm -f $${locs}; \
+	  rm -f $${locs}; \
+	}
+
 libcircada.la: $(libcircada_la_OBJECTS) $(libcircada_la_DEPENDENCIES) $(EXTRA_libcircada_la_DEPENDENCIES) 
-	$(AM_V_CXXLD)$(libcircada_la_LINK) -rpath $(libdir) $(libcircada_la_OBJECTS) $(libcircada_la_LIBADD) $(LIBS)
+	$(AM_V_CXXLD)$(libcircada_la_LINK) $(am_libcircada_la_rpath) $(libcircada_la_OBJECTS) $(libcircada_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -763,7 +780,7 @@ maintainer-clean-generic:
 clean: clean-am
 
 clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
-	mostlyclean-am
+	clean-noinstLTLIBRARIES mostlyclean-am
 
 distclean: distclean-am
 	-rm -rf ./$(DEPDIR)
@@ -834,18 +851,19 @@ uninstall-am: uninstall-libLTLIBRARIES
 .MAKE: install-am install-strip
 
 .PHONY: CTAGS GTAGS TAGS all all-am check check-am clean clean-generic \
-	clean-libLTLIBRARIES clean-libtool cscopelist-am ctags \
-	ctags-am distclean distclean-compile distclean-generic \
-	distclean-libtool distclean-tags distdir dvi dvi-am html \
-	html-am info info-am install install-am install-data \
-	install-data-am install-dvi install-dvi-am install-exec \
-	install-exec-am install-html install-html-am install-info \
-	install-info-am install-libLTLIBRARIES install-man install-pdf \
-	install-pdf-am install-ps install-ps-am install-strip \
-	installcheck installcheck-am installdirs maintainer-clean \
-	maintainer-clean-generic mostlyclean mostlyclean-compile \
-	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
-	tags tags-am uninstall uninstall-am uninstall-libLTLIBRARIES
+	clean-libLTLIBRARIES clean-libtool clean-noinstLTLIBRARIES \
+	cscopelist-am ctags ctags-am distclean distclean-compile \
+	distclean-generic distclean-libtool distclean-tags distdir dvi \
+	dvi-am html html-am info info-am install install-am \
+	install-data install-data-am install-dvi install-dvi-am \
+	install-exec install-exec-am install-html install-html-am \
+	install-info install-info-am install-libLTLIBRARIES \
+	install-man install-pdf install-pdf-am install-ps \
+	install-ps-am install-strip installcheck installcheck-am \
+	installdirs maintainer-clean maintainer-clean-generic \
+	mostlyclean mostlyclean-compile mostlyclean-generic \
+	mostlyclean-libtool pdf pdf-am ps ps-am tags tags-am uninstall \
+	uninstall-am uninstall-libLTLIBRARIES
 
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

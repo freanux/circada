@@ -1,1 +1,3 @@
+if BUILD_LIBRARY
 nobase_include_HEADERS = Circada/CircadaException.hpp Circada/Circada.hpp Circada/Configuration.hpp Circada/DCC.hpp Circada/DCCManager.hpp Circada/Environment.hpp Circada/Events.hpp Circada/Exception.hpp Circada/Flags.hpp Circada/Global.hpp Circada/GlobalSettings.hpp Circada/Internals.hpp Circada/IOSync.hpp Circada/IrcClientSide.hpp Circada/IrcServerSide.hpp Circada/LineFetcher.hpp Circada/Message.hpp Circada/Mutex.hpp Circada/Nick.hpp Circada/Parser.hpp Circada/Recoder.hpp Circada/RFC2812.hpp Circada/Session.hpp Circada/SessionOptions.hpp Circada/Socket.hpp Circada/Thread.hpp Circada/Types.hpp Circada/Utils.hpp Circada/Window.hpp Circada/WindowManager.hpp
+endif
