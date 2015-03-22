@@ -1,9 +1,10 @@
 TODO library:
 -------------
-* check, if netsplit is over, the netsplit is removed from list
 * reconnect, rejoin with throttling
 * server caps -> readout NETWORK to set the server name
 
 DONE:
 -----
 * INT_DAY_CHANGE should not make noise
+* check, if netsplit is over, the netsplit is removed from list
+

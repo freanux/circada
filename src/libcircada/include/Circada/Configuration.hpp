@@ -31,8 +31,8 @@ namespace Circada {
 
 class ConfigurationException : public Exception {
 public:
-	ConfigurationException(const char *msg) : Exception(msg) { }
-	ConfigurationException(std::string msg) : Exception(msg) { }
+    ConfigurationException(const char *msg) : Exception(msg) { }
+    ConfigurationException(std::string msg) : Exception(msg) { }
 };
 
 class Configuration {

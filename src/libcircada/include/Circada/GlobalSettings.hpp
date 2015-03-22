@@ -30,22 +30,22 @@ namespace Circada {
 
 class GlobalSettings {
 public:
-	GlobalSettings();
-	virtual ~GlobalSettings();
+    GlobalSettings();
+    virtual ~GlobalSettings();
 
-	const std::string& get_project_name();
-	const std::string& get_project_version();
-	const std::string& get_quit_message();
-	bool get_injection();
-	Encodings& get_encodings();
+    const std::string& get_project_name();
+    const std::string& get_project_version();
+    const std::string& get_quit_message();
+    bool get_injection();
+    Encodings& get_encodings();
 
-	Encodings encodings;
+    Encodings encodings;
 
 protected:
-	std::string project_name;
-	std::string project_version;
-	std::string quit_message;
-	bool inject_messages;
+    std::string project_name;
+    std::string project_version;
+    std::string quit_message;
+    bool inject_messages;
 
     Mutex settings_mtx;
 };

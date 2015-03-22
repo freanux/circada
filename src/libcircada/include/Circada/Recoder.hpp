@@ -30,14 +30,14 @@ typedef std::vector<std::string> Encodings;
 
 class Recoder {
 public:
-	Recoder(const Encodings& encodings);
-	virtual ~Recoder() { }
+    Recoder(const Encodings& encodings);
+    virtual ~Recoder() { }
 
-	void recode(std::string& text) const;
+    void recode(std::string& text) const;
 
 private:
-	static const int RecodeMaxBuffer;
-	Encodings encodings;
+    static const int RecodeMaxBuffer;
+    Encodings encodings;
 };
 
 } /* namespace Circada */

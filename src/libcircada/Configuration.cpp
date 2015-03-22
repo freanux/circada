@@ -109,8 +109,6 @@ void Configuration::set_value(const std::string& category, const std::string& ke
 const std::string& Configuration::get_value(const std::string& category, const std::string& key) throw (ConfigurationException) {
     ScopeMutex lock(&mtx);
 
-    //validation(category);
-    //validation(key);
     Entries::iterator it = entries.find(category + "." + key);
     if (it == entries.end()) {
         return empty_string;
@@ -122,8 +120,6 @@ const std::string& Configuration::get_value(const std::string& category, const s
 const std::string& Configuration::get_value(const std::string& category, const std::string& key, const std::string& defaults) throw (ConfigurationException) {
     ScopeMutex lock(&mtx);
 
-    //validation(category);
-    //validation(key);
     Entries::iterator it = entries.find(category + "." + key);
     if (it == entries.end()) {
         //set_value_nolock(category, key, defaults);

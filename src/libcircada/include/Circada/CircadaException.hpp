@@ -27,8 +27,8 @@ namespace Circada {
 
 class CircadaException : public Exception {
 public:
-	CircadaException(const char *msg) : Exception(msg) { }
-	CircadaException(const std::string& msg) : Exception(msg) { }
+    CircadaException(const char *msg) : Exception(msg) { }
+    CircadaException(const std::string& msg) : Exception(msg) { }
 };
 
 } /* namespace Circada */

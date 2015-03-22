@@ -44,7 +44,6 @@ void Recoder::recode(std::string& text) const {
             iconv_t conv = iconv_open("UTF-8", encodings[i].c_str());
             if (conv) {
                 memset(dstbuf, 0, RecodeMaxBuffer);
-                //size_t bytes = iconv(conv, (char **)&psrc, &srclen, (char **)&pdst, &dstlen);
                 size_t bytes = iconv(conv, static_cast<char **>(&psrc), &srclen, static_cast<char **>(&pdst), &dstlen);
                 iconv_close(conv);
                 if (bytes < std::string::npos) {

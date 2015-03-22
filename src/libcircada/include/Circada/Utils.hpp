@@ -30,8 +30,8 @@ namespace Circada {
 
 class UtilsException : public Exception {
 public:
-	UtilsException(const char *msg) : Exception(msg) { }
-	UtilsException(std::string msg) : Exception(msg) { }
+    UtilsException(const char *msg) : Exception(msg) { }
+    UtilsException(std::string msg) : Exception(msg) { }
 };
 
 typedef std::vector<std::string> TokenizedParams;

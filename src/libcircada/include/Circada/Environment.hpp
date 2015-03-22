@@ -29,7 +29,7 @@ namespace Circada {
 
 class EnvironmentException : public Exception {
 public:
-	EnvironmentException() : Exception("Cannot access environment.") { }
+    EnvironmentException() : Exception("Cannot access environment.") { }
 };
 
 class Environment {

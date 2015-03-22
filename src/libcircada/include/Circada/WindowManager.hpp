@@ -32,20 +32,20 @@ namespace Circada {
 class WindowManager {
 public:
     WindowManager();
-	virtual ~WindowManager();
+    virtual ~WindowManager();
 
     SessionWindow::List get_all_session_windows(Session *s);
     SessionWindow *get_application_window();
-	SessionWindow *get_window(Session *s, const std::string& name);
-	SessionWindow *get_window(const DCC *dcc, const std::string& nick);
-	SessionWindow *create_application_window(Events *evt, const std::string& name, const std::string& topic);
-	SessionWindow *create_window(Events *evt, Session *s, ServerNickPrefix *snp, WindowType type, const std::string& my_nick, const std::string& name);
-	SessionWindow *create_window(Events *evt, const DCC *dcc, const std::string& my_nick, const std::string& his_nick);
-	void detach_window(const DCC *dcc);
-	void destroy_window(Events *evt, SessionWindow *w);
+    SessionWindow *get_window(Session *s, const std::string& name);
+    SessionWindow *get_window(const DCC *dcc, const std::string& nick);
+    SessionWindow *create_application_window(Events *evt, const std::string& name, const std::string& topic);
+    SessionWindow *create_window(Events *evt, Session *s, ServerNickPrefix *snp, WindowType type, const std::string& my_nick, const std::string& name);
+    SessionWindow *create_window(Events *evt, const DCC *dcc, const std::string& my_nick, const std::string& his_nick);
+    void detach_window(const DCC *dcc);
+    void destroy_window(Events *evt, SessionWindow *w);
     void destroy_window_nolock(Events *evt, SessionWindow *w);
-	void destroy_all_windows_in_session(Events *evt, Session *s);
-	void destroy_all_windows();
+    void destroy_all_windows_in_session(Events *evt, Session *s);
+    void destroy_all_windows();
 
 private:
     SessionWindow::List windows;

@@ -50,7 +50,7 @@ void Socket::set_tls(const std::string& ca_file) throw (SocketException) {
         credentials.set_x509_trust_file(ca_file.c_str(), GNUTLS_X509_FMT_PEM);
         session.set_credentials(credentials);
         session.set_priority("NORMAL", 0);
-    } catch (std::exception& e) {
+    } catch (const std::exception& e) {
         this->tls = false;
         throw SocketException(e.what());
     }
@@ -147,7 +147,7 @@ void Socket::connect(const char *ip_address, unsigned short port) throw (SocketE
             if (session.handshake() < 0) {
                 failed = true;
             }
-        } catch (std::exception& e) {
+        } catch (const std::exception& e) {
             failed = true;
         }
         if (failed) {
@@ -299,7 +299,7 @@ size_t Socket::send(const char *buffer, size_t size) throw (SocketException) {
     if (tls) {
         try {
             rv = session.send(buffer, size);
-        } catch (std::exception& e) {
+        } catch (const std::exception& e) {
             throw SocketException(e.what());
         }
     } else {
@@ -325,7 +325,7 @@ size_t Socket::receive(void *buffer, size_t size) throw (SocketException) {
     if (tls) {
         try {
             rv = session.recv(buffer, size);
-        } catch (std::exception& e) {
+        } catch (const std::exception& e) {
             throw SocketException(e.what());
         }
     } else {

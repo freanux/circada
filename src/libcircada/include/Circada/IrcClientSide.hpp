@@ -31,11 +31,11 @@ public:
     IrcClientSide();
     virtual ~IrcClientSide();
 
-	/* global setters */
-	void set_project_name(const std::string& name);
-	void set_project_version(const std::string& version);
-	void set_quit_message(const std::string& message);
-	void set_injection(bool state);
+    /* global setters */
+    void set_project_name(const std::string& name);
+    void set_project_version(const std::string& version);
+    void set_quit_message(const std::string& message);
+    void set_injection(bool state);
 };
 
 } /* namespace Circada */

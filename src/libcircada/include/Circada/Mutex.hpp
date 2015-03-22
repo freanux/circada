@@ -56,18 +56,18 @@ private:
 
 class ScopeMutex {
 private:
-	ScopeMutex(const ScopeMutex& rhs);
-	ScopeMutex& operator=(const ScopeMutex& rhs);
+    ScopeMutex(const ScopeMutex& rhs);
+    ScopeMutex& operator=(const ScopeMutex& rhs);
 
 public:
-	ScopeMutex(Mutex *mtx);
-	virtual ~ScopeMutex();
+    ScopeMutex(Mutex *mtx);
+    virtual ~ScopeMutex();
 
     void lock();
     void unlock();
 
 private:
-	Mutex *mtx;
+    Mutex *mtx;
 };
 
 } /* namespace Circada */
