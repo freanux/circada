@@ -116,8 +116,8 @@ void Application::run() throw (ApplicationException) {
                     if (sw) {
                         select_window(sw);
                     }
-					entry_widget.draw();
-					set_cursor();
+                    entry_widget.draw();
+                    set_cursor();
                     break;
                 }
 
