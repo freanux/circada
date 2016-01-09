@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeLite_Workspace Name="Circada" Database="">
+  <Project Name="circada" Path="circada/circada.project" Active="No"/>
+  <Project Name="libcircada" Path="libcircada/libcircada.project" Active="Yes"/>
+  <BuildMatrix>
+    <WorkspaceConfiguration Name="Debug" Selected="yes">
+      <Environment/>
+      <Project Name="circada" ConfigName="Debug"/>
+      <Project Name="libcircada" ConfigName="Debug"/>
+    </WorkspaceConfiguration>
+    <WorkspaceConfiguration Name="Release" Selected="yes">
+      <Environment/>
+      <Project Name="circada" ConfigName="Release"/>
+      <Project Name="libcircada" ConfigName="Release"/>
+    </WorkspaceConfiguration>
+  </BuildMatrix>
+</CodeLite_Workspace>

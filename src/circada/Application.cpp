@@ -146,12 +146,18 @@ void Application::run() throw (ApplicationException) {
                     break;
 
                 case EntryWidget::EntryWidgetEventUp:
-                    nicklist_widget.scroll_up();
+                    {
+                        ScopeMutex lock(&draw_mtx);
+                        nicklist_widget.scroll_up();
+                    }
                     set_cursor();
                     break;
 
                 case EntryWidget::EntryWidgetEventDown:
-                    nicklist_widget.scroll_down();
+                    {
+                        ScopeMutex lock(&draw_mtx);
+                        nicklist_widget.scroll_down();
+                    }
                     set_cursor();
                     break;
 

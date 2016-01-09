@@ -44,7 +44,6 @@ void Mutex::lock() {
 
 bool Mutex::try_lock() {
     return (pthread_mutex_trylock(&mutex->h_mutex) == 0);
-
 }
 
 void Mutex::unlock() {

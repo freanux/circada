@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeLite_Project Name="libcircada" InternalType="Library">
+  <Plugins>
+    <Plugin Name="CMakePlugin">
+      <![CDATA[[{
+  "name": "Debug",
+  "enabled": false,
+  "buildDirectory": "build",
+  "sourceDirectory": "$(ProjectPath)",
+  "generator": "",
+  "buildType": "",
+  "arguments": [],
+  "parentProject": ""
+ }, {
+  "name": "Release",
+  "enabled": false,
+  "buildDirectory": "build",
+  "sourceDirectory": "$(ProjectPath)",
+  "generator": "",
+  "buildType": "",
+  "arguments": [],
+  "parentProject": ""
+ }]]]>
+    </Plugin>
+    <Plugin Name="qmake">
+      <![CDATA[00020001N0005Debug0000000000000001N0007Release000000000000]]>
+    </Plugin>
+  </Plugins>
+  <Description/>
+  <Dependencies/>
+  <VirtualDirectory Name="src">
+    <File Name="../../src/libcircada/Circada.cpp"/>
+    <File Name="../../src/libcircada/Configuration.cpp"/>
+    <File Name="../../src/libcircada/DCC.cpp"/>
+    <File Name="../../src/libcircada/DCCManager.cpp"/>
+    <File Name="../../src/libcircada/Environment.cpp"/>
+    <File Name="../../src/libcircada/Exception.cpp"/>
+    <File Name="../../src/libcircada/Flags.cpp"/>
+    <File Name="../../src/libcircada/GlobalSettings.cpp"/>
+    <File Name="../../src/libcircada/IOSync.cpp"/>
+    <File Name="../../src/libcircada/IrcClientSide.cpp"/>
+    <File Name="../../src/libcircada/IrcServerSide.cpp"/>
+    <File Name="../../src/libcircada/LineFetcher.cpp"/>
+    <File Name="../../src/libcircada/Message.cpp"/>
+    <File Name="../../src/libcircada/Mutex.cpp"/>
+    <File Name="../../src/libcircada/Nick.cpp"/>
+    <File Name="../../src/libcircada/Parser.cpp"/>
+    <File Name="../../src/libcircada/ParserCommands.cpp"/>
+    <File Name="../../src/libcircada/Recoder.cpp"/>
+    <File Name="../../src/libcircada/Session.cpp"/>
+    <File Name="../../src/libcircada/SessionOptions.cpp"/>
+    <File Name="../../src/libcircada/SessionProtocol.cpp"/>
+    <File Name="../../src/libcircada/Socket.cpp"/>
+    <File Name="../../src/libcircada/Thread.cpp"/>
+    <File Name="../../src/libcircada/Utils.cpp"/>
+    <File Name="../../src/libcircada/Window.cpp"/>
+    <File Name="../../src/libcircada/WindowManager.cpp"/>
+  </VirtualDirectory>
+  <VirtualDirectory Name="include">
+    <File Name="../../src/libcircada/include/Circada/Circada.hpp"/>
+    <File Name="../../src/libcircada/include/Circada/CircadaException.hpp"/>
+    <File Name="../../src/libcircada/include/Circada/Configuration.hpp"/>
+    <File Name="../../src/libcircada/include/Circada/DCC.hpp"/>
+    <File Name="../../src/libcircada/include/Circada/DCCManager.hpp"/>
+    <File Name="../../src/libcircada/include/Circada/Environment.hpp"/>
+    <File Name="../../src/libcircada/include/Circada/Events.hpp"/>
+    <File Name="../../src/libcircada/include/Circada/Exception.hpp"/>
+    <File Name="../../src/libcircada/include/Circada/Flags.hpp"/>
+    <File Name="../../src/libcircada/include/Circada/Global.hpp"/>
+    <File Name="../../src/libcircada/include/Circada/GlobalSettings.hpp"/>
+    <File Name="../../src/libcircada/include/Circada/Internals.hpp"/>
+    <File Name="../../src/libcircada/include/Circada/IOSync.hpp"/>
+    <File Name="../../src/libcircada/include/Circada/IrcClientSide.hpp"/>
+    <File Name="../../src/libcircada/include/Circada/IrcServerSide.hpp"/>
+    <File Name="../../src/libcircada/include/Circada/LineFetcher.hpp"/>
+    <File Name="../../src/libcircada/include/Circada/Message.hpp"/>
+    <File Name="../../src/libcircada/include/Circada/Mutex.hpp"/>
+    <File Name="../../src/libcircada/include/Circada/Nick.hpp"/>
+    <File Name="../../src/libcircada/include/Circada/Parser.hpp"/>
+    <File Name="../../src/libcircada/include/Circada/Recoder.hpp"/>
+    <File Name="../../src/libcircada/include/Circada/RFC2812.hpp"/>
+    <File Name="../../src/libcircada/include/Circada/Session.hpp"/>
+    <File Name="../../src/libcircada/include/Circada/SessionOptions.hpp"/>
+    <File Name="../../src/libcircada/include/Circada/Socket.hpp"/>
+    <File Name="../../src/libcircada/include/Circada/Thread.hpp"/>
+    <File Name="../../src/libcircada/include/Circada/Types.hpp"/>
+    <File Name="../../src/libcircada/include/Circada/Utils.hpp"/>
+    <File Name="../../src/libcircada/include/Circada/Window.hpp"/>
+    <File Name="../../src/libcircada/include/Circada/WindowManager.hpp"/>
+  </VirtualDirectory>
+  <Settings Type="Static Library">
+    <GlobalSettings>
+      <Compiler Options="-pedantic;-Wall;-extra" C_Options="" Assembler="">
+        <IncludePath Value="../../src/libcircada/include"/>
+      </Compiler>
+      <Linker Options="">
+        <LibraryPath Value="."/>
+      </Linker>
+      <ResourceCompiler Options=""/>
+    </GlobalSettings>
+    <Configuration Name="Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Static Library" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-g" C_Options="-g" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
+        <IncludePath Value="."/>
+      </Compiler>
+      <Linker Options="" Required="yes"/>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="$(IntermediateDirectory)/$(ProjectName).a" IntermediateDirectory="./Debug" Command="" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
+        <![CDATA[]]>
+      </Environment>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="" IsExtended="no">
+        <DebuggerSearchPaths/>
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName/>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+      <Completion EnableCpp11="no" EnableCpp14="no">
+        <ClangCmpFlagsC/>
+        <ClangCmpFlags/>
+        <ClangPP/>
+        <SearchPaths/>
+      </Completion>
+    </Configuration>
+    <Configuration Name="Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Static Library" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-O3" C_Options="-O3" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
+        <IncludePath Value="."/>
+      </Compiler>
+      <Linker Options="" Required="yes"/>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="$(IntermediateDirectory)/lib$(ProjectName).a" IntermediateDirectory="./Release" Command="" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
+        <![CDATA[]]>
+      </Environment>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="" IsExtended="yes">
+        <DebuggerSearchPaths/>
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName/>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+      <Completion EnableCpp11="no" EnableCpp14="no">
+        <ClangCmpFlagsC/>
+        <ClangCmpFlags/>
+        <ClangPP/>
+        <SearchPaths/>
+      </Completion>
+    </Configuration>
+  </Settings>
+  <Dependencies Name="Debug">
+    <Project Name="circada"/>
+  </Dependencies>
+</CodeLite_Project>

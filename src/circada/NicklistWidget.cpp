@@ -100,13 +100,15 @@ void NicklistWidget::scroll_down() {
         Circada::Window *cw = current_window->get_circada_window();
         if (cw) {
             int sz = cw->get_nicks().size();
-            int new_top = current_window->nicklist_top + height;
-            if (new_top > sz - 1) {
-                new_top = sz - 1;
-            }
-            if (new_top != current_window->nicklist_top) {
-                current_window->nicklist_top = new_top;
-                draw(current_window);
+            if (sz) {
+                int new_top = current_window->nicklist_top + height;
+                if (new_top > sz - 1) {
+                    new_top = sz - 1;
+                }
+                if (new_top != current_window->nicklist_top) {
+                    current_window->nicklist_top = new_top;
+                    draw(current_window);
+                }
             }
         }
     }
