@@ -26,28 +26,28 @@
 
 namespace Circada {
 
-std::string Environment::get_username() throw (EnvironmentException) {
-    struct passwd *pw;
-    pw = getpwuid(geteuid());
-    if (!pw) {
-        throw EnvironmentException();
+    std::string Environment::get_username() throw (EnvironmentException) {
+        struct passwd *pw;
+        pw = getpwuid(geteuid());
+        if (!pw) {
+            throw EnvironmentException();
+        }
+        return std::string(pw->pw_name);
     }
-    return std::string(pw->pw_name);
-}
 
-std::string Environment::get_home_directory() throw (EnvironmentException) {
-    struct passwd *pw;
-    pw = getpwuid(geteuid());
-    if (!pw) {
-        throw EnvironmentException();
+    std::string Environment::get_home_directory() throw (EnvironmentException) {
+        struct passwd *pw;
+        pw = getpwuid(geteuid());
+        if (!pw) {
+            throw EnvironmentException();
+        }
+        return std::string(pw->pw_dir);
     }
-    return std::string(pw->pw_dir);
-}
 
-std::string Environment::get_uname() throw (EnvironmentException) {
-    struct utsname ud;
-    uname(&ud);
-    return std::string(ud.sysname);
-}
+    std::string Environment::get_uname() throw (EnvironmentException) {
+        struct utsname ud;
+        uname(&ud);
+        return std::string(ud.sysname);
+    }
 
 } /* namespace Circada */

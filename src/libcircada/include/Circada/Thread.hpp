@@ -26,24 +26,24 @@
 
 namespace Circada {
 
-class Thread {
-public:
-    Thread();
-    virtual ~Thread();
+    class Thread {
+    public:
+        Thread();
+        virtual ~Thread();
 
-protected:
-    bool thread_start();
-    void thread_join();
-    void thread_signal(int sig);
-    void thread_cancel();
-    void thread_detach();
-    virtual void thread() = 0;
+    protected:
+        bool thread_start();
+        void thread_join();
+        void thread_signal(int sig);
+        void thread_cancel();
+        void thread_detach();
+        virtual void thread() = 0;
 
-private:
-    pthread_t t;
+    private:
+        pthread_t t;
 
-    static void *thread_helper(void *o);
-};
+        static void *thread_helper(void *o);
+    };
 
 } /* namespace Circada */
 

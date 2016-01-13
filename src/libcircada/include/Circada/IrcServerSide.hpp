@@ -29,11 +29,11 @@
 
 namespace Circada {
 
-class IrcServerSide : public virtual GlobalSettings, public virtual Events, public WindowManager, public DCCManager {
-public:
-    IrcServerSide(Configuration& config);
-    virtual ~IrcServerSide();
-};
+    class IrcServerSide : public virtual GlobalSettings, public virtual Events, public WindowManager, public DCCManager {
+    public:
+        IrcServerSide(Configuration& config);
+        virtual ~IrcServerSide();
+    };
 
 } /* namespace Circada */
 

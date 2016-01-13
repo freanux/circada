@@ -29,135 +29,135 @@
 
 namespace Circada {
 
-const char *Configuration::ConfigurationFile = "config";
+    const char *Configuration::ConfigurationFile = "config";
 
-Configuration::Configuration(const std::string& working_directory) throw (ConfigurationException) : modified(false) {
-    try {
-        this->working_directory = Environment::get_home_directory() + "/" + working_directory;
-    } catch (const EnvironmentException& e) {
-        throw ConfigurationException(e.what());
+    Configuration::Configuration(const std::string& working_directory) throw (ConfigurationException) : modified(false) {
+        try {
+            this->working_directory = Environment::get_home_directory() + "/" + working_directory;
+        } catch (const EnvironmentException& e) {
+            throw ConfigurationException(e.what());
+        }
+        try {
+            create_directory(this->working_directory);
+        } catch (const UtilsException& e) {
+            throw ConfigurationException("Cannot create working directory: " + std::string(e.what()));
+        }
+        load();
     }
-    try {
-        create_directory(this->working_directory);
-    } catch (const UtilsException& e) {
-        throw ConfigurationException("Cannot create working directory: " + std::string(e.what()));
+
+    Configuration::~Configuration() {
+        /* try to save */
+        try {
+            save();
+        } catch (...) {
+            /* chomp */
+        }
     }
-    load();
-}
 
-Configuration::~Configuration() {
-    /* try to save */
-    try {
-        save();
-    } catch (...) {
-        /* chomp */
+    const std::string& Configuration::get_working_directory() {
+        return working_directory;
     }
-}
 
-const std::string& Configuration::get_working_directory() {
-    return working_directory;
-}
+    void Configuration::load() throw (ConfigurationException) {
+        ScopeMutex lock(&mtx);
 
-void Configuration::load() throw (ConfigurationException) {
-    ScopeMutex lock(&mtx);
+        std::string filename = working_directory + "/";
+        filename += ConfigurationFile;
 
-    std::string filename = working_directory + "/";
-    filename += ConfigurationFile;
+        std::ifstream f(filename.c_str());
 
-    std::ifstream f(filename.c_str());
-
-    if (f.is_open()) {
-        std::string line;
-        while (getline(f, line)) {
-            if (line.length()) {
-                size_t pos = line.find('=');
-                if (pos != std::string::npos) {
-                    entries[line.substr(0, pos)] = line.substr(pos + 1);
-                } else {
-                    throw ConfigurationException("Malformed expression in configuration file.");
+        if (f.is_open()) {
+            std::string line;
+            while (getline(f, line)) {
+                if (line.length()) {
+                    size_t pos = line.find('=');
+                    if (pos != std::string::npos) {
+                        entries[line.substr(0, pos)] = line.substr(pos + 1);
+                    } else {
+                        throw ConfigurationException("Malformed expression in configuration file.");
+                    }
                 }
             }
         }
     }
-}
 
-void Configuration::save() throw (ConfigurationException) {
-    ScopeMutex lock(&mtx);
+    void Configuration::save() throw (ConfigurationException) {
+        ScopeMutex lock(&mtx);
 
-    if (modified) {
-        std::string filename = working_directory + "/";
-        filename += ConfigurationFile;
+        if (modified) {
+            std::string filename = working_directory + "/";
+            filename += ConfigurationFile;
 
-        std::ofstream f(filename.c_str());
-        if (!f.is_open()) {
-            throw ConfigurationException("Cannot open file for writing: " + filename);
-        }
+            std::ofstream f(filename.c_str());
+            if (!f.is_open()) {
+                throw ConfigurationException("Cannot open file for writing: " + filename);
+            }
 
-        for (Entries::iterator it = entries.begin(); it != entries.end(); it++) {
-            f << it->first << "=" << it->second << std::endl;
-        }
+            for (Entries::iterator it = entries.begin(); it != entries.end(); it++) {
+                f << it->first << "=" << it->second << std::endl;
+            }
 
-        modified = false;
-    }
-}
-
-void Configuration::set_value(const std::string& category, const std::string& key, const std::string& value) throw (ConfigurationException) {
-    ScopeMutex lock(&mtx);
-    set_value_nolock(category, key, value);
-}
-
-const std::string& Configuration::get_value(const std::string& category, const std::string& key) throw (ConfigurationException) {
-    ScopeMutex lock(&mtx);
-
-    Entries::iterator it = entries.find(category + "." + key);
-    if (it == entries.end()) {
-        return empty_string;
-    }
-
-    return it->second;
-}
-
-const std::string& Configuration::get_value(const std::string& category, const std::string& key, const std::string& defaults) throw (ConfigurationException) {
-    ScopeMutex lock(&mtx);
-
-    Entries::iterator it = entries.find(category + "." + key);
-    if (it == entries.end()) {
-        //set_value_nolock(category, key, defaults);
-        return defaults;
-    }
-
-    return it->second;
-}
-
-bool Configuration::is_true(const std::string& value) {
-    return (atoi(value.c_str()) != 0);
-}
-
-void Configuration::validation(const std::string& s) throw (ConfigurationException) {
-    static std::string allowed_characters("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_");
-
-    size_t sz = s.length();
-    for (size_t i = 0; i < sz; i++) {
-        if (allowed_characters.find(s[i]) == std::string::npos) {
-            throw ConfigurationException("Invalid character in category/key.");
+            modified = false;
         }
     }
-}
 
-void Configuration::set_value_nolock(const std::string& category, const std::string& key, const std::string& value) throw (ConfigurationException) {
-    validation(category);
-    validation(key);
+    void Configuration::set_value(const std::string& category, const std::string& key, const std::string& value) throw (ConfigurationException) {
+        ScopeMutex lock(&mtx);
+        set_value_nolock(category, key, value);
+    }
 
-    if (value.length()) {
-        entries[category + "." + key] = value;
-        modified = true;
-    } else {
+    const std::string& Configuration::get_value(const std::string& category, const std::string& key) throw (ConfigurationException) {
+        ScopeMutex lock(&mtx);
+
         Entries::iterator it = entries.find(category + "." + key);
-        if (it != entries.end()) {
-            entries.erase(it);
-            modified = true;
+        if (it == entries.end()) {
+            return empty_string;
+        }
+
+        return it->second;
+    }
+
+    const std::string& Configuration::get_value(const std::string& category, const std::string& key, const std::string& defaults) throw (ConfigurationException) {
+        ScopeMutex lock(&mtx);
+
+        Entries::iterator it = entries.find(category + "." + key);
+        if (it == entries.end()) {
+            //set_value_nolock(category, key, defaults);
+            return defaults;
+        }
+
+        return it->second;
+    }
+
+    bool Configuration::is_true(const std::string& value) {
+        return (atoi(value.c_str()) != 0);
+    }
+
+    void Configuration::validation(const std::string& s) throw (ConfigurationException) {
+        static std::string allowed_characters("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_");
+
+        size_t sz = s.length();
+        for (size_t i = 0; i < sz; i++) {
+            if (allowed_characters.find(s[i]) == std::string::npos) {
+                throw ConfigurationException("Invalid character in category/key.");
+            }
         }
     }
-}
+
+    void Configuration::set_value_nolock(const std::string& category, const std::string& key, const std::string& value) throw (ConfigurationException) {
+        validation(category);
+        validation(key);
+
+        if (value.length()) {
+            entries[category + "." + key] = value;
+            modified = true;
+        } else {
+            Entries::iterator it = entries.find(category + "." + key);
+            if (it != entries.end()) {
+                entries.erase(it);
+                modified = true;
+            }
+        }
+    }
 
 } /* namespace Circada */

@@ -25,58 +25,58 @@
 
 namespace Circada {
 
-const int Recoder::RecodeMaxBuffer = 1024;
+    const int Recoder::RecodeMaxBuffer = 1024;
 
-Recoder::Recoder(const Encodings& encodings) : encodings(encodings) { }
+    Recoder::Recoder(const Encodings& encodings) : encodings(encodings) { }
 
-void Recoder::recode(std::string& text) const {
-    const char *srcbuf = text.c_str();
-    char dstbuf[RecodeMaxBuffer];
+    void Recoder::recode(std::string& text) const {
+        const char *srcbuf = text.c_str();
+        char dstbuf[RecodeMaxBuffer];
 
-    /* try to recode text with all encodings first */
-    size_t sz = encodings.size();
-    if (sz) {
-        for (size_t i = 0; i < sz; i++) {
-            char *psrc = const_cast<char *>(srcbuf);
-            char *pdst = dstbuf;
-            size_t srclen = text.length();
-            size_t dstlen = RecodeMaxBuffer;
-            iconv_t conv = iconv_open("UTF-8", encodings[i].c_str());
-            if (conv) {
-                memset(dstbuf, 0, RecodeMaxBuffer);
-                size_t bytes = iconv(conv, static_cast<char **>(&psrc), &srclen, static_cast<char **>(&pdst), &dstlen);
-                iconv_close(conv);
-                if (bytes < std::string::npos) {
-                    text.assign(dstbuf);
-                    return;
+        /* try to recode text with all encodings first */
+        size_t sz = encodings.size();
+        if (sz) {
+            for (size_t i = 0; i < sz; i++) {
+                char *psrc = const_cast<char *>(srcbuf);
+                char *pdst = dstbuf;
+                size_t srclen = text.length();
+                size_t dstlen = RecodeMaxBuffer;
+                iconv_t conv = iconv_open("UTF-8", encodings[i].c_str());
+                if (conv) {
+                    memset(dstbuf, 0, RecodeMaxBuffer);
+                    size_t bytes = iconv(conv, static_cast<char **>(&psrc), &srclen, static_cast<char **>(&pdst), &dstlen);
+                    iconv_close(conv);
+                    if (bytes < std::string::npos) {
+                        text.assign(dstbuf);
+                        return;
+                    }
                 }
             }
         }
-    }
 
-    /* ok, failed -> now, replace unrecognized characters with question marks */
-    char *psrc = const_cast<char *>(srcbuf);
-    char *pdst = dstbuf;
-    size_t srclen = text.length();
-    size_t dstlen = RecodeMaxBuffer;
-    memset(dstbuf, 0, RecodeMaxBuffer);
-    while (*psrc) {
-        iconv_t conv = iconv_open("UTF-8", "UTF-8");
-        if (conv) {
-            size_t bytes = iconv(conv, static_cast<char **>(&psrc), &srclen, static_cast<char **>(&pdst), &dstlen);
-            iconv_close(conv);
-            if (bytes == std::string::npos) {
-                *pdst = '?';
-                pdst++;
-                dstlen--;
-                psrc++;
-                srclen--;
-            } else {
-                break;
+        /* ok, failed -> now, replace unrecognized characters with question marks */
+        char *psrc = const_cast<char *>(srcbuf);
+        char *pdst = dstbuf;
+        size_t srclen = text.length();
+        size_t dstlen = RecodeMaxBuffer;
+        memset(dstbuf, 0, RecodeMaxBuffer);
+        while (*psrc) {
+            iconv_t conv = iconv_open("UTF-8", "UTF-8");
+            if (conv) {
+                size_t bytes = iconv(conv, static_cast<char **>(&psrc), &srclen, static_cast<char **>(&pdst), &dstlen);
+                iconv_close(conv);
+                if (bytes == std::string::npos) {
+                    *pdst = '?';
+                    pdst++;
+                    dstlen--;
+                    psrc++;
+                    srclen--;
+                } else {
+                    break;
+                }
             }
         }
+        text.assign(dstbuf);
     }
-    text.assign(dstbuf);
-}
 
 } /* namespace Circada */

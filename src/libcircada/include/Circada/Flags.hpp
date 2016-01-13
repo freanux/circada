@@ -27,23 +27,23 @@
 
 namespace Circada {
 
-#define POSSIBLE_FLAGS CHARS_LETTER CHARS_DIGIT
-#define FLAGS_MAX_SIZE sizeof(POSSIBLE_FLAGS)
+    #define POSSIBLE_FLAGS CHARS_LETTER CHARS_DIGIT
+    #define FLAGS_MAX_SIZE sizeof(POSSIBLE_FLAGS)
 
-class Flags {
-public:
-    Flags();
-    virtual ~Flags();
+    class Flags {
+    public:
+        Flags();
+        virtual ~Flags();
 
-    std::string get_flags();
-    void set_flags(const std::string& new_flags);
-    void clear();
-    bool is_flag_set(char flag);
+        std::string get_flags();
+        void set_flags(const std::string& new_flags);
+        void clear();
+        bool is_flag_set(char flag);
 
-private:
-    char flags[FLAGS_MAX_SIZE];
-    std::string possible_flags;
-};
+    private:
+        char flags[FLAGS_MAX_SIZE];
+        std::string possible_flags;
+    };
 
 } /* namespace Circada */
 

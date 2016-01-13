@@ -29,40 +29,40 @@
 
 namespace Circada {
 
-#define POSSIBLE_NICK_LETTERS CHARS_LETTER CHARS_DIGIT CHARS_SPECIAL "-"
-#define NICK_LETTERS_MAX_SIZE sizeof(POSSIBLE_NICK_LETTERS)
+    #define POSSIBLE_NICK_LETTERS CHARS_LETTER CHARS_DIGIT CHARS_SPECIAL "-"
+    #define NICK_LETTERS_MAX_SIZE sizeof(POSSIBLE_NICK_LETTERS)
 
-class ServerNickPrefix {
-public:
-    ServerNickPrefix() { }
-    virtual ~ServerNickPrefix() { }
+    class ServerNickPrefix {
+    public:
+        ServerNickPrefix() { }
+        virtual ~ServerNickPrefix() { }
 
-    virtual const std::string& get_nick_chars() const = 0;
-    virtual const std::string& get_nick_symbols() const = 0;
-};
+        virtual const std::string& get_nick_chars() const = 0;
+        virtual const std::string& get_nick_symbols() const = 0;
+    };
 
-class Nick {
-public:
-    typedef std::vector<Nick> List;
-    static bool is_nick_in_text(const std::string& nick, const std::string& text);
+    class Nick {
+    public:
+        typedef std::vector<Nick> List;
+        static bool is_nick_in_text(const std::string& nick, const std::string& text);
 
-    Nick(const std::string& nick, ServerNickPrefix *snp);
-    virtual ~Nick() { }
+        Nick(const std::string& nick, ServerNickPrefix *snp);
+        virtual ~Nick() { }
 
-    bool operator<(const Nick& rhs) const;
-    void set_flags(const std::string& new_flags);
-    char get_flag();
-    void set_nick(const std::string& nick);
-    const std::string& get_nick();
+        bool operator<(const Nick& rhs) const;
+        void set_flags(const std::string& new_flags);
+        char get_flag();
+        void set_nick(const std::string& nick);
+        const std::string& get_nick();
 
-protected:
-    std::string nick;
-    Flags flags;
-    ServerNickPrefix *snp;
-    std::string sortnick;
+    protected:
+        std::string nick;
+        Flags flags;
+        ServerNickPrefix *snp;
+        std::string sortnick;
 
-    void set_sortnick();
-};
+        void set_sortnick();
+    };
 
 } /* namespace Circada */
 

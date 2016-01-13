@@ -31,54 +31,54 @@
 
 namespace Circada {
 
-class SocketException : public Exception {
-public:
-    SocketException(const char *msg) : Exception(msg) { }
-    SocketException(std::string msg) : Exception(msg) { }
-};
+    class SocketException : public Exception {
+    public:
+        SocketException(const char *msg) : Exception(msg) { }
+        SocketException(std::string msg) : Exception(msg) { }
+    };
 
-class Socket {
-private:
-    Socket(const Socket& rhs);
-    Socket operator=(const Socket& rhs);
+    class Socket {
+    private:
+        Socket(const Socket& rhs);
+        Socket operator=(const Socket& rhs);
 
-public:
-    Socket();
-    virtual ~Socket();
+    public:
+        Socket();
+        virtual ~Socket();
 
-    void set_tls(const std::string& ca_file) throw (SocketException);
-    void reset_tls();
-    void connect(const char *ip_address, unsigned short port) throw (SocketException);
-    bool activity(time_t sec, suseconds_t usec) throw (SocketException);
-    void listen(const char *address, unsigned short port, int backlog) throw (SocketException);
-    void listen(const char *address, unsigned short port) throw (SocketException);
-    void listen(unsigned short port, int backlog) throw (SocketException);
-    void listen(unsigned short port) throw (SocketException);
-    void accept(const Socket& socket) throw (SocketException);
-    void close();
+        void set_tls(const std::string& ca_file) throw (SocketException);
+        void reset_tls();
+        void connect(const char *ip_address, unsigned short port) throw (SocketException);
+        bool activity(time_t sec, suseconds_t usec) throw (SocketException);
+        void listen(const char *address, unsigned short port, int backlog) throw (SocketException);
+        void listen(const char *address, unsigned short port) throw (SocketException);
+        void listen(unsigned short port, int backlog) throw (SocketException);
+        void listen(unsigned short port) throw (SocketException);
+        void accept(const Socket& socket) throw (SocketException);
+        void close();
 
-    size_t send(const char *buffer, size_t size) throw (SocketException);
-    size_t send(const std::string& buffer) throw (SocketException);
-    size_t receive(void *buffer, size_t size) throw (SocketException);
-    bool get_error() const;
-    bool is_connected() const;
-    unsigned short get_port() throw (SocketException);
-    unsigned long get_address() throw (SocketException);
+        size_t send(const char *buffer, size_t size) throw (SocketException);
+        size_t send(const std::string& buffer) throw (SocketException);
+        size_t receive(void *buffer, size_t size) throw (SocketException);
+        bool get_error() const;
+        bool is_connected() const;
+        unsigned short get_port() throw (SocketException);
+        unsigned long get_address() throw (SocketException);
 
-private:
-    static const int DefaultBacklog;
+    private:
+        static const int DefaultBacklog;
 
-    int socket;
-    bool connected;
-    bool listening;
-    bool error;
-    bool tls;
-    bool disconnecting;
-    gnutls::client_session session;
-    gnutls::certificate_credentials credentials;
+        int socket;
+        bool connected;
+        bool listening;
+        bool error;
+        bool tls;
+        bool disconnecting;
+        gnutls::client_session session;
+        gnutls::certificate_credentials credentials;
 
-    void check_states() throw (SocketException);
-};
+        void check_states() throw (SocketException);
+    };
 
 } /* namespace Circada */
 

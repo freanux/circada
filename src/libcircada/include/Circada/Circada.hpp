@@ -35,54 +35,54 @@
 
 namespace Circada {
 
-class IrcClient : private IrcServerSide, public IrcClientSide {
-private:
-    IrcClient(const IrcClient& rhs);
-    IrcClient& operator=(const IrcClient& rhs);
+    class IrcClient : private IrcServerSide, public IrcClientSide {
+    private:
+        IrcClient(const IrcClient& rhs);
+        IrcClient& operator=(const IrcClient& rhs);
 
-public:
-    IrcClient(Configuration& config);
-    virtual ~IrcClient();
+    public:
+        IrcClient(Configuration& config);
+        virtual ~IrcClient();
 
-    Window *create_application_window(const std::string& name, const std::string& topic);
-    Window *get_application_window();
+        Window *create_application_window(const std::string& name, const std::string& topic);
+        Window *get_application_window();
 
-    /* create and destroy sessions with these functions.                      */
-    Session *create_session(const SessionOptions& options) throw (CircadaException);
-    void destroy_session(Session *s) throw (CircadaException);
-    size_t get_session_count();
+        /* create and destroy sessions with these functions. */
+        Session *create_session(const SessionOptions& options) throw (CircadaException);
+        void destroy_session(Session *s) throw (CircadaException);
+        size_t get_session_count();
 
-    /* managing all dcc requests                                              */
-    DCCHandle::List get_dcc_list();
-    void dcc_accept(DCCHandle dcc) throw (DCCInvalidHandleException, DCCOperationNotPermittedException);
-    void dcc_force(DCCHandle dcc) throw (DCCInvalidHandleException, DCCOperationNotPermittedException);
-    void dcc_decline(DCCHandle dcc) throw (DCCInvalidHandleException, DCCOperationNotPermittedException);
-    void dcc_abort(DCCHandle dcc) throw (DCCInvalidHandleException, DCCOperationNotPermittedException);
-    void dcc_send_msg(DCCHandle dcc, const std::string& msg) throw (DCCInvalidHandleException, DCCOperationNotPermittedException, SocketException);
-    DCCHandle get_dcc_handle_from_window(Window *w) throw (DCCOperationNotPermittedException);
-    Window *get_window_from_dcc_handle(DCCHandle dcc) throw (DCCInvalidHandleException, DCCOperationNotPermittedException);
-    DCCChatHandle get_chat_handle(DCCHandle dcc) throw (DCCOperationNotPermittedException);
-    DCCXferHandle get_xfer_handle(DCCHandle dcc) throw (DCCOperationNotPermittedException);
+        /* managing all dcc requests  */
+        DCCHandle::List get_dcc_list();
+        void dcc_accept(DCCHandle dcc) throw (DCCInvalidHandleException, DCCOperationNotPermittedException);
+        void dcc_force(DCCHandle dcc) throw (DCCInvalidHandleException, DCCOperationNotPermittedException);
+        void dcc_decline(DCCHandle dcc) throw (DCCInvalidHandleException, DCCOperationNotPermittedException);
+        void dcc_abort(DCCHandle dcc) throw (DCCInvalidHandleException, DCCOperationNotPermittedException);
+        void dcc_send_msg(DCCHandle dcc, const std::string& msg) throw (DCCInvalidHandleException, DCCOperationNotPermittedException, SocketException);
+        DCCHandle get_dcc_handle_from_window(Window *w) throw (DCCOperationNotPermittedException);
+        Window *get_window_from_dcc_handle(DCCHandle dcc) throw (DCCInvalidHandleException, DCCOperationNotPermittedException);
+        DCCChatHandle get_chat_handle(DCCHandle dcc) throw (DCCOperationNotPermittedException);
+        DCCXferHandle get_xfer_handle(DCCHandle dcc) throw (DCCOperationNotPermittedException);
 
-    /* use suicide, to cut a connection. finally, the object will             */
-    /* kill itself. this function acts like a fire and forget signal.         */
-    void suicide(Session *s);
+        /* use suicide, to cut a connection. finally, the object will     */
+        /* kill itself. this function acts like a fire and forget signal. */
+        void suicide(Session *s);
 
-    /* use this to query a nick/user */
-    Window *query(Session *s, const std::string& nick) throw (CircadaException);
+        /* use this to query a nick/user */
+        Window *query(Session *s, const std::string& nick) throw (CircadaException);
 
-    /* use this to unquery a chat or close a dcc session */
-    void unquery(Window *w) throw (CircadaException);
+        /* use this to unquery a chat or close a dcc session */
+        void unquery(Window *w) throw (CircadaException);
 
-protected:
-    Mutex mtx;
+    protected:
+        Mutex mtx;
 
-private:
-    Configuration& config;
-    Session::List sessions;
+    private:
+        Configuration& config;
+        Session::List sessions;
 
-    void destroy_session_nolock(Session *s) throw (CircadaException);
-};
+        void destroy_session_nolock(Session *s) throw (CircadaException);
+    };
 
 } /* namespace Circada */
 

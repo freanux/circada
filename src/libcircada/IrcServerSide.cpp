@@ -22,8 +22,8 @@
 
 namespace Circada {
 
-IrcServerSide::IrcServerSide(Configuration& config) : DCCManager(config, *this, *this) { }
+    IrcServerSide::IrcServerSide(Configuration& config) : DCCManager(config, *this, *this) { }
 
-IrcServerSide::~IrcServerSide() { }
+    IrcServerSide::~IrcServerSide() { }
 
 } /* namespace Circada */

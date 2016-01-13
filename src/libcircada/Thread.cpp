@@ -22,33 +22,33 @@
 
 namespace Circada {
 
-Thread::Thread() : t(0) { }
+    Thread::Thread() : t(0) { }
 
-Thread::~Thread() { }
+    Thread::~Thread() { }
 
-bool Thread::thread_start() {
-    return (pthread_create(&t, NULL, thread_helper, this) == 0);
-}
+    bool Thread::thread_start() {
+        return (pthread_create(&t, NULL, thread_helper, this) == 0);
+    }
 
-void Thread::thread_join() {
-    pthread_join(t, NULL);
-}
+    void Thread::thread_join() {
+        pthread_join(t, NULL);
+    }
 
-void Thread::thread_signal(int sig) {
-    pthread_kill(t, sig);
-}
+    void Thread::thread_signal(int sig) {
+        pthread_kill(t, sig);
+    }
 
-void Thread::thread_cancel() {
-    pthread_cancel(t);
-}
+    void Thread::thread_cancel() {
+        pthread_cancel(t);
+    }
 
-void Thread::thread_detach() {
-    pthread_detach(t);
-}
+    void Thread::thread_detach() {
+        pthread_detach(t);
+    }
 
-void *Thread::thread_helper(void *o) {
-    ((Thread *)o)->thread();
-    return NULL;
-}
+    void *Thread::thread_helper(void *o) {
+        ((Thread *)o)->thread();
+        return NULL;
+    }
 
 } /* namespace Circada */

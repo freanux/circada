@@ -22,14 +22,14 @@
 
 namespace Circada {
 
-SessionOptions::SessionOptions() throw (EnvironmentException)
-    : name(), server(), port(6667),
-      nick(Environment::get_username()),
-      alternative_nick(nick + "_"),
-      user(nick),
-      real_name(nick),
-      ca_file(), user_invisible(false), receive_wallops(false) { }
+    SessionOptions::SessionOptions() throw (EnvironmentException)
+        : name(), server(), port(6667),
+          nick(Environment::get_username()),
+          alternative_nick(nick + "_"),
+          user(nick),
+          real_name(nick),
+          ca_file(), user_invisible(false), receive_wallops(false) { }
 
-SessionOptions::~SessionOptions() { }
+    SessionOptions::~SessionOptions() { }
 
 } /* namespace Circada */

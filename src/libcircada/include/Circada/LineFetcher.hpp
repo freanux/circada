@@ -29,27 +29,27 @@
 
 namespace Circada {
 
-class LineFetcherException : public Exception {
-public:
-    LineFetcherException(const char *msg) : Exception(msg) { }
-    LineFetcherException(std::string msg) : Exception(msg) { }
-};
+    class LineFetcherException : public Exception {
+    public:
+        LineFetcherException(const char *msg) : Exception(msg) { }
+        LineFetcherException(std::string msg) : Exception(msg) { }
+    };
 
-class LineFetcher {
-public:
-    typedef std::vector<std::string> Lines;
+    class LineFetcher {
+    public:
+        typedef std::vector<std::string> Lines;
 
-    LineFetcher();
-    LineFetcher(const std::string& eol);
-    virtual ~LineFetcher();
+        LineFetcher();
+        LineFetcher(const std::string& eol);
+        virtual ~LineFetcher();
 
-    void flush();
-    size_t fetch(Socket& socket, Lines& lines) throw (LineFetcherException);
+        void flush();
+        size_t fetch(Socket& socket, Lines& lines) throw (LineFetcherException);
 
-private:
-    std::string data;
-    std::string eol;
-};
+    private:
+        std::string data;
+        std::string eol;
+    };
 
 } /* namespace Circada */
 

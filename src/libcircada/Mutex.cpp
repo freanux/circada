@@ -24,46 +24,46 @@
 
 namespace Circada {
 
-Mutex::Mutex() throw (MutexException) {
-    try {
-        mutex = new mutex_t;
-    } catch (const std::exception& e) {
-        throw MutexException(e.what());
+    Mutex::Mutex() throw (MutexException) {
+        try {
+            mutex = new mutex_t;
+        } catch (const std::exception& e) {
+            throw MutexException(e.what());
+        }
+        pthread_mutex_init(&mutex->h_mutex, NULL);
     }
-    pthread_mutex_init(&mutex->h_mutex, NULL);
-}
 
-Mutex::~Mutex() {
-    pthread_mutex_destroy(&mutex->h_mutex);
-    delete mutex;
-}
+    Mutex::~Mutex() {
+        pthread_mutex_destroy(&mutex->h_mutex);
+        delete mutex;
+    }
 
-void Mutex::lock() {
-    pthread_mutex_lock(&mutex->h_mutex);
-}
+    void Mutex::lock() {
+        pthread_mutex_lock(&mutex->h_mutex);
+    }
 
-bool Mutex::try_lock() {
-    return (pthread_mutex_trylock(&mutex->h_mutex) == 0);
-}
+    bool Mutex::try_lock() {
+        return (pthread_mutex_trylock(&mutex->h_mutex) == 0);
+    }
 
-void Mutex::unlock() {
-    pthread_mutex_unlock(&mutex->h_mutex);
-}
+    void Mutex::unlock() {
+        pthread_mutex_unlock(&mutex->h_mutex);
+    }
 
-ScopeMutex::ScopeMutex(Mutex *mtx) : mtx(mtx) {
-    this->mtx->lock();
-}
+    ScopeMutex::ScopeMutex(Mutex *mtx) : mtx(mtx) {
+        this->mtx->lock();
+    }
 
-ScopeMutex::~ScopeMutex() {
-    this->mtx->unlock();
-}
+    ScopeMutex::~ScopeMutex() {
+        this->mtx->unlock();
+    }
 
-void ScopeMutex::lock() {
-    this->mtx->lock();
-}
+    void ScopeMutex::lock() {
+        this->mtx->lock();
+    }
 
-void ScopeMutex::unlock() {
-    this->mtx->lock();
-}
+    void ScopeMutex::unlock() {
+        this->mtx->lock();
+    }
 
 } /* namespace Circada */

@@ -27,30 +27,30 @@
 
 namespace Circada {
 
-class IOSyncException : public Exception {
-public:
-    IOSyncException(const char *msg) : Exception(msg) { }
-    IOSyncException(const std::string& msg) : Exception(msg) { }
-};
+    class IOSyncException : public Exception {
+    public:
+        IOSyncException(const char *msg) : Exception(msg) { }
+        IOSyncException(const std::string& msg) : Exception(msg) { }
+    };
 
-class IOSync {
-private:
-    IOSync(const IOSync& rhs);
-    IOSync& operator=(const IOSync& rhs);
+    class IOSync {
+    private:
+        IOSync(const IOSync& rhs);
+        IOSync& operator=(const IOSync& rhs);
 
-public:
-    IOSync() throw (IOSyncException);
-    virtual ~IOSync();
+    public:
+        IOSync() throw (IOSyncException);
+        virtual ~IOSync();
 
-    void io_sync_set_non_blocking() throw (IOSyncException);
-    void io_sync_set_blocking() throw (IOSyncException);
-    bool io_sync_wait_for_event() throw (IOSyncException);
-    void io_sync_signal_event() throw (IOSyncException);
+        void io_sync_set_non_blocking() throw (IOSyncException);
+        void io_sync_set_blocking() throw (IOSyncException);
+        bool io_sync_wait_for_event() throw (IOSyncException);
+        void io_sync_signal_event() throw (IOSyncException);
 
-private:
-    int pipefd[2];
-    char signal_buffer[1];
-};
+    private:
+        int pipefd[2];
+        char signal_buffer[1];
+    };
 
 } /* namespace Circada */
 

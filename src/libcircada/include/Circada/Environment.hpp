@@ -27,17 +27,17 @@
 
 namespace Circada {
 
-class EnvironmentException : public Exception {
-public:
-    EnvironmentException() : Exception("Cannot access environment.") { }
-};
+    class EnvironmentException : public Exception {
+    public:
+        EnvironmentException() : Exception("Cannot access environment.") { }
+    };
 
-class Environment {
-public:
-    static std::string get_username() throw (EnvironmentException);
-    static std::string get_home_directory() throw (EnvironmentException);
-    static std::string get_uname() throw (EnvironmentException);
-};
+    class Environment {
+    public:
+        static std::string get_username() throw (EnvironmentException);
+        static std::string get_home_directory() throw (EnvironmentException);
+        static std::string get_uname() throw (EnvironmentException);
+    };
 
 } /* namespace Circada */
 

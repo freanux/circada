@@ -27,48 +27,48 @@
 
 namespace Circada {
 
-class MutexException : public Exception {
-public:
-    MutexException(const char *msg) : Exception(msg) { }
-    MutexException(std::string msg) : Exception(msg) { }
-};
+    class MutexException : public Exception {
+    public:
+        MutexException(const char *msg) : Exception(msg) { }
+        MutexException(std::string msg) : Exception(msg) { }
+    };
 
-class Mutex {
-private:
-    Mutex(const Mutex& rhs);
-    Mutex& operator=(const Mutex& rhs);
+    class Mutex {
+    private:
+        Mutex(const Mutex& rhs);
+        Mutex& operator=(const Mutex& rhs);
 
-    typedef struct {
-        pthread_mutex_t h_mutex;
-    } mutex_t;
+        typedef struct {
+            pthread_mutex_t h_mutex;
+        } mutex_t;
 
-public:
-    Mutex() throw (MutexException);
-    virtual ~Mutex();
+    public:
+        Mutex() throw (MutexException);
+        virtual ~Mutex();
 
-    void lock();
-    bool try_lock();
-    void unlock();
+        void lock();
+        bool try_lock();
+        void unlock();
 
-private:
-    mutex_t *mutex;
-};
+    private:
+        mutex_t *mutex;
+    };
 
-class ScopeMutex {
-private:
-    ScopeMutex(const ScopeMutex& rhs);
-    ScopeMutex& operator=(const ScopeMutex& rhs);
+    class ScopeMutex {
+    private:
+        ScopeMutex(const ScopeMutex& rhs);
+        ScopeMutex& operator=(const ScopeMutex& rhs);
 
-public:
-    ScopeMutex(Mutex *mtx);
-    virtual ~ScopeMutex();
+    public:
+        ScopeMutex(Mutex *mtx);
+        virtual ~ScopeMutex();
 
-    void lock();
-    void unlock();
+        void lock();
+        void unlock();
 
-private:
-    Mutex *mtx;
-};
+    private:
+        Mutex *mtx;
+    };
 
 } /* namespace Circada */
 

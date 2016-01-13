@@ -29,39 +29,39 @@
 
 namespace Circada {
 
-class ConfigurationException : public Exception {
-public:
-    ConfigurationException(const char *msg) : Exception(msg) { }
-    ConfigurationException(std::string msg) : Exception(msg) { }
-};
+    class ConfigurationException : public Exception {
+    public:
+        ConfigurationException(const char *msg) : Exception(msg) { }
+        ConfigurationException(std::string msg) : Exception(msg) { }
+    };
 
-class Configuration {
-public:
-    Configuration(const std::string& working_directory) throw (ConfigurationException);
-    virtual ~Configuration();
+    class Configuration {
+    public:
+        Configuration(const std::string& working_directory) throw (ConfigurationException);
+        virtual ~Configuration();
 
-    const std::string& get_working_directory();
-    void load() throw (ConfigurationException);
-    void save() throw (ConfigurationException);
-    void set_value(const std::string& category, const std::string& key, const std::string& value) throw (ConfigurationException);
-    const std::string& get_value(const std::string& category, const std::string& key) throw (ConfigurationException);
-    const std::string& get_value(const std::string& category, const std::string& key, const std::string& defaults) throw (ConfigurationException);
-    bool is_true(const std::string& value);
+        const std::string& get_working_directory();
+        void load() throw (ConfigurationException);
+        void save() throw (ConfigurationException);
+        void set_value(const std::string& category, const std::string& key, const std::string& value) throw (ConfigurationException);
+        const std::string& get_value(const std::string& category, const std::string& key) throw (ConfigurationException);
+        const std::string& get_value(const std::string& category, const std::string& key, const std::string& defaults) throw (ConfigurationException);
+        bool is_true(const std::string& value);
 
-private:
-    static const char *ConfigurationFile;
-    typedef std::map<std::string, std::string> Entries;
+    private:
+        static const char *ConfigurationFile;
+        typedef std::map<std::string, std::string> Entries;
 
-    bool modified;
-    std::string working_directory;
-    std::string empty_string;
-    Entries entries;
-    Mutex mtx;
+        bool modified;
+        std::string working_directory;
+        std::string empty_string;
+        Entries entries;
+        Mutex mtx;
 
-    void load_defaults();
-    void validation(const std::string& s) throw (ConfigurationException);
-    void set_value_nolock(const std::string& category, const std::string& key, const std::string& value) throw (ConfigurationException);
-};
+        void load_defaults();
+        void validation(const std::string& s) throw (ConfigurationException);
+        void set_value_nolock(const std::string& category, const std::string& key, const std::string& value) throw (ConfigurationException);
+    };
 
 } /* namespace Circada */
 

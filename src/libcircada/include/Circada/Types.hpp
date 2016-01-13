@@ -25,7 +25,7 @@
 
 namespace Circada {
 
-typedef uint32_t u32;
+    typedef uint32_t u32;
 
 } /* namespace Circada */
 

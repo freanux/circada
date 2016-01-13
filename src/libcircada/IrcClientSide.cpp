@@ -22,28 +22,28 @@
 
 namespace Circada {
 
-IrcClientSide::IrcClientSide() { }
+    IrcClientSide::IrcClientSide() { }
 
-IrcClientSide::~IrcClientSide() { }
+    IrcClientSide::~IrcClientSide() { }
 
-void IrcClientSide::set_project_name(const std::string& name) {
-    ScopeMutex lock(&settings_mtx);
-    project_name = name;
-}
+    void IrcClientSide::set_project_name(const std::string& name) {
+        ScopeMutex lock(&settings_mtx);
+        project_name = name;
+    }
 
-void IrcClientSide::set_project_version(const std::string& version) {
-    ScopeMutex lock(&settings_mtx);
-    project_version = version;
-}
+    void IrcClientSide::set_project_version(const std::string& version) {
+        ScopeMutex lock(&settings_mtx);
+        project_version = version;
+    }
 
-void IrcClientSide::set_quit_message(const std::string& message) {
-    ScopeMutex lock(&settings_mtx);
-    quit_message = message;
-}
+    void IrcClientSide::set_quit_message(const std::string& message) {
+        ScopeMutex lock(&settings_mtx);
+        quit_message = message;
+    }
 
-void IrcClientSide::set_injection(bool state) {
-    ScopeMutex lock(&settings_mtx);
-    inject_messages = state;
-}
+    void IrcClientSide::set_injection(bool state) {
+        ScopeMutex lock(&settings_mtx);
+        inject_messages = state;
+    }
 
 } /* namespace Circada */

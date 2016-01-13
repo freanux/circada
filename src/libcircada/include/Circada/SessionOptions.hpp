@@ -27,22 +27,22 @@
 
 namespace Circada {
 
-class SessionOptions {
-public:
-    SessionOptions() throw (EnvironmentException);
-    virtual ~SessionOptions();
+    class SessionOptions {
+    public:
+        SessionOptions() throw (EnvironmentException);
+        virtual ~SessionOptions();
 
-    std::string name;
-    std::string server;
-    unsigned short port;
-    std::string nick;
-    std::string alternative_nick;
-    std::string user;
-    std::string real_name;
-    std::string ca_file;
-    bool user_invisible;    /* try to request to be invisible    */
-    bool receive_wallops;   /* try to request to receive wallops */
-};
+        std::string name;
+        std::string server;
+        unsigned short port;
+        std::string nick;
+        std::string alternative_nick;
+        std::string user;
+        std::string real_name;
+        std::string ca_file;
+        bool user_invisible;    /* try to request to be invisible    */
+        bool receive_wallops;   /* try to request to receive wallops */
+    };
 
 } /* namespace Circada */
 

@@ -26,17 +26,17 @@
 
 namespace Circada {
 
-class Exception : public std::exception {
-    public:
-        Exception(const char *caption);
-        Exception(const std::string& caption);
-        virtual ~Exception() throw () { }
+    class Exception : public std::exception {
+        public:
+            Exception(const char *caption);
+            Exception(const std::string& caption);
+            virtual ~Exception() throw () { }
 
-        virtual const char *what() const throw();
+            virtual const char *what() const throw();
 
-    private:
-        std::string caption;
-};
+        private:
+            std::string caption;
+    };
 
 } /* namespace Circada */
 

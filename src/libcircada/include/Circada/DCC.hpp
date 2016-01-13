@@ -32,272 +32,272 @@
 
 namespace Circada {
 
-class DCCException : public Exception {
-public:
-    DCCException(const char *msg) : Exception(msg) { }
-    DCCException(std::string msg) : Exception(msg) { }
-};
+    class DCCException : public Exception {
+    public:
+        DCCException(const char *msg) : Exception(msg) { }
+        DCCException(std::string msg) : Exception(msg) { }
+    };
 
-class DCCTimedoutException : public DCCException {
-public:
-    DCCTimedoutException() : DCCException("Timeout.") { }
-};
+    class DCCTimedoutException : public DCCException {
+    public:
+        DCCTimedoutException() : DCCException("Timeout.") { }
+    };
 
-class DCCChatStoppedException : public DCCException {
-public:
-    DCCChatStoppedException(const char *msg) : DCCException(msg) { }
-    DCCChatStoppedException(std::string msg) : DCCException(msg) { }
-};
+    class DCCChatStoppedException : public DCCException {
+    public:
+        DCCChatStoppedException(const char *msg) : DCCException(msg) { }
+        DCCChatStoppedException(std::string msg) : DCCException(msg) { }
+    };
 
-class DCCInvalidHandleException : public DCCException {
-public:
-    DCCInvalidHandleException() : DCCException("Invalid DCC handle, it may be expired.") { }
-};
+    class DCCInvalidHandleException : public DCCException {
+    public:
+        DCCInvalidHandleException() : DCCException("Invalid DCC handle, it may be expired.") { }
+    };
 
-class DCCOperationNotPermittedException : public DCCException {
-public:
-    DCCOperationNotPermittedException() : DCCException("Operation is not permitted.") { }
-};
+    class DCCOperationNotPermittedException : public DCCException {
+    public:
+        DCCOperationNotPermittedException() : DCCException("Operation is not permitted.") { }
+    };
 
-enum DCCDirection {
-    DCCDirectionIncoming,
-    DCCDirectionOutgoing
-};
+    enum DCCDirection {
+        DCCDirectionIncoming,
+        DCCDirectionOutgoing
+    };
 
-enum DCCType {
-    DCCTypeNone,
-    DCCTypeChat,
-    DCCTypeXfer
-};
+    enum DCCType {
+        DCCTypeNone,
+        DCCTypeChat,
+        DCCTypeXfer
+    };
 
-enum XferState {
-    XferStateStart,
-    XferStateTransfer
-};
+    enum XferState {
+        XferStateStart,
+        XferStateTransfer
+    };
 
-class DCCManager;
-class Session;
+    class DCCManager;
+    class Session;
 
-class DCCIO {
-public:
-    DCCIO(DCCDirection direction, unsigned long address, unsigned short port);
-    virtual ~DCCIO();
+    class DCCIO {
+    public:
+        DCCIO(DCCDirection direction, unsigned long address, unsigned short port);
+        virtual ~DCCIO();
 
-    unsigned long get_address() const;
-    unsigned short get_port() const;
-    Socket& get_socket();
-    DCCDirection get_direction() const;
-    void set_timeout(int s);
+        unsigned long get_address() const;
+        unsigned short get_port() const;
+        Socket& get_socket();
+        DCCDirection get_direction() const;
+        void set_timeout(int s);
 
-    virtual void connect() throw (DCCException) = 0;
-    void stop();
+        virtual void connect() throw (DCCException) = 0;
+        void stop();
 
-protected:
-    Socket socket;
-    bool iorunning;
-    int timeout;
+    protected:
+        Socket socket;
+        bool iorunning;
+        int timeout;
 
-    void set_port(unsigned short port);
-    void set_address(unsigned long address);
+        void set_port(unsigned short port);
+        void set_address(unsigned long address);
 
-private:
-    DCCDirection direction;
-    unsigned int address;
-    unsigned short port;
-};
+    private:
+        DCCDirection direction;
+        unsigned int address;
+        unsigned short port;
+    };
 
-class DCC : public Thread {
-public:
-    typedef std::vector<DCC *> List;
+    class DCC : public Thread {
+    public:
+        typedef std::vector<DCC *> List;
 
-    DCC(Session *s, DCCManager& mgr, DCCIO& io, DCCType type, const std::string& nick);
-    virtual ~DCC();
+        DCC(Session *s, DCCManager& mgr, DCCIO& io, DCCType type, const std::string& nick);
+        virtual ~DCC();
 
-    void start() throw (DCCException);
-    void stop();
-    DCCIO& get_dccio() const;
-    DCCType get_type() const;
-    bool is_running() const;
-    bool is_connected() const;
-    void finished();
-    const std::string& get_my_nick() const;
-    const std::string& get_his_nick() const;
-    Session *get_session() const;
-    void reset_session();
-    void set_his_nick(const std::string& new_nick);
-    void set_my_nick(const std::string& new_nick);
-    void set_will_be_killed();
-    bool get_will_be_killed() const;
+        void start() throw (DCCException);
+        void stop();
+        DCCIO& get_dccio() const;
+        DCCType get_type() const;
+        bool is_running() const;
+        bool is_connected() const;
+        void finished();
+        const std::string& get_my_nick() const;
+        const std::string& get_his_nick() const;
+        Session *get_session() const;
+        void reset_session();
+        void set_his_nick(const std::string& new_nick);
+        void set_my_nick(const std::string& new_nick);
+        void set_will_be_killed();
+        bool get_will_be_killed() const;
 
-protected:
-    DCCManager& mgr;
+    protected:
+        DCCManager& mgr;
 
-private:
-    Session *s;
-    DCCIO& io;
-    DCCType type;
-    std::string my_nick;
-    std::string his_nick;
-    bool running;
-    bool connected;
-    bool will_be_killed;
+    private:
+        Session *s;
+        DCCIO& io;
+        DCCType type;
+        std::string my_nick;
+        std::string his_nick;
+        bool running;
+        bool connected;
+        bool will_be_killed;
 
-    virtual void process_or_idle() throw (DCCException) { }
-    virtual void begin_handler() { }
-    virtual void end_handler() { }
-    virtual void thread();
-};
+        virtual void process_or_idle() throw (DCCException) { }
+        virtual void begin_handler() { }
+        virtual void end_handler() { }
+        virtual void thread();
+    };
 
-class DCCIn : public DCCIO {
-public:
-    DCCIn() throw (DCCException);
-    virtual ~DCCIn();
+    class DCCIn : public DCCIO {
+    public:
+        DCCIn() throw (DCCException);
+        virtual ~DCCIn();
 
-protected:
-    virtual void connect() throw (DCCException);
+    protected:
+        virtual void connect() throw (DCCException);
 
-private:
-    bool listening;
-};
+    private:
+        bool listening;
+    };
 
-class DCCOut : public DCCIO {
-public:
-    DCCOut(unsigned long address, unsigned short port);
-    virtual ~DCCOut();
+    class DCCOut : public DCCIO {
+    public:
+        DCCOut(unsigned long address, unsigned short port);
+        virtual ~DCCOut();
 
-protected:
-    virtual void connect() throw (DCCException);
-};
+    protected:
+        virtual void connect() throw (DCCException);
+    };
 
-class DCCChat : public DCC {
-public:
-    DCCChat(Session *s, DCCManager& mgr, DCCIO& io, const std::string& nick);
-    virtual ~DCCChat();
+    class DCCChat : public DCC {
+    public:
+        DCCChat(Session *s, DCCManager& mgr, DCCIO& io, const std::string& nick);
+        virtual ~DCCChat();
 
-    void send(const std::string& msg) throw (DCCException);
+        void send(const std::string& msg) throw (DCCException);
 
-private:
-    LineFetcher fetcher;
+    private:
+        LineFetcher fetcher;
 
-    virtual void process_or_idle() throw (DCCException);
-    virtual void begin_handler();
-};
+        virtual void process_or_idle() throw (DCCException);
+        virtual void begin_handler();
+    };
 
-class DCCXfer : public DCC {
-public:
-    DCCXfer(Session *s, DCCManager& mgr, DCCIO& io, const std::string& nick, const std::string& filename, u32 filesize);
-    virtual ~DCCXfer();
+    class DCCXfer : public DCC {
+    public:
+        DCCXfer(Session *s, DCCManager& mgr, DCCIO& io, const std::string& nick, const std::string& filename, u32 filesize);
+        virtual ~DCCXfer();
 
-    const std::string& get_filename() const;
-    void set_resume_position(u32 startpos);
-    u32 get_total_acknownledged() const;
-    u32 get_filesize() const;
+        const std::string& get_filename() const;
+        void set_resume_position(u32 startpos);
+        u32 get_total_acknownledged() const;
+        u32 get_filesize() const;
 
-protected:
-    static const int BufferLength = 512; //65536;
-    std::string filename;
-    u32 filesize;
-    u32 startpos;
-    XferState state;
-    FILE *f;
-    bool successful;
+    protected:
+        static const int BufferLength = 512; //65536;
+        std::string filename;
+        u32 filesize;
+        u32 startpos;
+        XferState state;
+        FILE *f;
+        bool successful;
 
-    char buffer[BufferLength];
-    time_t last_time;
-    u32 total_acknowledged;
+        char buffer[BufferLength];
+        time_t last_time;
+        u32 total_acknowledged;
 
-    virtual void begin_handler();
-    virtual void end_handler();
-};
+        virtual void begin_handler();
+        virtual void end_handler();
+    };
 
-class DCCChatIn : public DCCChat, public DCCIn {
-public:
-    DCCChatIn(Session *s, DCCManager& mgr, const std::string& nick);
-    virtual ~DCCChatIn();
-};
+    class DCCChatIn : public DCCChat, public DCCIn {
+    public:
+        DCCChatIn(Session *s, DCCManager& mgr, const std::string& nick);
+        virtual ~DCCChatIn();
+    };
 
-class DCCChatOut : public DCCChat, public DCCOut {
-public:
-    DCCChatOut(Session *s, DCCManager& mgr, const std::string& nick, unsigned long address, unsigned short port);
-    virtual ~DCCChatOut();
-};
+    class DCCChatOut : public DCCChat, public DCCOut {
+    public:
+        DCCChatOut(Session *s, DCCManager& mgr, const std::string& nick, unsigned long address, unsigned short port);
+        virtual ~DCCChatOut();
+    };
 
-class DCCXferIn : public DCCXfer, public DCCIn {
-public:
-    DCCXferIn(Session *s, DCCManager& mgr, const std::string& nick, const std::string& filename, u32 filesize);
-    virtual ~DCCXferIn();
+    class DCCXferIn : public DCCXfer, public DCCIn {
+    public:
+        DCCXferIn(Session *s, DCCManager& mgr, const std::string& nick, const std::string& filename, u32 filesize);
+        virtual ~DCCXferIn();
 
-    u32 get_total_sent() const;
+        u32 get_total_sent() const;
 
-private:
-    u32 total_sent;
-    size_t total_size_read;
+    private:
+        u32 total_sent;
+        size_t total_size_read;
 
-    virtual void process_or_idle() throw (DCCException);
-};
+        virtual void process_or_idle() throw (DCCException);
+    };
 
-class DCCXferOut : public DCCXfer, public DCCOut {
-public:
-    DCCXferOut(Session *s, DCCManager& mgr, const std::string& nick, const std::string& filename, u32 filesize, unsigned long address, unsigned short port);
-    virtual ~DCCXferOut();
+    class DCCXferOut : public DCCXfer, public DCCOut {
+    public:
+        DCCXferOut(Session *s, DCCManager& mgr, const std::string& nick, const std::string& filename, u32 filesize, unsigned long address, unsigned short port);
+        virtual ~DCCXferOut();
 
-private:
-    std::string part_filename;
-    u32 last_acknowledged;
+    private:
+        std::string part_filename;
+        u32 last_acknowledged;
 
-    virtual void process_or_idle() throw (DCCException);
-};
+        virtual void process_or_idle() throw (DCCException);
+    };
 
-/******************************************************************************
- * DCCHandle
- * this handle is public
- ******************************************************************************/
-class DCCHandleBase {
-public:
-    DCCHandleBase(DCCManager& dcc_mgr, const DCC *dcc);
-    DCCHandleBase(const DCC *dcc);
-    virtual ~DCCHandleBase();
+    /**************************************************************************
+     * DCCHandle
+     * this handle is public
+     **************************************************************************/
+    class DCCHandleBase {
+    public:
+        DCCHandleBase(DCCManager& dcc_mgr, const DCC *dcc);
+        DCCHandleBase(const DCC *dcc);
+        virtual ~DCCHandleBase();
 
-    DCC *get_handle();
+        DCC *get_handle();
 
-protected:
-    DCCManager& dcc_mgr;
-    const DCC *dcc;
+    protected:
+        DCCManager& dcc_mgr;
+        const DCC *dcc;
 
-    void check_handle() const throw (DCCInvalidHandleException);
-};
+        void check_handle() const throw (DCCInvalidHandleException);
+    };
 
-class DCCHandle : protected DCCHandleBase {
-public:
-    typedef std::vector<DCCHandle> List;
+    class DCCHandle : protected DCCHandleBase {
+    public:
+        typedef std::vector<DCCHandle> List;
 
-    DCCHandle(DCCManager& dcc_mgr, const DCC *dcc);
-    DCCHandle operator=(DCCHandle rhs);
-    virtual ~DCCHandle();
+        DCCHandle(DCCManager& dcc_mgr, const DCC *dcc);
+        DCCHandle operator=(DCCHandle rhs);
+        virtual ~DCCHandle();
 
-    const std::string& get_his_nick() const throw (DCCInvalidHandleException);
-    const std::string& get_my_nick() const throw (DCCInvalidHandleException);
-    DCCType get_type() const throw (DCCInvalidHandleException);
-    DCCDirection get_direction() const throw (DCCInvalidHandleException);
-    bool is_running() const throw (DCCInvalidHandleException);
-    bool is_connected() const throw (DCCInvalidHandleException);
-};
+        const std::string& get_his_nick() const throw (DCCInvalidHandleException);
+        const std::string& get_my_nick() const throw (DCCInvalidHandleException);
+        DCCType get_type() const throw (DCCInvalidHandleException);
+        DCCDirection get_direction() const throw (DCCInvalidHandleException);
+        bool is_running() const throw (DCCInvalidHandleException);
+        bool is_connected() const throw (DCCInvalidHandleException);
+    };
 
-class DCCChatHandle : public DCCHandle {
-public:
-    DCCChatHandle(DCCManager& dcc_mgr, const DCC *dcc);
-    virtual ~DCCChatHandle();
-};
+    class DCCChatHandle : public DCCHandle {
+    public:
+        DCCChatHandle(DCCManager& dcc_mgr, const DCC *dcc);
+        virtual ~DCCChatHandle();
+    };
 
-class DCCXferHandle : public DCCHandle {
-public:
-    DCCXferHandle(DCCManager& dcc_mgr, const DCC *dcc);
-    virtual ~DCCXferHandle();
+    class DCCXferHandle : public DCCHandle {
+    public:
+        DCCXferHandle(DCCManager& dcc_mgr, const DCC *dcc);
+        virtual ~DCCXferHandle();
 
-    const std::string& get_filename() const throw (DCCInvalidHandleException);
-    unsigned int get_transferred_bytes() const throw (DCCInvalidHandleException);
-    unsigned int get_filesize() const throw (DCCInvalidHandleException);
-};
+        const std::string& get_filename() const throw (DCCInvalidHandleException);
+        unsigned int get_transferred_bytes() const throw (DCCInvalidHandleException);
+        unsigned int get_filesize() const throw (DCCInvalidHandleException);
+    };
 
 } /* namespace Circada */
 

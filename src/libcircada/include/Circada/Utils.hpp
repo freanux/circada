@@ -28,31 +28,32 @@
 
 namespace Circada {
 
-class UtilsException : public Exception {
-public:
-    UtilsException(const char *msg) : Exception(msg) { }
-    UtilsException(std::string msg) : Exception(msg) { }
-};
+    class UtilsException : public Exception {
+    public:
+        UtilsException(const char *msg) : Exception(msg) { }
+        UtilsException(std::string msg) : Exception(msg) { }
+    };
 
-typedef std::vector<std::string> TokenizedParams;
+    typedef std::vector<std::string> TokenizedParams;
 
-int tokenize(int parameter_count, std::string in_str, TokenizedParams& out_params);
-bool is_equal(const std::string& a, const std::string& b);
-bool is_equal(const char *a, const char *b);
-std::string get_current_time();
-void trim(std::string& s);
-void to_lower(std::string& str);
-void to_upper(std::string& str);
-std::string unix_to_date(const std::string& st);
-void initialize_tls();
-void deinitialize_tls();
-bool is_valid_domain_char(const char domain_char);
-bool is_valid_domain_name(const std::string& domain);
-bool is_netsplit(const std::string& quit_message);
-bool is_numeric(const std::string& value);
-void create_directory(const std::string& directory) throw (UtilsException);
-bool file_exists(const std::string& filename);
-std::string get_now();
+    int tokenize(int parameter_count, std::string in_str, TokenizedParams& out_params);
+    bool is_equal(const std::string& a, const std::string& b);
+    bool is_equal(const char *a, const char *b);
+    std::string get_current_time();
+    void trim(std::string& s);
+    void to_lower(std::string& str);
+    void to_upper(std::string& str);
+    std::string unix_to_date(const std::string& st);
+    void initialize_tls();
+    void deinitialize_tls();
+    bool is_valid_domain_char(const char domain_char);
+    bool is_valid_domain_name(const std::string& domain);
+    bool is_netsplit(const std::string& quit_message);
+    bool is_numeric(const std::string& value);
+    void create_directory(const std::string& directory) throw (UtilsException);
+    bool file_exists(const std::string& filename);
+    std::string get_now();
+
 } /* namespace Circada */
 
 #endif /* _CIRCADA_UTILS_HPP_ */

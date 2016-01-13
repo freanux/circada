@@ -28,37 +28,37 @@
 
 namespace Circada {
 
-class Session;
-class Window;
+    class Session;
+    class Window;
 
-class Message {
-public:
-    typedef std::vector<std::string> Params;
+    class Message {
+    public:
+        typedef std::vector<std::string> Params;
 
-    Message() { }
-    virtual ~Message() { }
+        Message() { }
+        virtual ~Message() { }
 
-    void parse(Session *s, const std::string& message, const Recoder *recoder = 0);
-    void make_midnight();
+        void parse(Session *s, const std::string& message, const Recoder *recoder = 0);
+        void make_midnight();
 
-    Session *session;
-    std::string timestamp;
-    std::string line;
-    std::string nick;
-    std::string nick_with_prefix;
-    std::string user_and_host;
-    std::string user;
-    std::string host;
-    std::string command;
-    std::string ctcp;
-    std::string op_notices;
-    Params params;
-    size_t pc;
-    bool injected;
-    bool its_me;
-    bool to_me;
-    bool unhandled_ctcp_dcc;
-};
+        Session *session;
+        std::string timestamp;
+        std::string line;
+        std::string nick;
+        std::string nick_with_prefix;
+        std::string user_and_host;
+        std::string user;
+        std::string host;
+        std::string command;
+        std::string ctcp;
+        std::string op_notices;
+        Params params;
+        size_t pc;
+        bool injected;
+        bool its_me;
+        bool to_me;
+        bool unhandled_ctcp_dcc;
+    };
 
 } /* namespace Circada */
 

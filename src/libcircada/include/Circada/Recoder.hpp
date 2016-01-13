@@ -26,19 +26,19 @@
 
 namespace Circada {
 
-typedef std::vector<std::string> Encodings;
+    typedef std::vector<std::string> Encodings;
 
-class Recoder {
-public:
-    Recoder(const Encodings& encodings);
-    virtual ~Recoder() { }
+    class Recoder {
+    public:
+        Recoder(const Encodings& encodings);
+        virtual ~Recoder() { }
 
-    void recode(std::string& text) const;
+        void recode(std::string& text) const;
 
-private:
-    static const int RecodeMaxBuffer;
-    Encodings encodings;
-};
+    private:
+        static const int RecodeMaxBuffer;
+        Encodings encodings;
+    };
 
 } /* namespace Circada */
 
