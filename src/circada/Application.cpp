@@ -187,7 +187,6 @@ void Application::run() throw (ApplicationException) {
                             /* nothing */
                             break;
                     }
-
                     break;
 
                 default:

@@ -56,7 +56,7 @@ EntryWidget::EscapeKeyEvent EntryWidget::keyevents[] = {
 };
 
 EntryWidget::EntryWidget(Circada::Mutex& draw_mtx)
-    : draw_mtx(draw_mtx), configured (false), curx(0), ofsx(0),
+    : draw_mtx(draw_mtx), configured(false), curx(0), ofsx(0),
       parser(0), last_mru_index(-1), max_mru(100), numbers_only(false),
       mode_key(0)
 {
@@ -167,7 +167,6 @@ EntryWidget::EntryWidgetEvent EntryWidget::input() {
                 mode_key = static_cast<char>(ch);
                 retval = EntryWidgetEventModeKey;
             }
-
         } else {
             reset_mru_tab();
         }
@@ -399,6 +398,7 @@ EntryWidget::EntryWidgetEvent EntryWidget::keyevent_delete_word() {
         reset_mru_tab();
         draw();
     }
+
     return EntryWidgetEventNone;
 }
 
@@ -428,6 +428,7 @@ EntryWidget::EntryWidgetEvent EntryWidget::keyevent_enter() {
             }
         }
     }
+
     return EntryWidgetEventEnter;
 }
 
@@ -483,6 +484,7 @@ EntryWidget::EntryWidgetEvent EntryWidget::keyevent_left() {
         reset_mru_tab();
         set_cursor();
     }
+
     return EntryWidgetEventNone;
 }
 

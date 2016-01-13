@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CodeLite_Workspace Name="Circada" Database="">
-  <Project Name="circada" Path="circada/circada.project" Active="No"/>
-  <Project Name="libcircada" Path="libcircada/libcircada.project" Active="Yes"/>
+  <Project Name="circada" Path="circada/circada.project" Active="Yes"/>
+  <Project Name="libcircada" Path="libcircada/libcircada.project" Active="No"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Debug" Selected="yes">
       <Environment/>

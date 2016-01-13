@@ -54,6 +54,7 @@ UTF8Iterator& UTF8Iterator::operator=(const UTF8Iterator& rhs) {
     string_iterator = rhs.string_iterator;
     current_code_point = rhs.current_code_point;
     is_dirty = rhs.is_dirty;
+
     return *this;
 }
 
@@ -84,6 +85,7 @@ UTF8Iterator& UTF8Iterator::operator++() {
 UTF8Iterator UTF8Iterator::operator++(int) {
     UTF8Iterator temp = *this;
     ++(*this);
+
     return temp;
 }
 
@@ -106,6 +108,7 @@ UTF8Iterator& UTF8Iterator::operator--() {
 UTF8Iterator UTF8Iterator::operator--(int) {
     UTF8Iterator temp = *this;
     --(*this);
+
     return temp;
 }
 
@@ -179,6 +182,7 @@ const std::string& UTF8Iterator::get_sequence() const {
     if (is_dirty) {
         calc_current_code_point();
     }
+
     return sequence;
 }
 
