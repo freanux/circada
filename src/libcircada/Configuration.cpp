@@ -18,9 +18,9 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <Circada/Configuration.hpp>
-#include <Circada/Environment.hpp>
-#include <Circada/Utils.hpp>
+#include "Circada/Configuration.hpp"
+#include "Circada/Environment.hpp"
+#include "Circada/Utils.hpp"
 
 #include <fstream>
 #include <unistd.h>

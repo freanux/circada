@@ -18,8 +18,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <Circada/GlobalSettings.hpp>
-#include <Circada/Global.hpp>
+#include "Circada/GlobalSettings.hpp"
+#include "Circada/Global.hpp"
 
 namespace Circada {
 

@@ -18,8 +18,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <Circada/WindowManager.hpp>
-#include <Circada/Utils.hpp>
+#include "Circada/WindowManager.hpp"
+#include "Circada/Utils.hpp"
 
 namespace Circada {
 

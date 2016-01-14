@@ -18,13 +18,13 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <Circada/Session.hpp>
-#include <Circada/Circada.hpp>
-#include <Circada/RFC2812.hpp>
-#include <Circada/Internals.hpp>
-#include <Circada/Utils.hpp>
-#include <Circada/LineFetcher.hpp>
-#include <Circada/Environment.hpp>
+#include "Circada/Session.hpp"
+#include "Circada/Circada.hpp"
+#include "Circada/RFC2812.hpp"
+#include "Circada/Internals.hpp"
+#include "Circada/Utils.hpp"
+#include "Circada/LineFetcher.hpp"
+#include "Circada/Environment.hpp"
 
 #include <sstream>
 #include <cstdlib>

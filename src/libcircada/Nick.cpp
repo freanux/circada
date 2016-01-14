@@ -18,8 +18,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <Circada/Nick.hpp>
-#include <Circada/Utils.hpp>
+#include "Circada/Nick.hpp"
+#include "Circada/Utils.hpp"
 
 #include <cstring>
 

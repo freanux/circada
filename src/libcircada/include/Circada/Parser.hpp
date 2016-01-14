@@ -21,9 +21,9 @@
 #ifndef _CIRCADA_PARSER_HPP_
 #define _CIRCADA_PARSER_HPP_
 
-#include <Circada/Exception.hpp>
-#include <Circada/Session.hpp>
-#include <Circada/Window.hpp>
+#include "Circada/Exception.hpp"
+#include "Circada/Session.hpp"
+#include "Circada/Window.hpp"
 
 #include <string>
 #include <vector>

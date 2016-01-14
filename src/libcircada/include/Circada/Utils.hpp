@@ -21,7 +21,7 @@
 #ifndef _CIRCADA_UTILS_HPP_
 #define _CIRCADA_UTILS_HPP_
 
-#include <Circada/Exception.hpp>
+#include "Circada/Exception.hpp"
 
 #include <string>
 #include <vector>

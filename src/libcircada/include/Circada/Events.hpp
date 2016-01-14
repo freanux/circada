@@ -21,9 +21,9 @@
 #ifndef _CIRCADA_EVENTS_HPP_
 #define _CIRCADA_EVENTS_HPP_
 
-#include <Circada/Session.hpp>
-#include <Circada/Window.hpp>
-#include <Circada/Message.hpp>
+#include "Circada/Session.hpp"
+#include "Circada/Window.hpp"
+#include "Circada/Message.hpp"
 
 #include <string>
 

@@ -18,7 +18,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <Circada/IOSync.hpp>
+#include "Circada/IOSync.hpp"
 
 #include <cerrno>
 #include <cstring>

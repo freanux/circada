@@ -21,8 +21,8 @@
 #ifndef _CIRCADA_CONFIGURATION_HPP_
 #define _CIRCADA_CONFIGURATION_HPP_
 
-#include <Circada/Exception.hpp>
-#include <Circada/Mutex.hpp>
+#include "Circada/Exception.hpp"
+#include "Circada/Mutex.hpp"
 
 #include <string>
 #include <map>

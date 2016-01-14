@@ -18,7 +18,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <Circada/IrcServerSide.hpp>
+#include "Circada/IrcServerSide.hpp"
 
 namespace Circada {
 

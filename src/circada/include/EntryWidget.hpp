@@ -24,6 +24,7 @@
 #include "Terminal.hpp"
 
 #include <Circada/Circada.hpp>
+
 #include <deque>
 #include <string>
 

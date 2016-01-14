@@ -18,9 +18,9 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <Circada/Message.hpp>
-#include <Circada/Session.hpp>
-#include <Circada/Utils.hpp>
+#include "Circada/Message.hpp"
+#include "Circada/Session.hpp"
+#include "Circada/Utils.hpp"
 
 #include <ctime>
 

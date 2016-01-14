@@ -18,9 +18,9 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <Circada/Circada.hpp>
-#include <Circada/Session.hpp>
-#include <Circada/Global.hpp>
+#include "Circada/Circada.hpp"
+#include "Circada/Session.hpp"
+#include "Circada/Global.hpp"
 
 namespace Circada {
 

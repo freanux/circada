@@ -21,7 +21,7 @@
 #ifndef _CIRCADA_ENVIRONMENT_HPP_
 #define _CIRCADA_ENVIRONMENT_HPP_
 
-#include <Circada/Exception.hpp>
+#include "Circada/Exception.hpp"
 
 #include <string>
 

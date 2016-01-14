@@ -21,11 +21,11 @@
 #ifndef _CIRCADA_SERVERSIDE_HPP_
 #define _CIRCADA_SERVERSIDE_HPP_
 
-#include <Circada/Configuration.hpp>
-#include <Circada/GlobalSettings.hpp>
-#include <Circada/Events.hpp>
-#include <Circada/WindowManager.hpp>
-#include <Circada/DCCManager.hpp>
+#include "Circada/Configuration.hpp"
+#include "Circada/GlobalSettings.hpp"
+#include "Circada/Events.hpp"
+#include "Circada/WindowManager.hpp"
+#include "Circada/DCCManager.hpp"
 
 namespace Circada {
 

@@ -21,7 +21,7 @@
 #ifndef _CIRCADA_IOSYNC_HPP_
 #define _CIRCADA_IOSYNC_HPP_
 
-#include <Circada/Exception.hpp>
+#include "Circada/Exception.hpp"
 
 #include <unistd.h>
 

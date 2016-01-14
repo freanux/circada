@@ -21,8 +21,8 @@
 #ifndef _CIRCADA_LINEFETCHER_HPP_
 #define _CIRCADA_LINEFETCHER_HPP_
 
-#include <Circada/Exception.hpp>
-#include <Circada/Socket.hpp>
+#include "Circada/Exception.hpp"
+#include "Circada/Socket.hpp"
 
 #include <string>
 #include <vector>

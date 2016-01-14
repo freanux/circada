@@ -18,7 +18,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <Circada/Socket.hpp>
+#include "Circada/Socket.hpp"
 
 #include <unistd.h>
 #include <sys/types.h>

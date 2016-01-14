@@ -21,7 +21,7 @@
 #ifndef _CIRCADA_CIRCADAEXCEPTIONS_HPP_
 #define _CIRCADA_CIRCADAEXCEPTIONS_HPP_
 
-#include <Circada/Exception.hpp>
+#include "Circada/Exception.hpp"
 
 namespace Circada {
 

@@ -21,7 +21,7 @@
 #ifndef _CIRCADA_MESSAGE_HPP_
 #define _CIRCADA_MESSAGE_HPP_
 
-#include <Circada/Recoder.hpp>
+#include "Circada/Recoder.hpp"
 
 #include <string>
 #include <vector>

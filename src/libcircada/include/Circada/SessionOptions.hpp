@@ -21,7 +21,7 @@
 #ifndef _CIRCADA_SESSIONOPTIONS_HPP_
 #define _CIRCADA_SESSIONOPTIONS_HPP_
 
-#include <Circada/Environment.hpp>
+#include "Circada/Environment.hpp"
 
 #include <string>
 

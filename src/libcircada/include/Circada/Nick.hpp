@@ -21,8 +21,8 @@
 #ifndef _CIRCADA_NICK_HPP_
 #define _CIRCADA_NICK_HPP_
 
-#include <Circada/Flags.hpp>
-#include <Circada/RFC2812.hpp>
+#include "Circada/Flags.hpp"
+#include "Circada/RFC2812.hpp"
 
 #include <string>
 #include <vector>

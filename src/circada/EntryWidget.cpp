@@ -25,7 +25,6 @@
 
 #include <cstring>
 #include <cstdlib>
-
 #include <iostream>
 
 const int EntryTimeout = 500;

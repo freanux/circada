@@ -18,9 +18,9 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <Circada/DCC.hpp>
-#include <Circada/DCCManager.hpp>
-#include <Circada/Utils.hpp>
+#include "Circada/DCC.hpp"
+#include "Circada/DCCManager.hpp"
+#include "Circada/Utils.hpp"
 
 #include <cstdlib>
 #include <cstdio>

@@ -31,6 +31,7 @@
 #include "Formatter.hpp"
 
 #include <Circada/Circada.hpp>
+
 #include <vector>
 
 using namespace Circada;

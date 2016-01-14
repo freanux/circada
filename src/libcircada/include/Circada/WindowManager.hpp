@@ -21,11 +21,10 @@
 #ifndef _CIRCADA_WINDOWMANAGER_HPP_
 #define _CIRCADA_WINDOWMANAGER_HPP_
 
-//#include <Circada/CircadaException.hpp>
-#include <Circada/Session.hpp>
-#include <Circada/Window.hpp>
-#include <Circada/Mutex.hpp>
-#include <Circada/Events.hpp>
+#include "Circada/Session.hpp"
+#include "Circada/Window.hpp"
+#include "Circada/Mutex.hpp"
+#include "Circada/Events.hpp"
 
 namespace Circada {
 

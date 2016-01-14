@@ -25,6 +25,7 @@
 #include "ScreenWindow.hpp"
 
 #include <Circada/Circada.hpp>
+
 #include <string>
 
 class StatusWidget {

@@ -18,8 +18,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <Circada/Parser.hpp>
-#include <Circada/Utils.hpp>
+#include "Circada/Parser.hpp"
+#include "Circada/Utils.hpp"
 
 namespace Circada {
 

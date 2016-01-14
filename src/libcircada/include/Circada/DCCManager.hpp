@@ -21,13 +21,13 @@
 #ifndef _CIRCADA_DCCMANAGER_HPP_
 #define _CIRCADA_DCCMANAGER_HPP_
 
-#include <Circada/Exception.hpp>
-#include <Circada/Configuration.hpp>
-#include <Circada/DCC.hpp>
-#include <Circada/Session.hpp>
-#include <Circada/Mutex.hpp>
-#include <Circada/Events.hpp>
-#include <Circada/WindowManager.hpp>
+#include "Circada/Exception.hpp"
+#include "Circada/Configuration.hpp"
+#include "Circada/DCC.hpp"
+#include "Circada/Session.hpp"
+#include "Circada/Mutex.hpp"
+#include "Circada/Events.hpp"
+#include "Circada/WindowManager.hpp"
 
 namespace Circada {
 

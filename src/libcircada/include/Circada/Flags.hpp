@@ -21,7 +21,7 @@
 #ifndef _CIRCADA_FLAGS_HPP_
 #define _CIRCADA_FLAGS_HPP_
 
-#include <Circada/RFC2812.hpp>
+#include "Circada/RFC2812.hpp"
 
 #include <string>
 

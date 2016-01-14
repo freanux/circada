@@ -21,14 +21,14 @@
 #ifndef _CIRCADA_CIRCADA_HPP_
 #define _CIRCADA_CIRCADA_HPP_
 
-#include <Circada/CircadaException.hpp>
-#include <Circada/Configuration.hpp>
-#include <Circada/IrcServerSide.hpp>
-#include <Circada/IrcClientSide.hpp>
-#include <Circada/Utils.hpp>
-#include <Circada/Internals.hpp>
-#include <Circada/Environment.hpp>
-#include <Circada/Parser.hpp>
+#include "Circada/CircadaException.hpp"
+#include "Circada/Configuration.hpp"
+#include "Circada/IrcServerSide.hpp"
+#include "Circada/IrcClientSide.hpp"
+#include "Circada/Utils.hpp"
+#include "Circada/Internals.hpp"
+#include "Circada/Environment.hpp"
+#include "Circada/Parser.hpp"
 
 #include <vector>
 #include <string>

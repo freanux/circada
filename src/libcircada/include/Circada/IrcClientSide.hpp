@@ -21,8 +21,8 @@
 #ifndef _CIRCADA_CLIENTSIDE_HPP_
 #define _CIRCADA_CLIENTSIDE_HPP_
 
-#include <Circada/GlobalSettings.hpp>
-#include <Circada/Events.hpp>
+#include "Circada/GlobalSettings.hpp"
+#include "Circada/Events.hpp"
 
 namespace Circada {
 

@@ -21,9 +21,9 @@
 #ifndef _CIRCADA_WINDOW_HPP_
 #define _CIRCADA_WINDOW_HPP_
 
-#include <Circada/Flags.hpp>
-#include <Circada/Nick.hpp>
-#include <Circada/DCC.hpp>
+#include "Circada/Flags.hpp"
+#include "Circada/Nick.hpp"
+#include "Circada/DCC.hpp"
 
 #include <vector>
 #include <map>

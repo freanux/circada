@@ -21,8 +21,8 @@
 #ifndef _CIRCADA_GLOBALSETTINGS_HPP_
 #define _CIRCADA_GLOBALSETTINGS_HPP_
 
-#include <Circada/Mutex.hpp>
-#include <Circada/Recoder.hpp>
+#include "Circada/Mutex.hpp"
+#include "Circada/Recoder.hpp"
 
 #include <string>
 

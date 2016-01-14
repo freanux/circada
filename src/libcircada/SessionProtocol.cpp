@@ -18,10 +18,10 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <Circada/Session.hpp>
-#include <Circada/Utils.hpp>
-#include <Circada/Internals.hpp>
-#include <Circada/Circada.hpp>
+#include "Circada/Session.hpp"
+#include "Circada/Utils.hpp"
+#include "Circada/Internals.hpp"
+#include "Circada/Circada.hpp"
 
 #include <sstream>
 #include <cstdlib>

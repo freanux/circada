@@ -21,7 +21,7 @@
 #ifndef _CIRCADA_MUTEX_HPP_
 #define _CIRCADA_MUTEX_HPP_
 
-#include <Circada/Exception.hpp>
+#include "Circada/Exception.hpp"
 
 #include <pthread.h>
 

@@ -18,8 +18,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <Circada/DCCManager.hpp>
-#include <Circada/Utils.hpp>
+#include "Circada/DCCManager.hpp"
+#include "Circada/Utils.hpp"
 
 #include <unistd.h>
 #include <cstdio>

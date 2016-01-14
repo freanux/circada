@@ -21,19 +21,19 @@
 #ifndef _CIRCADA_SESSION_HPP_
 #define _CIRCADA_SESSION_HPP_
 
-#include <Circada/Exception.hpp>
-#include <Circada/Configuration.hpp>
-#include <Circada/Thread.hpp>
-#include <Circada/Nick.hpp>
-#include <Circada/IOSync.hpp>
-#include <Circada/Socket.hpp>
-#include <Circada/Mutex.hpp>
-#include <Circada/Window.hpp>
-#include <Circada/Message.hpp>
-#include <Circada/Flags.hpp>
-#include <Circada/Recoder.hpp>
-#include <Circada/SessionOptions.hpp>
-#include <Circada/DCC.hpp>
+#include "Circada/Exception.hpp"
+#include "Circada/Configuration.hpp"
+#include "Circada/Thread.hpp"
+#include "Circada/Nick.hpp"
+#include "Circada/IOSync.hpp"
+#include "Circada/Socket.hpp"
+#include "Circada/Mutex.hpp"
+#include "Circada/Window.hpp"
+#include "Circada/Message.hpp"
+#include "Circada/Flags.hpp"
+#include "Circada/Recoder.hpp"
+#include "Circada/SessionOptions.hpp"
+#include "Circada/DCC.hpp"
 
 #include <vector>
 #include <string>

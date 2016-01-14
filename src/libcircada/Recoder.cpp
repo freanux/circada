@@ -18,7 +18,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <Circada/Recoder.hpp>
+#include "Circada/Recoder.hpp"
 
 #include <iconv.h>
 #include <cstring>
