@@ -45,6 +45,7 @@ namespace Circada  {
     std::string Parser::parse(const Session *s, const Window *w, std::string line, bool& external) throw (ParserException) {
         std::string output;
 
+        external = false;
         if (line.length()) {
             if (!w) {
                 throw ParserException("Please connect to an IRC server first.");
@@ -69,7 +70,6 @@ namespace Circada  {
                 const char *irc_command = 0;
                 std::string params;
                 bool found = false;
-                external = false;
                 if (w->get_window_type() == WindowTypeDCC && is_equal(command.c_str(), "me")) {
                     output = "\x01";
                     output += "ACTION " + line + "\x01";
