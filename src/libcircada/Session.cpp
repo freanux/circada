@@ -768,10 +768,12 @@ namespace Circada {
     }
 
     void Session::send_to_alert_window(SessionWindow *w, const Message& m) {
-        SessionWindow *aw = create_alert_window();
-        iss.alert(this, aw, w, m);
-        window_action_and_notify(w, WindowActionAlert);
-        window_action_and_notify(aw, WindowActionAlert);
+        if (w != server_window) {
+            SessionWindow *aw = create_alert_window();
+            iss.alert(this, aw, w, m);
+            window_action_and_notify(w, WindowActionAlert);
+            window_action_and_notify(aw, WindowActionAlert);
+        }
     }
 
     /**************************************************************************
