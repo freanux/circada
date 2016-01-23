@@ -119,7 +119,7 @@ private:
     int get_window_nbr(ScreenWindow *w);
     void send_dcc_abort(Window *w, DCCHandle dcc, const std::string& reason);
 
-    void message_router(Session *s, Window *w, const Message& m) throw ();
+    void message_router(Session *s, Window *w, const Message& m, const char *from) throw ();
     void build_window_tree();
     std::string make_tree_nr(ScreenWindow::List::iterator& it);
 
@@ -144,6 +144,7 @@ private:
     virtual void message(Session *s, Window *w, const Message& m) throw ();
     virtual void notice(Session *s, Window *w, const Message& m) throw ();
     virtual void noise(Session *s, Window *w, const Message& m) throw ();
+    virtual void alert(Session *s, Window *w, const Window *from_w, const Message& m) throw ();
     virtual void ctcp_request(Session *s, Window *w, const Message& m) throw ();
     virtual void ctcp_unhandled_request(Session *s, Window *w, const Message& m) throw ();
     virtual void change_my_mode(Session *s, const std::string& mode) throw ();

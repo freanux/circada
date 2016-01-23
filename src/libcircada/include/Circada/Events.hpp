@@ -48,6 +48,7 @@ namespace Circada {
         virtual void message(Session *s, Window *w, const Message& m) throw () { }
         virtual void notice(Session *s, Window *w, const Message& m) throw () { }
         virtual void noise(Session *s, Window *w, const Message& m) throw () { }
+        virtual void alert(Session* s, Window *w, const Window *from_w, const Message& m) throw () { }
         virtual void ctcp_request(Session *s, Window *w, const Message& m) throw () { }
         virtual void ctcp_unhandled_request(Session *s, Window *w, const Message& m) throw () { }
         virtual void change_my_mode(Session *s, const std::string& mode) throw () { }

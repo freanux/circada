@@ -166,6 +166,10 @@ void StatusWidget::draw() {
             case Circada::WindowTypeDCC:
                 wcolor_set(win_status, Formatter::get_color_code(FormatterColorBrightCyan, FormatterColorDarkBlue), 0);
                 break;
+
+            case Circada::WindowTypeAlerts:
+                wcolor_set(win_status, Formatter::get_color_code(FormatterColorBrightWhite, FormatterColorDarkBlue), 0);
+                break;
         }
         waddstr(win_status, window_name.c_str());
         wcolor_set(win_status, Formatter::get_color_code(FormatterColorBrightWhite, FormatterColorDarkBlue), 0);

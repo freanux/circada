@@ -59,7 +59,6 @@
     <File Name="../../src/circada/UTF8.cpp"/>
     <File Name="../../src/circada/Utils.cpp"/>
   </VirtualDirectory>
-  <Dependencies Name="Debug"/>
   <Dependencies Name="Release"/>
   <Settings Type="Executable">
     <GlobalSettings>
@@ -158,4 +157,7 @@
       </Completion>
     </Configuration>
   </Settings>
+  <Dependencies Name="Debug">
+    <Project Name="libcircada"/>
+  </Dependencies>
 </CodeLite_Project>

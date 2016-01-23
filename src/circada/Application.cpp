@@ -328,7 +328,11 @@ void Application::parse_entry() {
         if (external) {
             execute(output);
         } else if (s) {
-            s->send(output);
+            if (w->get_window_type() == WindowTypeAlerts) {
+                print(sw, "You cannot send message into this window.");
+            } else {
+                s->send(output);
+            }
         } else if (w->get_window_type() == WindowTypeDCC) {
             DCCHandle dcc = get_dcc_handle_from_window(w);
             dcc_send_msg(dcc, output);

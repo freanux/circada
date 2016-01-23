@@ -91,7 +91,7 @@ namespace Circada {
             gettimeofday(&tim, 0);
             double t_new = tim.tv_sec + (tim.tv_usec / 1000000.0);
             last_tracked_lag = t_new - t_old;
-            iss->lag_update(this, last_tracked_lag);
+            iss.lag_update(this, last_tracked_lag);
          } else {
             send_notification_with_noise(server_window, m);
          }
@@ -102,24 +102,24 @@ namespace Circada {
 
         /* change nick in each window */
         if (m.nick.length()) {
-            SessionWindow::List windows = iss->get_all_session_windows(this);
+            SessionWindow::List windows = iss.get_all_session_windows(this);
             for (SessionWindow::List::iterator it = windows.begin(); it != windows.end(); it++) {
                 SessionWindow *w = *it;
                 switch (w->get_window_type()) {
                     case WindowTypePrivate:
                         if (is_equal(w->get_name(), m.nick)) {
                             w->set_name(new_nick);
-                            iss->change_name(this, w, new_nick);
+                            iss.change_name(this, w, new_nick);
                             std::string topic = new_nick + " (" + m.user_and_host + ")";
                             w->change_nick(m.nick, new_nick);
-                            iss->change_nick(this, w, m.nick, new_nick);
+                            iss.change_nick(this, w, m.nick, new_nick);
                             if (w->set_topic(topic)) {
-                                iss->change_topic(this, w, topic);
+                                iss.change_topic(this, w, topic);
                             }
                             send_notification_with_noise(w, m);
                         } else if (m.nick == nick) {
                             w->change_nick(m.nick, new_nick);
-                            iss->change_nick(this, w, m.nick, new_nick);
+                            iss.change_nick(this, w, m.nick, new_nick);
                             send_notification_with_noise(w, m);
                         }
                         break;
@@ -131,7 +131,7 @@ namespace Circada {
                     default:
                         if (w->get_nick(m.nick)) {
                             w->change_nick(m.nick, new_nick);
-                            iss->change_nick(this, w, m.nick, new_nick);
+                            iss.change_nick(this, w, m.nick, new_nick);
                             send_notification_with_noise(w, m);
                         }
                         break;
@@ -145,10 +145,10 @@ namespace Circada {
         if (m.nick == nick || connection_state != ConnectionStateLoggedIn)    {
             std::string old_nick = nick;
             nick = new_nick;
-            iss->dcc_change_my_nick(this, nick);
-            iss->change_my_nick(this, old_nick, new_nick);
+            iss.dcc_change_my_nick(this, nick);
+            iss.change_my_nick(this, old_nick, new_nick);
         } else {
-            iss->dcc_change_his_nick(this, m.nick, new_nick);
+            iss.dcc_change_his_nick(this, m.nick, new_nick);
         }
     }
 
@@ -163,7 +163,7 @@ namespace Circada {
             nsm.pc = nsm.params.size();
             send_notification_with_noise(w, nsm);
         }
-        iss->add_nick(this, w, m.nick);
+        iss.add_nick(this, w, m.nick);
         if (is_equal(m.nick, nick)) {
             /* request mode settings for this channel */
             sender->pump("MODE " + channel);
@@ -178,7 +178,7 @@ namespace Circada {
         } else {
             SessionWindow *w = create_window(WindowTypeChannel, channel);
             w->remove_nick(m.nick);
-            iss->remove_nick(this, w, m.nick);
+            iss.remove_nick(this, w, m.nick);
             send_notification_with_noise(w, m);
         }
     }
@@ -192,7 +192,7 @@ namespace Circada {
         } else {
             SessionWindow *w = create_window(WindowTypeChannel, channel);
             w->remove_nick(kicked_nick);
-            iss->remove_nick(this, w, kicked_nick);
+            iss.remove_nick(this, w, kicked_nick);
             send_notification_with_noise(w, m);
         }
     }
@@ -218,14 +218,14 @@ namespace Circada {
         }
 
         /* walk thru all windows */
-        SessionWindow::List windows = iss->get_all_session_windows(this);
+        SessionWindow::List windows = iss.get_all_session_windows(this);
         for (SessionWindow::List::iterator it = windows.begin(); it != windows.end(); it++) {
             SessionWindow *w = *it;
             switch (w->get_window_type()) {
                 case WindowTypePrivate:
                     if (is_equal(w->get_name(), m.nick)) {
                         w->remove_nick(m.nick);
-                        iss->remove_nick(this, w, m.nick);
+                        iss.remove_nick(this, w, m.nick);
                         send_notification_with_noise(w, m);
                     }
                     break;
@@ -246,7 +246,7 @@ namespace Circada {
                         }
                         /* remove nick from list */
                         w->remove_nick(m.nick);
-                        iss->remove_nick(this, w, m.nick);
+                        iss.remove_nick(this, w, m.nick);
                         send_notification_with_noise(w, m);
                     }
                     break;
@@ -259,7 +259,7 @@ namespace Circada {
         const std::string& topic = m.params[1];
         SessionWindow *w = create_window(WindowTypeChannel, channel);
         w->set_topic(topic, true);
-        iss->change_topic(this, w, topic);
+        iss.change_topic(this, w, topic);
         send_notification_with_noise(w, m);
     }
 
@@ -279,11 +279,12 @@ namespace Circada {
                 Message& unsecured_m = const_cast<Message&>(m);
                 unsecured_m.to_me = true;
                 if (w->set_action(WindowActionAlert)) {
-                    iss->window_action(this, w);
+                    iss.window_action(this, w);
                 }
+                send_to_alert_window(w, m);
             } else {
                 if (w->set_action(WindowActionChat)) {
-                    iss->window_action(this, w);
+                    iss.window_action(this, w);
                 }
             }
             if (!process_ctcp(m)) {
@@ -299,7 +300,7 @@ namespace Circada {
                     if (!w->get_topic().length()) {
                         std::string topic = channel_or_nick;
                         if (w->set_topic(topic, false)) {
-                            iss->change_topic(this, w, topic);
+                            iss.change_topic(this, w, topic);
                         }
                     }
                 } else {
@@ -307,20 +308,20 @@ namespace Circada {
                     w = create_window(WindowTypePrivate, m.nick);
                     add_nick_prefix(w, m);
                     if (w->set_topic(topic, false)) {
-                        iss->change_topic(this, w, topic);
+                        iss.change_topic(this, w, topic);
                     }
                 }
 
                 /* nick case change? */
                 if (w && w->get_window_type() == WindowTypePrivate && !m.injected && w->get_name() != m.nick) {
                     w->set_name(m.nick);
-                    iss->change_name(this, w, m.nick);
+                    iss.change_name(this, w, m.nick);
                 }
 
                 /* nick enters query? */
                 if (w && !w->get_nick(m.nick)) {
                     w->add_nick(m.nick, false);
-                    iss->add_nick(this, w, m.nick);
+                    iss.add_nick(this, w, m.nick);
                 }
 
                 /* post */
@@ -344,6 +345,7 @@ namespace Circada {
                 w = server_window;
             }
             send_notice_with_noise(w, unsecured_m, WindowActionAlert);
+            send_to_alert_window(w, unsecured_m);
         } else {
             if (!unsecured_m.host.length()) {
                 SessionWindow *w = get_window(channel);
@@ -355,15 +357,16 @@ namespace Circada {
                 if (w->get_window_type() == WindowTypePrivate) {
                     std::string topic = unsecured_m.nick + " (" + unsecured_m.user_and_host + ")";
                     if (w->set_topic(topic, false)) {
-                        iss->change_topic(this, w, topic);
+                        iss.change_topic(this, w, topic);
                     }
                     if (!unsecured_m.injected && w->get_name() != unsecured_m.nick) {
                         /* nick case change? */
                         w->set_name(unsecured_m.nick);
-                        iss->change_name(this, w, unsecured_m.nick);
+                        iss.change_name(this, w, unsecured_m.nick);
                     }
                 }
                 send_notice_with_noise(w, unsecured_m, WindowActionAlert);
+                send_to_alert_window(w, unsecured_m);
             }
         }
     }
@@ -411,7 +414,7 @@ namespace Circada {
                     if (parm_index < m.pc) tm.params.push_back(m.params[parm_index++]);
                     tm.pc = tm.params.size();
                     w->set_flags(temp_flag, false);
-                    iss->change_channel_mode(this, w, temp_flag);
+                    iss.change_channel_mode(this, w, temp_flag);
                     send_notification_with_noise(w, tm);
                 } else if (channel_modes_c.find(c) != std::string::npos) {
                     /* C: change, has always a parameter if set */
@@ -448,7 +451,7 @@ namespace Circada {
                     if (n) {
                         n->set_flags(temp_flag);
                         w->sort_nicks();
-                        iss->change_nick_mode(this, w, n->get_nick(), temp_flag);
+                        iss.change_nick_mode(this, w, n->get_nick(), temp_flag);
 
                     }
                     send_notification_with_noise(w, tm);
@@ -479,14 +482,14 @@ namespace Circada {
                 tm.params.push_back(channel_modes_d);
                 tm.pc = tm.params.size();
                 w->set_flags(channel_modes_d, false);
-                iss->change_channel_mode(this, w, channel_modes_d);
+                iss.change_channel_mode(this, w, channel_modes_d);
                 send_notification_with_noise(w, tm);
             }
         } else {
             /* global user mode */
             const std::string& my_flags = m.params[1];
             flags.set_flags(my_flags);
-            iss->change_my_mode(this, my_flags);
+            iss.change_my_mode(this, my_flags);
             send_notification_with_noise(server_window, m);
         }
     }
@@ -495,7 +498,7 @@ namespace Circada {
         std::string topic = m.nick + " (" + m.user_and_host + ")";
         SessionWindow *w = create_window(WindowTypePrivate, m.nick);
         if (w->set_topic(topic, false)) {
-            iss->change_topic(this, w, topic);
+            iss.change_topic(this, w, topic);
         }
         send_notification_with_noise(w, m);
     }
@@ -545,7 +548,7 @@ namespace Circada {
 
         SessionWindow *w = create_window(WindowTypeChannel, channel);
         w->set_topic(topic, true);
-        iss->change_topic(this, w, topic);
+        iss.change_topic(this, w, topic);
     }
 
     void Session::rpl_namreply(const Message& m) throw (SessionException, SocketException) {
@@ -573,19 +576,19 @@ namespace Circada {
         const std::string& channel = m.params[1];
 
         if (channel == "*") {
-            SessionWindow::List windows = iss->get_all_session_windows(this);
+            SessionWindow::List windows = iss.get_all_session_windows(this);
             for (SessionWindow::List::iterator it = windows.begin(); it != windows.end(); it++) {
                 SessionWindow *w = *it;
                 if (w->get_window_type() == WindowTypeChannel) {
                     w->sort_nicks();
-                    iss->new_nicklist(this, w);
+                    iss.new_nicklist(this, w);
                 }
             }
         } else {
             SessionWindow *w = get_window(channel);
             if (w) {
                 w->sort_nicks();
-                iss->new_nicklist(this, w);
+                iss.new_nicklist(this, w);
             }
         }
     }
@@ -595,19 +598,19 @@ namespace Circada {
         const std::string& flags = m.params[2];
         SessionWindow *w = create_window(WindowTypeChannel, channel);
         w->set_flags(flags, true);
-        iss->change_channel_mode(this, w, flags);
+        iss.change_channel_mode(this, w, flags);
         send_notification_with_noise(w, m);
     }
 
     void Session::rpl_nowaway(const Message& m) throw (SessionException, SocketException) {
         away = true;
-        iss->away(this);
+        iss.away(this);
         send_notification_with_noise(server_window, m);
     }
 
     void Session::rpl_unaway(const Message& m) throw (SessionException, SocketException) {
         away = false;
-        iss->unaway(this);
+        iss.unaway(this);
         send_notification_with_noise(server_window, m);
     }
 
@@ -620,10 +623,10 @@ namespace Circada {
     }
 
     void Session::int_day_change(const Message& m) throw (SessionException, SocketException) {
-        SessionWindow::List windows = iss->get_all_session_windows(this);
+        SessionWindow::List windows = iss.get_all_session_windows(this);
         for (SessionWindow::List::iterator it = windows.begin(); it != windows.end(); it++) {
             SessionWindow *w = *it;
-            iss->noise(this, w, m); /* no action */
+            iss.noise(this, w, m); /* no action */
         }
     }
 

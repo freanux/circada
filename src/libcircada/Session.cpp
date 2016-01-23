@@ -126,9 +126,9 @@ namespace Circada {
 
     Suicidal::~Suicidal() { }
 
-    Session::Session(Configuration& config, IrcServerSide *iss, const SessionOptions& options) throw (SessionException)
+    Session::Session(Configuration& config, IrcServerSide& iss, const SessionOptions& options) throw (SessionException)
         : config(config), iss(iss), running(false), sender(0), server_window(0),
-          recoder(iss->get_encodings()), lag_detector(false), last_tracked_lag(0), old_time(0),
+          recoder(iss.get_encodings()), lag_detector(false), last_tracked_lag(0), old_time(0),
           options(options), connection_state(ConnectionStateLogin), suiciding(false)
     {
         /* checks */
@@ -144,8 +144,8 @@ namespace Circada {
     }
 
     Session::~Session() {
-        iss->destroy_all_dccs_in_session(this);
-        iss->destroy_all_windows_in_session(iss, this);
+        iss.destroy_all_dccs_in_session(this);
+        iss.destroy_all_windows_in_session(&iss, this);
         delete sender;
     }
 
@@ -172,7 +172,7 @@ namespace Circada {
                 do {
                     try {
                         if (socket.get_error()) break;
-                        send("QUIT  :" + iss->get_quit_message());
+                        send("QUIT  :" + iss.get_quit_message());
                         /* wait for 5 seconds */
                         while (counter < 50) {
                             if (socket.get_error()) break;
@@ -207,7 +207,7 @@ namespace Circada {
         m.parse(this, data, &recoder);
         m.nick = nick;
         m.its_me = true;
-        if (iss->get_injection()) {
+        if (iss.get_injection()) {
             if (is_equal(m.command, CMD_PRIVMSG) || is_equal(m.command, CMD_NOTICE)) {
                 inject(m);
             }
@@ -231,11 +231,11 @@ namespace Circada {
 
     DCCChatHandle Session::dcc_chat_offer(const std::string& nick) throw (SessionException) {
         /* try to find an earlier requested chat */
-        DCCHandle::List handles = iss->get_all_handles(this);
+        DCCHandle::List handles = iss.get_all_handles(this);
         for (DCCHandle::List::iterator it = handles.begin(); it != handles.end(); it++) {
             DCCHandle& h = *it;
             if (is_equal(h.get_his_nick(), nick) && !h.is_running()) {
-                iss->accept_dcc_handle(h, false);
+                iss.accept_dcc_handle(h, false);
                 DCCChatHandle chat_handle = *static_cast<DCCChatHandle *>(&h);
                 return chat_handle;
             }
@@ -245,7 +245,7 @@ namespace Circada {
         /* create new chat request */
         DCC *dcc = 0;
         try {
-            dcc = iss->create_chat_in(this, nick);
+            dcc = iss.create_chat_in(this, nick);
             char buffer[32];
             std::string req;
             req = "PRIVMSG " + nick + " :\01";
@@ -261,7 +261,7 @@ namespace Circada {
             throw SessionException(e.what());
         }
 
-        return DCCChatHandle(*iss, dcc);
+        return DCCChatHandle(iss, dcc);
     }
 
     DCCXferHandle Session::dcc_file_offer(const std::string& nick, const std::string& filename) throw (SessionException) {
@@ -270,7 +270,7 @@ namespace Circada {
             std::string converted_filename;
             u32 filesize = 0;
             char buffer[32];
-            dcc = iss->create_xfer_in(this, nick, filename, converted_filename, filesize);
+            dcc = iss.create_xfer_in(this, nick, filename, converted_filename, filesize);
             std::string req;
             req = "PRIVMSG " + nick + " :\01";
             req += "DCC SEND " + converted_filename + " ";
@@ -288,7 +288,7 @@ namespace Circada {
             throw SessionException(e.what());
         }
 
-        return DCCXferHandle(*iss, dcc);
+        return DCCXferHandle(iss, dcc);
     }
 
     /**************************************************************************
@@ -315,7 +315,7 @@ namespace Circada {
     void Session::suicide() {
         if (!suiciding) {
             suiciding = true;
-            new SuicideThread(iss, this, &socket);
+            new SuicideThread(&iss, this, &socket);
         }
     }
 
@@ -352,11 +352,11 @@ namespace Circada {
         /* go */
         server_window = create_window(WindowTypeServer, (options.name.length() ? options.name : options.server));
         server_window->set_topic(get_server());
-        iss->change_topic(this, server_window, server_window->get_topic());
+        iss.change_topic(this, server_window, server_window->get_topic());
 
         server_window->add_nick(nick, false);
-        iss->add_nick(this, server_window, nick);
-        iss->new_nicklist(this, server_window);
+        iss.add_nick(this, server_window, nick);
+        iss.new_nicklist(this, server_window);
 
         try {
             /* socket and login */
@@ -427,12 +427,12 @@ namespace Circada {
             }
         } catch (const Exception& e) {
             if (!suiciding) {
-                iss->connection_lost(this, e.what());
+                iss.connection_lost(this, e.what());
             }
         }
 
         /* delete all pending dccs, which are attached to the session */
-        iss->destroy_all_dccs_in_session(this);
+        iss.destroy_all_dccs_in_session(this);
 
         /* detach current thread */
         thread_detach();
@@ -548,7 +548,7 @@ namespace Circada {
     }
 
     DCCHandle::List Session::get_dcc_list() {
-        return iss->get_all_handles(this);
+        return iss.get_all_handles(this);
     }
 
     bool Session::process_ctcp(const Message& m) {
@@ -559,7 +559,7 @@ namespace Circada {
             if (is_equal(m.ctcp, "ACTION")) {
                 return false;
             } else if (is_equal(m.ctcp.c_str(), "VERSION")) {
-                sender->pump("NOTICE " + m.nick + " :\x01" + "VERSION " + iss->get_project_name() + " " + iss->get_project_version() + " running on " + Environment::get_uname() + "\x01");
+                sender->pump("NOTICE " + m.nick + " :\x01" + "VERSION " + iss.get_project_name() + " " + iss.get_project_version() + " running on " + Environment::get_uname() + "\x01");
                 send_ctcp_with_alert(m);
                 return true;
             } else if (is_equal(m.ctcp, "PING")) {
@@ -614,13 +614,13 @@ namespace Circada {
                         unsigned long port = atol(params[3].c_str());
                         DCC *dcc = 0;
                         try {
-                            dcc = iss->create_chat_out(this, who, addr, port);
-                            iss->dcc_incoming_chat_request(this, server_window, DCCChatHandle(*iss, dcc));
+                            dcc = iss.create_chat_out(this, who, addr, port);
+                            iss.dcc_incoming_chat_request(this, server_window, DCCChatHandle(iss, dcc));
                         } catch (const DCCException& e) {
-                            iss->dcc_chat_failed(server_window, DCCChatHandle(*iss, dcc), e.what());
+                            iss.dcc_chat_failed(server_window, DCCChatHandle(iss, dcc), e.what());
                         }
                     } else {
-                        iss->dcc_unhandled_chat_request(this, server_window, who, chat_request, m);
+                        iss.dcc_unhandled_chat_request(this, server_window, who, chat_request, m);
                     }
                     window_action_and_notify(server_window, WindowActionAlert);
                     return;
@@ -631,10 +631,10 @@ namespace Circada {
                     unsigned long fsz = (pc > 4 ? atol(params[4].c_str()) : 0);
                     DCC *dcc = 0;
                     try {
-                        dcc = iss->create_xfer_out(this, who, filename, fsz, addr, port);
-                        iss->dcc_incoming_xfer_request(this, server_window, DCCXferHandle(*iss, dcc));
+                        dcc = iss.create_xfer_out(this, who, filename, fsz, addr, port);
+                        iss.dcc_incoming_xfer_request(this, server_window, DCCXferHandle(iss, dcc));
                     } catch (const DCCException& e) {
-                        iss->dcc_xfer_failed(server_window, DCCXferHandle(*iss, dcc), e.what());
+                        iss.dcc_xfer_failed(server_window, DCCXferHandle(iss, dcc), e.what());
                     }
                     window_action_and_notify(server_window, WindowActionAlert);
                     return;
@@ -644,7 +644,7 @@ namespace Circada {
                     u32 startpos = atoi(params[3].c_str());
                     DCC *dcc = 0;
                     try {
-                        if (iss->set_resume_position(this, port, startpos, dcc)) {
+                        if (iss.set_resume_position(this, port, startpos, dcc)) {
                             char startpos_str[32];
                             sprintf(startpos_str, "%du", startpos);
                             std::string reply("PRIVMSG " + m.nick + " :\x01");
@@ -654,7 +654,7 @@ namespace Circada {
                             sender->pump(reply);
                         }
                     } catch (const DCCManagerException& e) {
-                        iss->dcc_mgr_failed(dcc, e.what());
+                        iss.dcc_mgr_failed(dcc, e.what());
                     }
                     return;
                 } else if (is_equal(dcc_request.c_str(), "ACCEPT") && pc > 3) {
@@ -662,11 +662,11 @@ namespace Circada {
                     u32 startpos = atoi(params[3].c_str());
                     DCC *dcc = 0;
                     try {
-                        if (iss->set_resume_position(this, port, startpos, dcc)) {
+                        if (iss.set_resume_position(this, port, startpos, dcc)) {
                             dcc->start();
                         }
                     } catch (const DCCManagerException& e) {
-                        iss->dcc_mgr_failed(dcc, e.what());
+                        iss.dcc_mgr_failed(dcc, e.what());
                     }
                     return;
                 }
@@ -675,20 +675,26 @@ namespace Circada {
 
         Message& unsecured_m = const_cast<Message&>(m);
         unsecured_m.unhandled_ctcp_dcc = true;
-        iss->dcc_unhandled_request(this, server_window, dcc_request, m);
+        iss.dcc_unhandled_request(this, server_window, dcc_request, m);
         window_action_and_notify(server_window, WindowActionAlert);
     }
 
     SessionWindow *Session::create_window(WindowType type, const std::string& name) {
-        return iss->create_window(iss, this, this, type, nick, name);
+        return iss.create_window(&iss, this, this, type, nick, name);
+    }
+
+    SessionWindow *Session::create_alert_window() {
+        SessionWindow *w = create_window(WindowTypeAlerts, "notifications");
+        w->set_topic("Notifications on " + get_server());
+        return w;
     }
 
     void Session::destroy_window(SessionWindow *w) {
-        iss->destroy_window(iss, w);
+        iss.destroy_window(&iss, w);
     }
 
     SessionWindow *Session::get_window(const std::string& name) {
-        return iss->get_window(this, name);
+        return iss.get_window(this, name);
     }
 
     bool Session::remove_channel_wildcards(Message& m, std::string& name) {
@@ -717,7 +723,7 @@ namespace Circada {
     }
 
     void Session::send_privmsg_with_noise(SessionWindow *w, const Message& m, WindowAction action) {
-        iss->message(this, w, m);
+        iss.message(this, w, m);
         window_action_and_notify(w, action);
     }
 
@@ -726,7 +732,7 @@ namespace Circada {
     }
 
     void Session::send_notice_with_noise(SessionWindow *w, const Message& m, WindowAction action) {
-        iss->notice(this, w, m);
+        iss.notice(this, w, m);
         window_action_and_notify(w, action);
     }
 
@@ -735,7 +741,7 @@ namespace Circada {
     }
 
     void Session::send_notification_with_noise(SessionWindow *w, const Message& m, WindowAction action) {
-        iss->noise(this, w, m);
+        iss.noise(this, w, m);
         window_action_and_notify(w, action);
     }
 
@@ -744,21 +750,28 @@ namespace Circada {
     }
 
     void Session::send_ctcp_with_alert(const Message& m) {
-        iss->ctcp_request(this, server_window, m);
+        iss.ctcp_request(this, server_window, m);
         window_action_and_notify(server_window, WindowActionAlert);
     }
 
     void Session::send_unhandled_ctcp_with_alert(const Message& m) {
-        iss->ctcp_unhandled_request(this, server_window, m);
+        iss.ctcp_unhandled_request(this, server_window, m);
         window_action_and_notify(server_window, WindowActionAlert);
     }
 
     void Session::window_action_and_notify(SessionWindow *w, WindowAction action) {
         if (w) {
             if (w->set_action(action)) {
-                iss->window_action(this, w);
+                iss.window_action(this, w);
             }
         }
+    }
+
+    void Session::send_to_alert_window(SessionWindow *w, const Message& m) {
+        SessionWindow *aw = create_alert_window();
+        iss.alert(this, aw, w, m);
+        window_action_and_notify(w, WindowActionAlert);
+        window_action_and_notify(aw, WindowActionAlert);
     }
 
     /**************************************************************************

@@ -96,15 +96,15 @@ namespace Circada {
     public:
         typedef std::vector<Session *> List;
 
-        Session(Configuration& config, IrcServerSide *iss, const SessionOptions& options) throw (SessionException);
+        Session(Configuration& config, IrcServerSide& iss, const SessionOptions& options) throw (SessionException);
         virtual ~Session();
 
-        /* use these functions to connect and disconnect                          */
+        /* use these functions to connect and disconnect                      */
         void connect() throw (SessionException);
         void disconnect() throw();
 
-        /* runtime functions                                                      */
-        /* use these to get some status, during an irc session                    */
+        /* runtime functions                                                  */
+        /* use these to get some status, during an irc session                */
         void send(const std::string& data) throw (SessionException);
         bool is_that_me(const std::string& nick);
         bool is_channel(const std::string& name);
@@ -156,7 +156,7 @@ namespace Circada {
 
         /* session management */
         Configuration& config;
-        IrcServerSide *iss;
+        IrcServerSide& iss;
         bool running;
         SenderThread *sender;
         SessionWindow *server_window;
@@ -199,6 +199,7 @@ namespace Circada {
         void process_dcc(const Message& m);
 
         SessionWindow *create_window(WindowType type, const std::string& name);
+        SessionWindow *create_alert_window();
         void destroy_window(SessionWindow *w);
         SessionWindow *get_window(const std::string& name);
 
@@ -214,6 +215,7 @@ namespace Circada {
         void send_ctcp_with_alert(const Message& m);
         void send_unhandled_ctcp_with_alert(const Message& m);
         void window_action_and_notify(SessionWindow *w, WindowAction action);
+        void send_to_alert_window(SessionWindow *w, const Message& m);
 
         /* protocol */
         void cmd_ping(const Message& m) throw (SessionException, SocketException);

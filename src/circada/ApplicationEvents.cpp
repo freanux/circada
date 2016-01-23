@@ -22,30 +22,36 @@
 
 void Application::message(Session *s, Window *w, const Message& m) throw () {
     if (!is_equal(m.ctcp, "dcc")) {
-        message_router(s, w, m);
+        message_router(s, w, m, 0);
     }
 }
 
 void Application::notice(Session *s, Window *w, const Message& m) throw () {
     if (!is_equal(m.ctcp, "dcc")) {
-        message_router(s, w, m);
+        message_router(s, w, m, 0);
     }
 }
 
 void Application::noise(Session *s, Window *w, const Message& m) throw () {
     if (!is_equal(m.ctcp, "dcc")) {
-        message_router(s, w, m);
+        message_router(s, w, m, 0);
+    }
+}
+
+void Application::alert(Session *s, Window *w, const Window *from_w, const Message& m) throw() {
+    if (!is_equal(m.ctcp, "dcc")) {
+        message_router(s, w, m, from_w->get_name().c_str());
     }
 }
 
 void Application::ctcp_request(Session *s, Window *w, const Message& m) throw () {
     if (!is_equal(m.ctcp, "dcc")) {
-        message_router(s, w, m);
+        message_router(s, w, m, 0);
     }
 }
 
 void Application::ctcp_unhandled_request(Session *s, Window *w, const Message& m) throw () {
-    message_router(s, w, m);
+    message_router(s, w, m, 0);
 }
 
 void Application::change_my_mode(Session *s, const std::string& mode) throw () {
@@ -454,10 +460,10 @@ void Application::dcc_receive_progress(Window *w, const DCCXferHandle dcc) throw
 }
 
 /* message router */
-void Application::message_router(Session *s, Window *w, const Message& m) throw () {
+void Application::message_router(Session *s, Window *w, const Message& m, const char *from) throw () {
     ScopeMutex lock(&draw_mtx);
     ScreenWindow *sw = get_window_nolock(w);
-    const std::string& line = sw->add_line(fmt, m);
+    const std::string& line = sw->add_line(fmt, m, from);
     if (selected_window == sw) {
         text_widget.draw_line(sw, line);
         text_widget.refresh(sw);

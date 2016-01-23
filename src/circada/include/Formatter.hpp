@@ -137,7 +137,9 @@ public:
     Format fmt_netsplit_highlight;
     Format fmt_netsplit_over;
 
-    void parse(const Circada::Message& m, std::string& line);
+    Format fmt_alert_channel;
+
+    void parse(const Circada::Message& m, std::string& line, const char *from);
     void plaintext(const std::string& timestamp, const std::string& text, std::string& line);
     void append_format(const std::string& what, const Format& fmt, std::string& into);
     void append_dcc_msg(const std::string& timestamp, const std::string& nick, bool me, const std::string& ctcp, const std::string& msg, std::string& into);

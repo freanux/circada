@@ -38,7 +38,7 @@ public:
 
     Circada::Session *get_circada_session();
     Circada::Window *get_circada_window();
-    const std::string& add_line(Formatter& fmt, const Circada::Message& m);
+    const std::string& add_line(Formatter& fmt, const Circada::Message& m, const char *from = 0);
     void add_formatted_line(const std::string& line);
     Lines& get_lines();
     int get_sequence();

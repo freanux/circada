@@ -46,7 +46,7 @@ namespace Circada {
         Session *s = 0;
 
         try {
-            s = new Session(config, this, options);
+            s = new Session(config, *this, options);
             ScopeMutex lock(&mtx);
             sessions.push_back(s);
         } catch (const std::exception& e) {
@@ -173,7 +173,7 @@ namespace Circada {
                     destroy_dcc(dcc);
                 }
                 destroy_window(this, sw);
-            } else if (sw->get_window_type() == WindowTypePrivate) {
+            } else if (sw->get_window_type() == WindowTypePrivate || sw->get_window_type() == WindowTypeAlerts) {
                 destroy_window(this, sw);
             } else {
                 throw CircadaException("This window cannot be closed this way.");

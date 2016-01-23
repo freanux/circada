@@ -121,6 +121,8 @@ Formatter::Formatter() : current_color(1) {
     fmt_netsplit_highlight.bold = true;
 
     fmt_netsplit_over.color = get_color_code(FormatterColorBrightMagenta, FormatterColorDarkBlack);
+
+    fmt_alert_channel.color = get_color_code(FormatterColorBrightCyan, FormatterColorDarkBlack);
 }
 
 Formatter::~Formatter() { }
@@ -129,11 +131,16 @@ unsigned char Formatter::get_color_code(int fg, int bg) {
     return (bg << 4) + fg;
 }
 
-void Formatter::parse(const Circada::Message& m, std::string& line) {
+void Formatter::parse(const Circada::Message& m, std::string& line, const char *from) {
     line.clear();
 
     // add time
     append_format(m.timestamp + " ", fmt_time, line);
+
+    // add source
+    if (from) {
+        append_format(std::string(from) + " ", fmt_alert_channel, line);
+    }
 
     // add text
     bool found = false;

@@ -37,9 +37,9 @@ Circada::Window *ScreenWindow::get_circada_window() {
     return window;
 }
 
-const std::string& ScreenWindow::add_line(Formatter& fmt, const Circada::Message& m) {
+const std::string& ScreenWindow::add_line(Formatter& fmt, const Circada::Message& m, const char *from) {
     std::string line;
-    fmt.parse(m, line);
+    fmt.parse(m, line, from);
     lines.push_back(line);
     cleanup();
     return lines[lines.size() - 1];

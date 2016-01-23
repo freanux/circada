@@ -36,7 +36,8 @@ namespace Circada {
         WindowTypeServer,
         WindowTypeChannel,
         WindowTypePrivate,
-        WindowTypeDCC
+        WindowTypeDCC,
+        WindowTypeAlerts
     };
 
     enum WindowAction {
