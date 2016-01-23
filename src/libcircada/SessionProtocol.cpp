@@ -142,7 +142,7 @@ namespace Circada {
         /* change my nick...?                                                 */
         /* if connection is not established in due to used nick by            */
         /* another user, change nick anyway.                                  */
-        if (m.nick == nick || connection_state != ConnectionStateLoggedIn)    {
+        if (m.nick == nick || connection_state != ConnectionStateLoggedIn) {
             std::string old_nick = nick;
             nick = new_nick;
             iss.dcc_change_my_nick(this, nick);
