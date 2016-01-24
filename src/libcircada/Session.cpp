@@ -44,13 +44,13 @@ namespace Circada {
         SuicideThread& operator=(const SenderThread& rhs);
 
     public:
-        SuicideThread(IrcServerSide *iss, Session *session, Socket *socket);
+        SuicideThread(IrcServerSide& iss, Session *session, Socket& socket);
         virtual ~SuicideThread();
 
     private:
-        IrcServerSide *iss;
+        IrcServerSide& iss;
         Session *session;
-        Socket *socket;
+        Socket& socket;
 
         virtual void thread();
     };
@@ -165,18 +165,18 @@ namespace Circada {
         if (running) {
             struct timespec wait, remaining;
             wait.tv_sec = 0;
-            wait.tv_nsec = 100000000;
             int counter = 0;
 
             if (socket.is_connected()) {
                 do {
                     try {
                         if (socket.get_error()) break;
-                        send("QUIT  :" + iss.get_quit_message());
+                        send("QUIT :" + iss.get_quit_message());
                         /* wait for 5 seconds */
                         while (counter < 50) {
                             if (socket.get_error()) break;
                             counter++;
+                            wait.tv_nsec = 100000000;
                             nanosleep(&wait, &remaining);
                         }
                     } catch (...) {
@@ -315,7 +315,7 @@ namespace Circada {
     void Session::suicide() {
         if (!suiciding) {
             suiciding = true;
-            new SuicideThread(&iss, this, &socket);
+            new SuicideThread(iss, this, socket);
         }
     }
 
@@ -779,7 +779,7 @@ namespace Circada {
     /**************************************************************************
      * SuicideThread
      **************************************************************************/
-    SuicideThread::SuicideThread(IrcServerSide *iss, Session *session, Socket *socket)
+    SuicideThread::SuicideThread(IrcServerSide& iss, Session *session, Socket& socket)
         : iss(iss), session(session), socket(socket)
     {
         thread_start();
@@ -796,11 +796,11 @@ namespace Circada {
 
         do {
             try {
-                if (socket->get_error()) break;
-                socket->send("QUIT  :" + iss->get_quit_message() + "\r\n");
+                if (socket.get_error()) break;
+                socket.send("QUIT :" + iss.get_quit_message() + "\r\n");
                 /* wait for 5 seconds */
                 while (counter < 50) {
-                    if (socket->get_error()) break;
+                    if (socket.get_error()) break;
                     counter++;
                     wait.tv_nsec = 100000000;
                     nanosleep(&wait, &remaining);
@@ -811,13 +811,11 @@ namespace Circada {
         } while (false);
 
         try {
-            socket->close();
+            socket.close();
         } catch (...) {
             /* chomp */
         }
-        Joinable *js = reinterpret_cast<Joinable *>(session);
-        js->join();
-
+        session->join();
         delete session;
         delete this;
     }

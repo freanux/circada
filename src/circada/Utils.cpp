@@ -21,6 +21,8 @@
 #include "Utils.hpp"
 #include "UTF8.hpp"
 
+#include <cstdio>
+
 static const int RecodeMaxSize = 1024;
 
 size_t to_wstring(const std::string& from, std::wstring& to) {

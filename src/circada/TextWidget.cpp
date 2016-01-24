@@ -287,8 +287,6 @@ int TextWidget::draw_line(const std::string& line, bool test_only, int from_line
                 }
                 str_it += sizeof(Formatter::Attribute);
             } else if (c == Formatter::AttributeBreakMarker) {
-                int y;
-                static_cast<void>(y);
                 leftmost = curx + 1;
                 str_it++;
             } else if (c == Formatter::AttributeRepeater) {
@@ -315,6 +313,11 @@ int TextWidget::draw_line(const std::string& line, bool test_only, int from_line
     }
 
     /* fill up line */
+    wattroff(win_text, A_BOLD);
+    wattroff(win_text, A_UNDERLINE);
+#ifdef A_ITALIC
+    wattroff(win_text, A_ITALIC);
+#endif
     if (!test_only) {
         for (int i = curx; i < width; i++) {
             mvwaddch(win_text, cury, i, ' ');

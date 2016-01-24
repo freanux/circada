@@ -89,6 +89,8 @@ namespace Circada {
     class IrcServerSide;
 
     class Session : private Thread, public ServerNickPrefix, private Joinable, public Suicidal {
+        friend class SuicideThread;
+
     private:
         Session(const Session& rhs);
         Session& operator=(const Session& rhs);
