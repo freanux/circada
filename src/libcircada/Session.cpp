@@ -768,7 +768,7 @@ namespace Circada {
     }
 
     void Session::send_to_alert_window(SessionWindow *w, const Message& m) {
-        if (w != server_window) {
+        if (w && w->get_window_type() == WindowTypeChannel) {
             SessionWindow *aw = create_alert_window();
             iss.alert(this, aw, w, m);
             window_action_and_notify(w, WindowActionAlert);
