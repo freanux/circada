@@ -137,6 +137,7 @@ private:
     void execute_save(const std::string& params);
     void execute_set(const std::string& params);
     void execute_get(const std::string& params);
+    void execute_sort(const std::string& params);
     void print_line(ScreenWindow *w, const std::string& timestamp, const std::string& what, Format& fmt);
     void print_line(ScreenWindow *w, const std::string& timestamp, const std::string& what);
 

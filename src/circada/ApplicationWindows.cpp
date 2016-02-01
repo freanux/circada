@@ -20,8 +20,6 @@
 
 #include "Application.hpp"
 
-#include <algorithm>
-
 ScreenWindow *Application::create_window(Session *s, Window *w) {
     ScopeMutex lock(&draw_mtx);
     ScreenWindow *sw = new ScreenWindow(config, window_sequence++, s, w);

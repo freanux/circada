@@ -23,6 +23,7 @@
 
 #include <unistd.h>
 #include <cstdlib>
+#include <algorithm>
 
 Application::Application(Configuration& config) throw (ApplicationException)
     : IrcClient(config), config(config), nicklist_width(0), selected_window(0),
@@ -521,6 +522,8 @@ void Application::execute(const std::string& line) {
         execute_set(params);
     } else if (is_equal(command.c_str(), "get")) {
         execute_get(params);
+    } else if (is_equal(command.c_str(), "sort")) {
+        execute_sort(params);
     }
 }
 
@@ -953,6 +956,13 @@ void Application::execute_get(const std::string& params) {
         print_line(sw, get_now(), "Insufficient parameters.", fmt.fmt_info_normal);
     }
     text_widget.refresh(sw);
+    set_cursor();
+}
+
+void Application::execute_sort(const std::string& params) {
+    std::sort(windows.begin(), windows.end(), ScreenWindowComparer());
+    update_input_infobar();
+    configure();
     set_cursor();
 }
 

@@ -59,25 +59,16 @@ int ScreenWindow::get_sequence() {
 }
 
 bool ScreenWindowComparer::operator()(ScreenWindow* const& lhs, ScreenWindow* const& rhs) {
-    //if (!lhs->get_circada_session()) {
-    //    return true;
-    //}
-
-    if (lhs->get_circada_session() == rhs->get_circada_session()) {
-        Circada::Window *lhs_w = lhs->get_circada_window();
-        Circada::Window *rhs_w = rhs->get_circada_window();
-        if (lhs_w->get_window_type() == rhs_w->get_window_type()) {
-            return lhs->get_sequence() < rhs->get_sequence();
-            /*
-            const std::string& lhs_name = lhs_w->get_name();
-            const std::string& rhs_name = rhs_w->get_name();
-            return strcasecmp(lhs_name.c_str(), rhs_name.c_str()) < 0;
-            */
+        if (lhs->get_circada_session() == rhs->get_circada_session()) {
+            Circada::Window *lhs_w = lhs->get_circada_window();
+            Circada::Window *rhs_w = rhs->get_circada_window();
+            if (lhs_w->get_window_type() == rhs_w->get_window_type()) {
+                return lhs_w->get_name() < rhs_w->get_name();
+            }
+            return lhs_w->get_window_type() < rhs_w->get_window_type();
         }
-        return (lhs_w->get_window_type() < rhs_w->get_window_type());
-    }
 
-    return (lhs->get_sequence() < rhs->get_sequence());
+        return lhs->get_circada_session() < rhs->get_circada_session();
 }
 
 void ScreenWindow::cleanup() {

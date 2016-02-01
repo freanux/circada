@@ -103,6 +103,7 @@ namespace Circada {
         { "service ", 0, 0, false },
         { "servlist ", 0, 0, false },
         { "set ", 0, 0, true },
+        { "sort", 0, 0, true },
         { "spamserv ", 0, &Parser::cmd_std_1, false },
         { "squery ", 0, 0, false },
         { "squit ", 0, 0, false },

@@ -118,7 +118,7 @@ namespace Circada {
         Window *get_server_window() const;
         double get_lag() const;
 
-        /* managing dcc requests                                                  */
+        /* managing dcc requests                                              */
         DCCChatHandle dcc_chat_offer(const std::string& nick) throw (SessionException);
         DCCXferHandle dcc_file_offer(const std::string& nick, const std::string& filename) throw (SessionException);
         DCCHandle::List get_dcc_list();
