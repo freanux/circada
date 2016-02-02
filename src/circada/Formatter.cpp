@@ -114,6 +114,7 @@ Formatter::Formatter() : current_color(1) {
     fmt_ctcp_unhandled.underline = true;
 
     fmt_day_change_line.color = get_color_code(FormatterColorBrightRed, FormatterColorDarkBlack);
+    fmt_last_viewed.color = get_color_code(FormatterColorDarkYellow, FormatterColorDarkBlack);
 
     fmt_netsplit.color = get_color_code(FormatterColorBrightRed, FormatterColorDarkBlack);
 

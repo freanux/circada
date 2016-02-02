@@ -32,5 +32,6 @@
 #define INT_DAY_CHANGE "!DC"
 #define INT_NETSPLIT "!NS"
 #define INT_NETSPLIT_OVER "!NSO"
+#define INT_LAST_VIEWED "!LV"
 
 #endif /* _CIRCADA_INTERNALS_HPP_ */

@@ -22,6 +22,11 @@
 #include "Utils.hpp"
 
 #include <cstring>
+#include <algorithm>
+
+template<class T> static bool erase_last_viewed(const T& elem) {
+    return (elem.type == ScreenWindow::Line::TypeLastViewed);
+}
 
 ScreenWindow::ScreenWindow(Circada::Configuration& config, int sequence, Circada::Session *s, Circada::Window *w)
     : line_at_bottom(0), rows_in_last_line(0), following(true), nicklist_top(0),
@@ -40,13 +45,28 @@ Circada::Window *ScreenWindow::get_circada_window() {
 const std::string& ScreenWindow::add_line(Formatter& fmt, const Circada::Message& m, const char *from) {
     std::string line;
     fmt.parse(m, line, from);
-    lines.push_back(line);
+    lines.push_back(Line(line));
     cleanup();
-    return lines[lines.size() - 1];
+    return lines[lines.size() - 1].text;
 }
 
 void ScreenWindow::add_formatted_line(const std::string& line) {
     lines.push_back(line);
+    cleanup();
+}
+
+void ScreenWindow::set_last_viewed(Formatter& fmt) {
+    lines.erase(std::remove_if(lines.begin(), lines.end(), erase_last_viewed<Line>), lines.end());
+    Circada::Message m;
+    m.command = INT_LAST_VIEWED;
+    m.injected = false;
+    m.its_me = false;
+    m.pc = 0;
+    m.session = 0;
+    m.to_me = false;
+    std::string line;
+    fmt.parse(m, line, 0);
+    lines.push_back(Line(Line::TypeLastViewed, line));
     cleanup();
 }
 
@@ -59,16 +79,17 @@ int ScreenWindow::get_sequence() {
 }
 
 bool ScreenWindowComparer::operator()(ScreenWindow* const& lhs, ScreenWindow* const& rhs) {
-        if (lhs->get_circada_session() == rhs->get_circada_session()) {
-            Circada::Window *lhs_w = lhs->get_circada_window();
-            Circada::Window *rhs_w = rhs->get_circada_window();
-            if (lhs_w->get_window_type() == rhs_w->get_window_type()) {
-                return lhs_w->get_name() < rhs_w->get_name();
-            }
-            return lhs_w->get_window_type() < rhs_w->get_window_type();
-        }
+    Circada::Window *lhs_w = lhs->get_circada_window();
+    Circada::Window *rhs_w = rhs->get_circada_window();
 
-        return lhs->get_circada_session() < rhs->get_circada_session();
+    if (lhs_w == rhs_w) {
+        if (lhs_w->get_window_type() == rhs_w->get_window_type()) {
+            return lhs_w->get_name() < rhs_w->get_name();
+        }
+        return lhs_w->get_window_type() < rhs_w->get_window_type();
+    }
+
+    return lhs_w->get_name() < rhs_w->get_name();
 }
 
 void ScreenWindow::cleanup() {

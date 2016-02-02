@@ -133,6 +133,7 @@ public:
     Format fmt_ctcp_unhandled;
 
     Format fmt_day_change_line;
+    Format fmt_last_viewed;
     Format fmt_netsplit;
     Format fmt_netsplit_highlight;
     Format fmt_netsplit_over;
@@ -184,6 +185,7 @@ private:
     void int_mode_channel_reset(const Circada::Message &m, std::string& into);
     void int_mode_nick_change(const Circada::Message &m, std::string& into);
     void int_day_change(const Circada::Message &m, std::string& into);
+    void int_last_viewed(const Circada::Message &m, std::string& into);
     void int_netsplit(const Circada::Message &m, std::string& into);
     void int_netsplit_over(const Circada::Message &m, std::string& into);
     void rpl_umodeis(const Circada::Message &m, std::string& into);

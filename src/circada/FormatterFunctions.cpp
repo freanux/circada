@@ -41,6 +41,7 @@ Formatter::Command Formatter::commands[] = {
     { INT_MODE_CHAN_RESET, &Formatter::int_mode_channel_reset },
     { INT_MODE_NICK_CHANGE, &Formatter::int_mode_nick_change },
     { INT_DAY_CHANGE, &Formatter::int_day_change },
+    { INT_LAST_VIEWED, &Formatter::int_last_viewed },
     { INT_NETSPLIT, &Formatter::int_netsplit },
     { INT_NETSPLIT_OVER, &Formatter::int_netsplit_over },
     { RPL_UMODEIS, &Formatter::rpl_umodeis },
@@ -309,6 +310,10 @@ void Formatter::int_day_change(const Circada::Message &m, std::string& into) {
     append_format("------", fmt_day_change_line, into);
     append_format(" " + m.params[0] + " ", fmt_info_bold, into);
     append_repeater(fmt_day_change_line, into);
+}
+
+void Formatter::int_last_viewed(const Circada::Message &m, std::string& into) {
+    append_repeater(fmt_last_viewed, into);
 }
 
 void Formatter::int_netsplit(const Circada::Message &m, std::string& into) {

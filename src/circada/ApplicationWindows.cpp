@@ -172,6 +172,10 @@ void Application::select_window(ScreenWindow *w) {
         {
             ScopeMutex lock(&draw_mtx);
 
+            if (selected_window) {
+                selected_window->set_last_viewed(fmt);
+            }
+
             selected_window = w;
             set_nicklist(&w->get_circada_window()->get_nicks());
 

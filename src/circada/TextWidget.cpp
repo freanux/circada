@@ -62,7 +62,7 @@ void TextWidget::draw() {
                 selected_window->line_at_bottom = index;
                 int save_curx = curx;
                 int save_cury = cury;
-                selected_window->rows_in_last_line = draw_line(lines[index], true);
+                selected_window->rows_in_last_line = draw_line(lines[index].text, true);
                 curx = save_curx;
                 cury = save_cury;
             } else {
@@ -106,7 +106,7 @@ void TextWidget::top_down_draw(int max_lines) {
 
             /* test to get number of lines of current line */
             curx = cury = 0;
-            int lines_to_draw = draw_line(lines[current_index], true);
+            int lines_to_draw = draw_line(lines[current_index].text, true);
             counted_lines += lines_to_draw;
             if (counted_lines >= max_lines) {
                 skip_rows = counted_lines - max_lines;
@@ -133,13 +133,13 @@ bool TextWidget::draw_clipping(int from_index, int upmost_skip_rows, int how_man
     }
     first_line = true;
     if (from_index < sz) {
-        int lines_drawn = draw_line(lines[from_index++], false, upmost_skip_rows + 1) - upmost_skip_rows;
+        int lines_drawn = draw_line(lines[from_index++].text, false, upmost_skip_rows + 1) - upmost_skip_rows;
         while (from_index < sz && lines_drawn < how_many_rows) {
             /* test */
             save_curx = curx;
             save_cury = cury;
             curx = cury = 0;
-            int lines_to_be_drawn = draw_line(lines[from_index], true);
+            int lines_to_be_drawn = draw_line(lines[from_index].text, true);
             curx = save_curx;
             cury = save_cury;
 
@@ -149,11 +149,11 @@ bool TextWidget::draw_clipping(int from_index, int upmost_skip_rows, int how_man
                 /* draw upper part of line */
                 int lines_to_draw = how_many_rows - lines_drawn;
                 selected_window->rows_in_last_line = lines_to_draw;
-                draw_line(lines[from_index], false, -1, lines_to_draw + 1);
+                draw_line(lines[from_index].text, false, -1, lines_to_draw + 1);
                 bailed_out = true;
                 break;
             } else {
-                selected_window->rows_in_last_line = draw_line(lines[from_index]);
+                selected_window->rows_in_last_line = draw_line(lines[from_index].text);
             }
             lines_drawn += lines_to_be_drawn;
             from_index++;
@@ -174,7 +174,7 @@ bool TextWidget::draw_clipping(int from_index, int upmost_skip_rows, int how_man
             save_curx = curx;
             save_cury = cury;
             curx = cury = 0;
-            int lines_to_be_drawn = draw_line(lines[from_index], true);
+            int lines_to_be_drawn = draw_line(lines[from_index].text, true);
             curx = save_curx;
             cury = save_cury;
             if (selected_window->rows_in_last_line == lines_to_be_drawn) {

@@ -25,13 +25,27 @@
 
 #include <Circada/Circada.hpp>
 
+#include <string>
 #include <vector>
 
 class ScreenWindow {
 public:
+    struct Line {
+        enum Type {
+            TypeRegular = 0,
+            TypeLastViewed
+        };
+
+        Line(const std::string& text) : type(TypeRegular), text(text) { }
+        Line(Type type, const std::string& text) : type(type), text(text) { }
+
+        Type type;
+        std::string text;
+    };
+
     typedef std::vector<Circada::DCCHandle> DDCHandles;
     typedef std::vector<ScreenWindow *> List;
-    typedef std::vector<std::string> Lines;
+    typedef std::vector<Line> Lines;
 
     ScreenWindow(Circada::Configuration& config, int sequence, Circada::Session *s, Circada::Window *w);
     virtual ~ScreenWindow();
@@ -40,6 +54,7 @@ public:
     Circada::Window *get_circada_window();
     const std::string& add_line(Formatter& fmt, const Circada::Message& m, const char *from = 0);
     void add_formatted_line(const std::string& line);
+    void set_last_viewed(Formatter& fmt);
     Lines& get_lines();
     int get_sequence();
 
