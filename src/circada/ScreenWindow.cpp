@@ -79,17 +79,17 @@ int ScreenWindow::get_sequence() {
 }
 
 bool ScreenWindowComparer::operator()(ScreenWindow* const& lhs, ScreenWindow* const& rhs) {
-    Circada::Window *lhs_w = lhs->get_circada_window();
-    Circada::Window *rhs_w = rhs->get_circada_window();
+    if (lhs == rhs) {
+        Circada::Window *lhs_w = lhs->get_circada_window();
+        Circada::Window *rhs_w = rhs->get_circada_window();
 
-    if (lhs_w == rhs_w) {
         if (lhs_w->get_window_type() == rhs_w->get_window_type()) {
             return lhs_w->get_name() < rhs_w->get_name();
         }
         return lhs_w->get_window_type() < rhs_w->get_window_type();
     }
 
-    return lhs_w < rhs_w;
+    return lhs < rhs;
 }
 
 void ScreenWindow::cleanup() {
