@@ -282,4 +282,8 @@ namespace Circada {
         return ' ';
     }
 
+    const Netsplits& SessionWindow::get_netsplits() {
+        return netsplits;
+    }
+
 } /* namespace Circada */

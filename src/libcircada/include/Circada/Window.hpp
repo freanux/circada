@@ -54,6 +54,8 @@ namespace Circada {
         struct timeval last_netsplit;
     };
 
+    typedef std::map<std::string, Netsplit> Netsplits;
+
     class Window {
     public:
         Window() { }
@@ -71,6 +73,7 @@ namespace Circada {
         virtual Nick::List& get_nicks() = 0;
         virtual Nick *get_nick(const std::string& nick) = 0;
         virtual char get_nick_flag(const std::string& nick) = 0;
+        virtual const Netsplits& get_netsplits() = 0;
     };
 
     class Session;
@@ -82,7 +85,7 @@ namespace Circada {
 
     public:
         typedef std::vector<SessionWindow *> List;
-        typedef std::map<std::string, Netsplit> Netsplits;
+        //typedef std::map<std::string, Netsplit> Netsplits;
 
         SessionWindow(const std::string& name, const std::string& topic);
         SessionWindow(Session *s, WindowType type, const std::string& name, ServerNickPrefix *snp);
@@ -121,6 +124,7 @@ namespace Circada {
         virtual Nick::List& get_nicks();
         virtual Nick *get_nick(const std::string& nick);
         virtual char get_nick_flag(const std::string& nick);
+        virtual const Netsplits& get_netsplits();
 
     private:
         Session *session;

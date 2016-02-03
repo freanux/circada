@@ -524,6 +524,8 @@ void Application::execute(const std::string& line) {
         execute_get(params);
     } else if (is_equal(command.c_str(), "sort")) {
         execute_sort(params);
+    } else if (is_equal(command.c_str(), "netsplits")) {
+        execute_netsplits(params);
     }
 }
 
@@ -960,9 +962,29 @@ void Application::execute_get(const std::string& params) {
 }
 
 void Application::execute_sort(const std::string& params) {
-    std::sort(windows.begin(), windows.end(), ScreenWindowComparer());
-    update_input_infobar();
+    {
+        ScopeMutex lock(&draw_mtx);
+        std::sort(windows.begin(), windows.end(), ScreenWindowComparer());
+        update_input_infobar();
+    }
     configure();
+    set_cursor();
+}
+
+void Application::execute_netsplits(const std::string& params) {
+    ScopeMutex lock(&draw_mtx);
+    if (selected_window) {
+        char buffer[128];
+        const Netsplits& netsplits = selected_window->get_circada_window()->get_netsplits();
+        std::string timestamp(get_now());
+        for (Netsplits::const_iterator it = netsplits.begin(); it != netsplits.end(); it++) {
+            const Netsplit& ns = it->second;
+            sprintf(buffer, "%s: %d nicks", it->first.c_str(), static_cast<int>(ns.nicks.size()));
+            print_line(selected_window, timestamp, buffer, fmt.fmt_info_normal);
+        }
+        print_line(selected_window, timestamp, "--- end of netsplit list ---", fmt.fmt_info_normal);
+        text_widget.refresh(selected_window);
+    }
     set_cursor();
 }
 
