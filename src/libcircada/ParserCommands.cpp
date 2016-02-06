@@ -79,6 +79,7 @@ namespace Circada {
         { "ms ", "MEMOSERV", &Parser::cmd_std_1, false },
         { "msg ", "PRIVMSG", &Parser::cmd_std_2_colon, false },
         { "names ", 0, 0, false },
+        { "netsplits", 0,0, true},
         { "notice ", "NOTICE", &Parser::cmd_std_2_colon, false },
         { "nick ", 0, &Parser::cmd_std_1, false },
         { "nickserv ", 0, &Parser::cmd_std_1, false },
