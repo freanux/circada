@@ -41,9 +41,9 @@ In the navigation mode, a window bar appears. Press the arrow keys to slide betw
 Download Circada from this web page or clone the bleeding edge from GitHub. Then untar the tarball. Change into your untarred circada project directory. Now you have to setup your compile process:
 
 ```
-$ ./autogen.sh
+$ autoreconf -i
 $ ./configure
-$ make
+$ make -j`nproc`
 ```
 
 install Circada:
