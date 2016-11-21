@@ -15,11 +15,17 @@ circada.mk
 circada.txt
 libcircada.mk
 libcircada.txt
+compile
+config.guess
 config.log
 config.status
+config.sub
+depcomp
 libtool
 circada
 *.so
 m4/*.m4
 configure
 ltmain.sh
+missing
+install-sh
