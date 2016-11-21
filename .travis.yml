@@ -15,6 +15,9 @@ notifications:
 install:
     - sudo apt-get -y update
     - sudo apt-get install build-essential autoconf libtool libncurses5-dev libncursesw5-dev libgnutls-dev
+
+script:
+    - autoreconf -i
     - ./configure
     - make -j`nproc`
     - sudo make install-strip
