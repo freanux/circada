@@ -1,6 +1,7 @@
 # Circada IRC client
 
 [![travis](https://img.shields.io/travis/freanux/circada.svg)](https://travis-ci.org/freanux/circada)
+[![license](https://img.shields.io/github/license/freanux/circada.svg)](https://github.com/freanux/circada/blob/next/COPYING)
 
 I work often in console or in a SSH session. So I have to use an irc console client. For years I used Irssi, then I tried out WeeChat for a while. Then I switched back to Irssi.
 
@@ -57,9 +58,9 @@ That's it!
 Download Circada from this web page or clone the bleeding edge from GitHub. Then untar the tarball. Change into your untarred circada project directory. Now you have to setup your compile process:
 
 ```
-$ ./autogen.sh
+$ autoreconf -i
 $ ./configure --enable-shared-library
-$ make
+$ make -j`nproc`
 ```
 
 Install Circada with rebuilding your ldcache:
