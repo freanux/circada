@@ -77,7 +77,7 @@ namespace Circada {
         { INT_DAY_CHANGE, &Session::int_day_change, Command::WindowNone, false },
 
         /* eol */
-        { 0, 0, false }
+        { 0, 0, 0, false }
     };
 
     void Session::cmd_ping(const Message& m) throw (SessionException, SocketException) {

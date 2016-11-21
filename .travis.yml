@@ -1,0 +1,20 @@
+language: cpp
+
+compiler:
+    - gcc
+
+notifications:
+    irc:
+        channels:
+            - chat.freenode.net#circada
+        template:
+            - "%{repository}/%{branch} (%{commit} - %{author}): %{message}"
+        use_notice: true
+        skip_join: true
+
+install:
+    - sudo apt-get -y update
+    - sudo apt-get install build-essential autoconf libtool libncurses5-dev libncursesw5-dev libgnutls-dev
+    - ./configure
+    - make -j`nproc`
+    - sudo make install-strip
