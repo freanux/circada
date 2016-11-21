@@ -1,7 +1,7 @@
 # Circada IRC client
 
 [![travis](https://img.shields.io/travis/freanux/circada.svg)](https://travis-ci.org/freanux/circada)
-[![license](https://img.shields.io/github/license/freanux/circada.svg)](https://github.com/freanux/circada/blob/next/COPYING)
+[![license](https://img.shields.io/github/license/freanux/circada.svg)](https://github.com/freanux/circada/blob/master/COPYING)
 
 I work often in console or in a SSH session. So I have to use an irc console client. For years I used Irssi, then I tried out WeeChat for a while. Then I switched back to Irssi.
 
