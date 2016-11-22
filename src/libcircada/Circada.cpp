@@ -143,8 +143,8 @@ namespace Circada {
         for (Session::List::iterator it = sessions.begin(); it != sessions.end(); it++) {
             if ((*it) == s) {
                 sessions.erase(it);
-                Suicidal *suicial = reinterpret_cast<Suicidal *>(s);
-                suicial->suicide();
+                Suicidal *suicidal = s;
+                suicidal->suicide();
                 break;
             }
         }

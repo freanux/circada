@@ -11,6 +11,7 @@ Makefile.in
 .build-debug
 .build-release
 .codelite
+.clang
 circada.mk
 circada.txt
 libcircada.mk
@@ -29,3 +30,5 @@ configure
 ltmain.sh
 missing
 install-sh
+Debug
+Release
