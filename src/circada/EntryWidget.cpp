@@ -29,7 +29,7 @@
 
 const int EntryTimeout = 500;
 
-/* perhaps make this sequences configurable */
+/* perhaps make these sequences configurable */
 EntryWidget::EscapeKeyEvent EntryWidget::keyevents[] = {
     { "", &EntryWidget::keyevent_escape },
     { "[3~", &EntryWidget::keyevent_delete },
@@ -153,7 +153,7 @@ EntryWidget::EntryWidgetEvent EntryWidget::input() {
                 timeout(EntryTimeout);
                 retval = keyevent_insert_sequence(seq);
             }
-        } else if (ch > 31 and ch < 256) {
+        } else if (ch > 31 && ch < 256) {
             if (!numbers_only) {
                 std::string seq;
                 seq += static_cast<char>(ch);
