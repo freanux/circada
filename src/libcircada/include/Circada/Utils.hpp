@@ -50,7 +50,7 @@ namespace Circada {
     bool is_valid_domain_name(const std::string& domain);
     bool is_netsplit(const std::string& quit_message);
     bool is_numeric(const std::string& value);
-    void create_directory(const std::string& directory) throw (UtilsException);
+    void create_directory(const std::string& directory);
     bool file_exists(const std::string& filename);
     std::string get_now();
 

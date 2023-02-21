@@ -42,7 +42,7 @@ namespace Circada  {
         return nick_suffix;
     }
 
-    std::string Parser::parse(const Session *s, const Window *w, std::string line, bool& external) throw (ParserException) {
+    std::string Parser::parse(const Session *s, const Window *w, std::string line, bool& external) {
         std::string output;
 
         external = false;

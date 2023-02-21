@@ -43,7 +43,7 @@ namespace Circada {
         }
     }
 
-    void Socket::set_tls(const std::string& ca_file) throw (SocketException) {
+    void Socket::set_tls(const std::string& ca_file) {
         check_states();
         try {
             this->tls = true;
@@ -62,7 +62,7 @@ namespace Circada {
         }
     }
 
-    void Socket::connect(const char *ip_address, unsigned short port) throw (SocketException) {
+    void Socket::connect(const char *ip_address, unsigned short port) {
         unsigned long address;
         struct sockaddr_in server;
         struct hostent *host_info;
@@ -158,7 +158,7 @@ namespace Circada {
         }
     }
 
-    bool Socket::activity(time_t sec, suseconds_t usec) throw (SocketException) {
+    bool Socket::activity(time_t sec, suseconds_t usec) {
         fd_set fds;
         FD_ZERO(&fds);
         FD_SET(socket, &fds);
@@ -198,7 +198,7 @@ namespace Circada {
         return false;
     }
 
-    void Socket::listen(const char *address, unsigned short port, int backlog) throw (SocketException) {
+    void Socket::listen(const char *address, unsigned short port, int backlog) {
         struct sockaddr_in server;
         int rv;
 
@@ -237,19 +237,19 @@ namespace Circada {
         }
     }
 
-    void Socket::listen(const char *address, unsigned short port) throw (SocketException) {
+    void Socket::listen(const char *address, unsigned short port) {
         listen(address, port, DefaultBacklog);
     }
 
-    void Socket::listen(unsigned short port, int backlog) throw (SocketException) {
+    void Socket::listen(unsigned short port, int backlog) {
         listen(0, port, backlog);
     }
 
-    void Socket::listen(unsigned short port) throw (SocketException) {
+    void Socket::listen(unsigned short port) {
         listen(0, port, DefaultBacklog);
     }
 
-    void Socket::accept(const Socket& socket) throw (SocketException) {
+    void Socket::accept(const Socket& socket) {
         struct sockaddr_in client;
         socklen_t client_len;
 
@@ -290,7 +290,7 @@ namespace Circada {
         }
     }
 
-    size_t Socket::send(const char *buffer, size_t size) throw (SocketException) {
+    size_t Socket::send(const char *buffer, size_t size) {
         if (error || !connected) {
             throw SocketException("Send failed, socket is closed.");
         }
@@ -312,11 +312,11 @@ namespace Circada {
         return static_cast<size_t>(rv);
     }
 
-    size_t Socket::send(const std::string& buffer) throw (SocketException) {
+    size_t Socket::send(const std::string& buffer) {
         return send(buffer.c_str(), buffer.length());
     }
 
-    size_t Socket::receive(void *buffer, size_t size) throw (SocketException) {
+    size_t Socket::receive(void *buffer, size_t size) {
         if (error || !connected) {
             throw SocketException("Receive failed, socket is closed.");
         }
@@ -346,7 +346,7 @@ namespace Circada {
         return connected;
     }
 
-    unsigned short Socket::get_port() throw (SocketException) {
+    unsigned short Socket::get_port() {
         struct sockaddr_in sin;
         socklen_t len = sizeof(sin);
         if (getsockname(socket, (struct sockaddr *)&sin, &len) == -1) {
@@ -356,7 +356,7 @@ namespace Circada {
         return ntohs(sin.sin_port);
     }
 
-    unsigned long Socket::get_address() throw (SocketException) {
+    unsigned long Socket::get_address() {
         struct sockaddr_in sin;
         socklen_t len = sizeof(sin);
         if (getsockname(socket, (struct sockaddr *)&sin, &len) == -1) {
@@ -366,7 +366,7 @@ namespace Circada {
         return sin.sin_addr.s_addr;
     }
 
-    void Socket::check_states() throw (SocketException) {
+    void Socket::check_states() {
         /* already connected? */
         if (connected) {
             throw SocketException("Socket already in use.");

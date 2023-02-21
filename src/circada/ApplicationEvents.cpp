@@ -20,48 +20,48 @@
 
 #include "Application.hpp"
 
-void Application::message(Session *s, Window *w, const Message& m) throw () {
+void Application::message(Session *s, Window *w, const Message& m) {
     if (!is_equal(m.ctcp, "dcc")) {
         message_router(s, w, m, 0);
     }
 }
 
-void Application::notice(Session *s, Window *w, const Message& m) throw () {
+void Application::notice(Session *s, Window *w, const Message& m) {
     if (!is_equal(m.ctcp, "dcc")) {
         message_router(s, w, m, 0);
     }
 }
 
-void Application::noise(Session *s, Window *w, const Message& m) throw () {
+void Application::noise(Session *s, Window *w, const Message& m) {
     if (!is_equal(m.ctcp, "dcc")) {
         message_router(s, w, m, 0);
     }
 }
 
-void Application::alert(Session *s, Window *w, const Window *from_w, const Message& m) throw() {
+void Application::alert(Session *s, Window *w, const Window *from_w, const Message& m) {
     if (!is_equal(m.ctcp, "dcc")) {
         message_router(s, w, m, from_w->get_name().c_str());
     }
 }
 
-void Application::ctcp_request(Session *s, Window *w, const Message& m) throw () {
+void Application::ctcp_request(Session *s, Window *w, const Message& m) {
     if (!is_equal(m.ctcp, "dcc")) {
         message_router(s, w, m, 0);
     }
 }
 
-void Application::ctcp_unhandled_request(Session *s, Window *w, const Message& m) throw () {
+void Application::ctcp_unhandled_request(Session *s, Window *w, const Message& m) {
     message_router(s, w, m, 0);
 }
 
-void Application::change_my_mode(Session *s, const std::string& mode) throw () {
+void Application::change_my_mode(Session *s, const std::string& mode) {
     ScopeMutex lock(&draw_mtx);
     status_widget.set_nick_mode(s->get_flags());
     status_widget.draw();
     set_cursor();
 }
 
-void Application::open_window(Session *s, Window *w) throw () {
+void Application::open_window(Session *s, Window *w) {
     ScreenWindow *sw = create_window(s, w);
 
     if (!text_widget.get_selected_window() ||
@@ -78,7 +78,7 @@ void Application::open_window(Session *s, Window *w) throw () {
     }
 }
 
-void Application::close_window(Session *s, Window *w) throw () {
+void Application::close_window(Session *s, Window *w) {
     if (selected_window->get_circada_window() == w) {
         select_prev_window();
     }
@@ -93,7 +93,7 @@ void Application::close_window(Session *s, Window *w) throw () {
     set_cursor();
 }
 
-void Application::window_action(Session *s, Window *w) throw () {
+void Application::window_action(Session *s, Window *w) {
     if (w->get_action() == WindowActionAlert) {
         beep();
     }
@@ -110,46 +110,46 @@ void Application::window_action(Session *s, Window *w) throw () {
     }
 }
 
-void Application::change_topic(Session *s, Window *w, const std::string& topic) throw () {
+void Application::change_topic(Session *s, Window *w, const std::string& topic) {
     set_topic(w, topic);
 }
 
-void Application::change_name(Session *s, Window *w, const std::string& name) throw () {
+void Application::change_name(Session *s, Window *w, const std::string& name) {
     set_name(w, name);
 }
 
-void Application::change_channel_mode(Session *s, Window *w, const std::string& mode) throw () {
+void Application::change_channel_mode(Session *s, Window *w, const std::string& mode) {
     set_channel_mode(w, mode);
 }
 
-void Application::new_nicklist(Session *s, Window *w) throw () {
+void Application::new_nicklist(Session *s, Window *w) {
     changes_in_nicklist(w);
 }
 
-void Application::add_nick(Session *s, Window *w, const std::string& nick) throw () {
+void Application::add_nick(Session *s, Window *w, const std::string& nick) {
     changes_in_nicklist(w);
 }
 
-void Application::remove_nick(Session *s, Window *w, const std::string& nick) throw () {
+void Application::remove_nick(Session *s, Window *w, const std::string& nick) {
     changes_in_nicklist(w);
 }
 
-void Application::change_nick(Session *s, Window *w, const std::string& old_nick, const std::string& new_nick) throw () {
+void Application::change_nick(Session *s, Window *w, const std::string& old_nick, const std::string& new_nick) {
     changes_in_nicklist(w);
 }
 
-void Application::change_my_nick(Session *s, const std::string& old_nick, const std::string& new_nick) throw () {
+void Application::change_my_nick(Session *s, const std::string& old_nick, const std::string& new_nick) {
     ScopeMutex lock(&draw_mtx);
     status_widget.set_nick(s->get_nick());
     status_widget.draw();
     set_cursor();
 }
 
-void Application::change_nick_mode(Session *s, Window *w, const std::string& nick, const std::string& mode) throw () {
+void Application::change_nick_mode(Session *s, Window *w, const std::string& nick, const std::string& mode) {
     changes_in_nicklist(w);
 }
 
-void Application::away(Session *s) throw () {
+void Application::away(Session *s) {
     if (selected_window->get_circada_session() == s) {
         ScopeMutex lock(&draw_mtx);
         status_widget.set_nick_away(s->am_i_away());
@@ -158,7 +158,7 @@ void Application::away(Session *s) throw () {
     }
 }
 
-void Application::unaway(Session *s) throw () {
+void Application::unaway(Session *s) {
     if (selected_window->get_circada_session() == s) {
         ScopeMutex lock(&draw_mtx);
         status_widget.set_nick_away(s->am_i_away());
@@ -167,13 +167,13 @@ void Application::unaway(Session *s) throw () {
     }
 }
 
-void Application::lag_update(Session *s, double lag_in_s) throw () {
+void Application::lag_update(Session *s, double lag_in_s) {
     if (selected_window->get_circada_session() == s) {
         set_lag(selected_window, lag_in_s);
     }
 }
 
-void Application::connection_lost(Session *s, const std::string& reason) throw () {
+void Application::connection_lost(Session *s, const std::string& reason) {
     ScreenWindow *sw = get_server_window(s);
     ScopeMutex lock(&draw_mtx);
 
@@ -188,7 +188,7 @@ void Application::connection_lost(Session *s, const std::string& reason) throw (
     set_cursor();
 }
 
-void Application::dcc_offered_chat_timedout(Session *s, Window *w, const DCCChatHandle dcc, const std::string& reason) throw () {
+void Application::dcc_offered_chat_timedout(Session *s, Window *w, const DCCChatHandle dcc, const std::string& reason) {
     ScopeMutex lock(&draw_mtx);
     ScreenWindow *sw = get_window_nolock(w);
 
@@ -205,7 +205,7 @@ void Application::dcc_offered_chat_timedout(Session *s, Window *w, const DCCChat
     set_cursor();
 }
 
-void Application::dcc_incoming_chat_request(Session *s, Window *w, const DCCChatHandle dcc) throw () {
+void Application::dcc_incoming_chat_request(Session *s, Window *w, const DCCChatHandle dcc) {
     ScopeMutex lock(&draw_mtx);
     ScreenWindow *sw = get_window_nolock(w);
 
@@ -222,7 +222,7 @@ void Application::dcc_incoming_chat_request(Session *s, Window *w, const DCCChat
     set_cursor();
 }
 
-void Application::dcc_offered_xfer_timedout(Session *s, Window *w, const DCCXferHandle dcc, const std::string& reason) throw () {
+void Application::dcc_offered_xfer_timedout(Session *s, Window *w, const DCCXferHandle dcc, const std::string& reason) {
     ScopeMutex lock(&draw_mtx);
     ScreenWindow *sw = get_window_nolock(w);
 
@@ -247,7 +247,7 @@ void Application::dcc_offered_xfer_timedout(Session *s, Window *w, const DCCXfer
     set_cursor();
 }
 
-void Application::dcc_incoming_xfer_request(Session *s, Window *w, const DCCXferHandle dcc) throw () {
+void Application::dcc_incoming_xfer_request(Session *s, Window *w, const DCCXferHandle dcc) {
     ScopeMutex lock(&draw_mtx);
     ScreenWindow *sw = get_window_nolock(w);
 
@@ -267,7 +267,7 @@ void Application::dcc_incoming_xfer_request(Session *s, Window *w, const DCCXfer
     set_cursor();
 }
 
-void Application::dcc_unhandled_request(Session *s, Window *w, const std::string& dcc_request, const Message& m) throw () {
+void Application::dcc_unhandled_request(Session *s, Window *w, const std::string& dcc_request, const Message& m) {
     ScopeMutex lock(&draw_mtx);
     ScreenWindow *sw = get_window_nolock(w);
 
@@ -285,7 +285,7 @@ void Application::dcc_unhandled_request(Session *s, Window *w, const std::string
     set_cursor();
 }
 
-void Application::dcc_unhandled_chat_request(Session *s, Window *w, const std::string& nick, const std::string& chat_request, const Message& m) throw () {
+void Application::dcc_unhandled_chat_request(Session *s, Window *w, const std::string& nick, const std::string& chat_request, const Message& m) {
     ScopeMutex lock(&draw_mtx);
     ScreenWindow *sw = get_window_nolock(w);
     std::string info;
@@ -301,7 +301,7 @@ void Application::dcc_unhandled_chat_request(Session *s, Window *w, const std::s
     set_cursor();
 }
 
-void Application::dcc_chat_begins(Window *w, const DCCChatHandle dcc) throw () {
+void Application::dcc_chat_begins(Window *w, const DCCChatHandle dcc) {
     ScopeMutex lock(&draw_mtx);
     ScreenWindow *sw = get_window_nolock(w);
     std::string info;
@@ -315,11 +315,11 @@ void Application::dcc_chat_begins(Window *w, const DCCChatHandle dcc) throw () {
     set_cursor();
 }
 
-void Application::dcc_chat_ended(Window *w, const DCCChatHandle dcc, const std::string& reason) throw () {
+void Application::dcc_chat_ended(Window *w, const DCCChatHandle dcc, const std::string& reason) {
     send_dcc_abort(w, dcc, reason);
 }
 
-void Application::dcc_chat_failed(Window *w, const DCCChatHandle dcc, const std::string& reason) throw () {
+void Application::dcc_chat_failed(Window *w, const DCCChatHandle dcc, const std::string& reason) {
     ScopeMutex lock(&draw_mtx);
     ScreenWindow *sw = get_window_nolock(w);
 
@@ -336,7 +336,7 @@ void Application::dcc_chat_failed(Window *w, const DCCChatHandle dcc, const std:
     set_cursor();
 }
 
-void Application::dcc_message(Window *w, const DCCChatHandle dcc, const std::string& ctcp, const std::string& msg) throw () {
+void Application::dcc_message(Window *w, const DCCChatHandle dcc, const std::string& ctcp, const std::string& msg) {
     ScopeMutex lock(&draw_mtx);
     ScreenWindow *sw = get_window_nolock(w);
     std::string line;
@@ -354,7 +354,7 @@ void Application::dcc_message(Window *w, const DCCChatHandle dcc, const std::str
     set_cursor();
 }
 
-void Application::dcc_xfer_begins(Window *w, const DCCXferHandle dcc) throw () {
+void Application::dcc_xfer_begins(Window *w, const DCCXferHandle dcc) {
     ScopeMutex lock(&draw_mtx);
     ScreenWindow *sw = get_window_nolock(w);
     if (!sw) {
@@ -378,7 +378,7 @@ void Application::dcc_xfer_begins(Window *w, const DCCXferHandle dcc) throw () {
     set_cursor();
 }
 
-void Application::dcc_xfer_ended(Window *w, const DCCXferHandle dcc) throw () {
+void Application::dcc_xfer_ended(Window *w, const DCCXferHandle dcc) {
     ScopeMutex lock(&draw_mtx);
     ScreenWindow *sw = get_window_nolock(w);
     if (!sw) {
@@ -404,7 +404,7 @@ void Application::dcc_xfer_ended(Window *w, const DCCXferHandle dcc) throw () {
     set_cursor();
 }
 
-void Application::dcc_xfer_failed(Window *w, const DCCXferHandle dcc, const std::string& reason) throw () {
+void Application::dcc_xfer_failed(Window *w, const DCCXferHandle dcc, const std::string& reason) {
     ScopeMutex lock(&draw_mtx);
     ScreenWindow *sw = get_window_nolock(w);
     if (!sw) {
@@ -431,7 +431,7 @@ void Application::dcc_xfer_failed(Window *w, const DCCXferHandle dcc, const std:
     set_cursor();
 }
 
-void Application::dcc_send_progress(Window *w, const DCCXferHandle dcc) throw () {
+void Application::dcc_send_progress(Window *w, const DCCXferHandle dcc) {
     if (w) {
         ScopeMutex lock(&draw_mtx);
         char buffer[128];
@@ -445,7 +445,7 @@ void Application::dcc_send_progress(Window *w, const DCCXferHandle dcc) throw ()
     }
 }
 
-void Application::dcc_receive_progress(Window *w, const DCCXferHandle dcc) throw () {
+void Application::dcc_receive_progress(Window *w, const DCCXferHandle dcc) {
     if (w) {
         ScopeMutex lock(&draw_mtx);
         char buffer[128];
@@ -460,7 +460,7 @@ void Application::dcc_receive_progress(Window *w, const DCCXferHandle dcc) throw
 }
 
 /* message router */
-void Application::message_router(Session *s, Window *w, const Message& m, const char *from) throw () {
+void Application::message_router(Session *s, Window *w, const Message& m, const char *from) {
     ScopeMutex lock(&draw_mtx);
     ScreenWindow *sw = get_window_nolock(w);
     const std::string& line = sw->add_line(fmt, m, from);

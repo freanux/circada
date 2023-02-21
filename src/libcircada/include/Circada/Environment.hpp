@@ -34,9 +34,9 @@ namespace Circada {
 
     class Environment {
     public:
-        static std::string get_username() throw (EnvironmentException);
-        static std::string get_home_directory() throw (EnvironmentException);
-        static std::string get_uname() throw (EnvironmentException);
+        static std::string get_username();
+        static std::string get_home_directory();
+        static std::string get_uname();
     };
 
 } /* namespace Circada */

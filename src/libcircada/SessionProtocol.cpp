@@ -80,11 +80,11 @@ namespace Circada {
         { 0, 0, 0, false }
     };
 
-    void Session::cmd_ping(const Message& m) throw (SessionException, SocketException) {
+    void Session::cmd_ping(const Message& m) {
         sender->pump("PONG :" + m.params[0]);
     }
 
-    void Session::cmd_pong(const Message& m) throw (SessionException, SocketException) {
+    void Session::cmd_pong(const Message& m) {
          if (m.pc > 1 && m.params[1].length() > 10 && m.params[1][0] == '\x1f') {
             struct timeval tim;
             double t_old = atof(m.params[1].substr(1).c_str());
@@ -97,7 +97,7 @@ namespace Circada {
          }
     }
 
-    void Session::cmd_nick(const Message& m) throw (SessionException, SocketException) {
+    void Session::cmd_nick(const Message& m) {
         const std::string& new_nick = m.params[0];
 
         /* change nick in each window */
@@ -152,7 +152,7 @@ namespace Circada {
         }
     }
 
-    void Session::cmd_join(const Message& m) throw (SessionException, SocketException) {
+    void Session::cmd_join(const Message& m) {
         const std::string& channel = m.params[0];
         SessionWindow *w = create_window(WindowTypeChannel, channel);
         w->add_nick(m.nick, false);
@@ -171,7 +171,7 @@ namespace Circada {
         send_notification_with_noise(w, m);
     }
 
-    void Session::cmd_part(const Message& m) throw (SessionException, SocketException) {
+    void Session::cmd_part(const Message& m) {
         const std::string& channel = m.params[0];
         if (is_equal(m.nick, nick)) {
             destroy_window(get_window(channel));
@@ -183,7 +183,7 @@ namespace Circada {
         }
     }
 
-    void Session::cmd_kick(const Message& m) throw (SessionException, SocketException) {
+    void Session::cmd_kick(const Message& m) {
         const std::string& channel = m.params[0];
         const std::string& kicked_nick = m.params[1];
         if (is_equal(kicked_nick, nick)) {
@@ -197,7 +197,7 @@ namespace Circada {
         }
     }
 
-    void Session::cmd_quit(const Message& m) throw (SessionException, SocketException) {
+    void Session::cmd_quit(const Message& m) {
         const std::string& quit_msg = m.params[0];
         Message nsm;
         struct timeval now;
@@ -254,7 +254,7 @@ namespace Circada {
         }
     }
 
-    void Session::cmd_topic(const Message& m) throw (SessionException, SocketException) {
+    void Session::cmd_topic(const Message& m) {
         const std::string& channel = m.params[0];
         const std::string& topic = m.params[1];
         SessionWindow *w = create_window(WindowTypeChannel, channel);
@@ -263,7 +263,7 @@ namespace Circada {
         send_notification_with_noise(w, m);
     }
 
-    void Session::cmd_privmsg(const Message& m) throw (SessionException, SocketException) {
+    void Session::cmd_privmsg(const Message& m) {
         const std::string& channel_or_nick = m.params[0];
         const std::string& text = m.params[1];
 
@@ -336,7 +336,7 @@ namespace Circada {
         }
     }
 
-    void Session::cmd_notice(const Message& m) throw (SessionException, SocketException) {
+    void Session::cmd_notice(const Message& m) {
         Message& unsecured_m = const_cast<Message&>(m);
         std::string& channel = unsecured_m.params[0];
         if (remove_channel_wildcards(unsecured_m, channel)) {
@@ -371,7 +371,7 @@ namespace Circada {
         }
     }
 
-    void Session::cmd_mode(const Message& m) throw (SessionException, SocketException) {
+    void Session::cmd_mode(const Message& m) {
         const std::string& channel_or_nick = m.params[0];
         if (is_channel(channel_or_nick)) {
             std::string channel_modes_d;
@@ -494,7 +494,7 @@ namespace Circada {
         }
     }
 
-    void Session::cmd_invite(const Message& m) throw (SessionException, SocketException) {
+    void Session::cmd_invite(const Message& m) {
         std::string topic = m.nick + " (" + m.user_and_host + ")";
         SessionWindow *w = create_window(WindowTypePrivate, m.nick);
         if (w->set_topic(topic, false)) {
@@ -503,14 +503,14 @@ namespace Circada {
         send_notification_with_noise(w, m);
     }
 
-    void Session::rpl_welcome(const Message& m) throw (SessionException, SocketException) {
+    void Session::rpl_welcome(const Message& m) {
         old_time = time(0);
         lag_detector = true;
         connection_state = ConnectionStateLoggedIn;
         send_notification_with_noise(server_window, m);
     }
 
-    void Session::rpl_protocol(const Message& m) throw (SessionException, SocketException) {
+    void Session::rpl_protocol(const Message& m) {
         std::string temp;
 
         /* channel types/prefixes */
@@ -542,7 +542,7 @@ namespace Circada {
         send_notification_with_noise(server_window, m);
     }
 
-    void Session::rpl_topic(const Message& m) throw (SessionException, SocketException) {
+    void Session::rpl_topic(const Message& m) {
         const std::string& channel = m.params[1];
         const std::string& topic = m.params[2];
 
@@ -551,7 +551,7 @@ namespace Circada {
         iss.change_topic(this, w, topic);
     }
 
-    void Session::rpl_namreply(const Message& m) throw (SessionException, SocketException) {
+    void Session::rpl_namreply(const Message& m) {
         const std::string& channel = m.params[2];
         std::string nicks = m.params[3];
         SessionWindow *w = get_window(channel);
@@ -572,7 +572,7 @@ namespace Circada {
         }
     }
 
-    void Session::rpl_endofnames(const Message& m) throw (SessionException, SocketException) {
+    void Session::rpl_endofnames(const Message& m) {
         const std::string& channel = m.params[1];
 
         if (channel == "*") {
@@ -593,7 +593,7 @@ namespace Circada {
         }
     }
 
-    void Session::rpl_channelmodeis(const Message& m) throw (SessionException, SocketException) {
+    void Session::rpl_channelmodeis(const Message& m) {
         const std::string& channel = m.params[1];
         const std::string& flags = m.params[2];
         SessionWindow *w = create_window(WindowTypeChannel, channel);
@@ -602,19 +602,19 @@ namespace Circada {
         send_notification_with_noise(w, m);
     }
 
-    void Session::rpl_nowaway(const Message& m) throw (SessionException, SocketException) {
+    void Session::rpl_nowaway(const Message& m) {
         away = true;
         iss.away(this);
         send_notification_with_noise(server_window, m);
     }
 
-    void Session::rpl_unaway(const Message& m) throw (SessionException, SocketException) {
+    void Session::rpl_unaway(const Message& m) {
         away = false;
         iss.unaway(this);
         send_notification_with_noise(server_window, m);
     }
 
-    void Session::err_nicknameinuse(const Message& m) throw (SessionException, SocketException) {
+    void Session::err_nicknameinuse(const Message& m) {
         send_notification_with_noise(server_window, m);
         if (connection_state == ConnectionStateLogin) {
             connection_state = ConnectionStateNickFailed;
@@ -622,7 +622,7 @@ namespace Circada {
         }
     }
 
-    void Session::int_day_change(const Message& m) throw (SessionException, SocketException) {
+    void Session::int_day_change(const Message& m) {
         SessionWindow::List windows = iss.get_all_session_windows(this);
         for (SessionWindow::List::iterator it = windows.begin(); it != windows.end(); it++) {
             SessionWindow *w = *it;

@@ -55,7 +55,7 @@ namespace Circada {
         virtual void thread();
     };
 
-    SenderThread::SenderThread(Socket *socket) throw (SessionException)
+    SenderThread::SenderThread(Socket *socket)
         : socket(socket), running(false)
     {
         running = true;
@@ -77,7 +77,7 @@ namespace Circada {
         io_sync_signal_event();
     }
 
-    void SenderThread::send(const std::string& data) throw (SessionException) {
+    void SenderThread::send(const std::string& data) {
         try {
             socket->send(data + "\r\n");
         } catch (const SocketException& e) {
@@ -126,7 +126,7 @@ namespace Circada {
 
     Suicidal::~Suicidal() { }
 
-    Session::Session(Configuration& config, IrcServerSide& iss, const SessionOptions& options) throw (SessionException)
+    Session::Session(Configuration& config, IrcServerSide& iss, const SessionOptions& options)
         : config(config), iss(iss), running(false), sender(0), server_window(0),
           recoder(iss.get_encodings()), lag_detector(false), last_tracked_lag(0), old_time(0),
           options(options), connection_state(ConnectionStateLogin), suiciding(false)
@@ -149,7 +149,7 @@ namespace Circada {
         delete sender;
     }
 
-    void Session::connect() throw (SessionException) {
+    void Session::connect() {
         if (!running) {
             running = true;
             if (!thread_start()) {
@@ -161,7 +161,7 @@ namespace Circada {
         }
     }
 
-    void Session::disconnect() throw() {
+    void Session::disconnect() {
         if (running) {
             struct timespec wait, remaining;
             wait.tv_sec = 0;
@@ -196,7 +196,7 @@ namespace Circada {
         }
     }
 
-    void Session::send(const std::string& data) throw (SessionException) {
+    void Session::send(const std::string& data) {
         if (!running || !sender || socket.get_error()) {
             throw SessionException("Connection not established.");
         }
@@ -229,7 +229,7 @@ namespace Circada {
         return is_equal(this->nick, nick);
     }
 
-    DCCChatHandle Session::dcc_chat_offer(const std::string& nick) throw (SessionException) {
+    DCCChatHandle Session::dcc_chat_offer(const std::string& nick) {
         /* try to find an earlier requested chat */
         DCCHandle::List handles = iss.get_all_handles(this);
         for (DCCHandle::List::iterator it = handles.begin(); it != handles.end(); it++) {
@@ -264,7 +264,7 @@ namespace Circada {
         return DCCChatHandle(iss, dcc);
     }
 
-    DCCXferHandle Session::dcc_file_offer(const std::string& nick, const std::string& filename) throw (SessionException) {
+    DCCXferHandle Session::dcc_file_offer(const std::string& nick, const std::string& filename) {
         DCC *dcc = 0;
         try {
             std::string converted_filename;
@@ -441,7 +441,7 @@ namespace Circada {
     /**************************************************************************
      * private functions
      **************************************************************************/
-    void Session::execute_injected() throw (SessionException, SocketException) {
+    void Session::execute_injected() {
         while (true) {
             Message m;
             {
@@ -454,7 +454,7 @@ namespace Circada {
         }
     }
 
-    void Session::execute(const Message& m) throw (SessionException, SocketException) {
+    void Session::execute(const Message& m) {
         ScopeMutex lock(&mtx);
 
         Command *cmd = commands;

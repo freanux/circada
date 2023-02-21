@@ -29,7 +29,7 @@ namespace Circada {
 
     class SessionOptions {
     public:
-        SessionOptions() throw (EnvironmentException);
+        SessionOptions();
         virtual ~SessionOptions();
 
         std::string name;

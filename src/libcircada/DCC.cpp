@@ -144,7 +144,7 @@ namespace Circada {
         return will_be_killed;
     }
 
-    void DCC::start() throw (DCCException) {
+    void DCC::start() {
         if (!running) {
             running = true;
             if (!thread_start()) {
@@ -193,7 +193,7 @@ namespace Circada {
     /**************************************************************************
      * DCCIn
      **************************************************************************/
-    DCCIn::DCCIn() throw (DCCException)
+    DCCIn::DCCIn()
         : DCCIO(DCCDirectionIncoming, 0, 0), listening(false)
     {
         socket.listen(0);
@@ -207,7 +207,7 @@ namespace Circada {
 
     DCCIn::~DCCIn() { }
 
-    void DCCIn::connect() throw (DCCException) {
+    void DCCIn::connect() {
         try {
             int timeout_counter = 0;
             while (iorunning) {
@@ -236,7 +236,7 @@ namespace Circada {
 
     DCCOut::~DCCOut() { }
 
-    void DCCOut::connect() throw (DCCException) {
+    void DCCOut::connect() {
         try {
             char addr[128];
             unsigned int address = get_address();
@@ -259,7 +259,7 @@ namespace Circada {
         mgr.dcc_mgr_chat_begins(this);
     }
 
-    void DCCChat::process_or_idle() throw (DCCException) {
+    void DCCChat::process_or_idle() {
         try {
             Socket& socket = get_dccio().get_socket();
             if (socket.activity(0, 100000)) {
@@ -287,7 +287,7 @@ namespace Circada {
         }
     }
 
-    void DCCChat::send(const std::string& msg) throw (DCCException) {
+    void DCCChat::send(const std::string& msg) {
         try {
             Socket& socket = get_dccio().get_socket();
             socket.send(msg + "\r\n");
@@ -365,7 +365,7 @@ namespace Circada {
         return total_sent;
     }
 
-    void DCCXferIn::process_or_idle() throw (DCCException) {
+    void DCCXferIn::process_or_idle() {
         try {
             switch (state) {
                 case XferStateStart:
@@ -429,7 +429,7 @@ namespace Circada {
 
     DCCXferOut::~DCCXferOut() { }
 
-    void DCCXferOut::process_or_idle() throw (DCCException) {
+    void DCCXferOut::process_or_idle() {
         try {
             switch (state) {
                 case XferStateStart:
@@ -534,7 +534,7 @@ namespace Circada {
         return const_cast<DCC *>(dcc);
     }
 
-    void DCCHandleBase::check_handle() const throw (DCCInvalidHandleException) {
+    void DCCHandleBase::check_handle() const {
         if (!dcc_mgr.is_handle_valid_nolock(dcc)) {
             throw DCCInvalidHandleException();
         }
@@ -548,37 +548,37 @@ namespace Circada {
         return rhs;
     }
 
-    const std::string& DCCHandle::get_his_nick() const throw (DCCInvalidHandleException) {
+    const std::string& DCCHandle::get_his_nick() const {
         ScopeMutex lock(&dcc_mgr.get_mutex());
         check_handle();
         return dcc->get_his_nick();
     }
 
-    const std::string& DCCHandle::get_my_nick() const throw (DCCInvalidHandleException) {
+    const std::string& DCCHandle::get_my_nick() const {
         ScopeMutex lock(&dcc_mgr.get_mutex());
         check_handle();
         return dcc->get_my_nick();
     }
 
-    DCCType DCCHandle::get_type() const throw (DCCInvalidHandleException) {
+    DCCType DCCHandle::get_type() const {
         ScopeMutex lock(&dcc_mgr.get_mutex());
         check_handle();
         return dcc->get_type();
     }
 
-    DCCDirection DCCHandle::get_direction() const throw (DCCInvalidHandleException) {
+    DCCDirection DCCHandle::get_direction() const {
         ScopeMutex lock(&dcc_mgr.get_mutex());
         check_handle();
         return dcc->get_dccio().get_direction();
     }
 
-    bool DCCHandle::is_running() const throw (DCCInvalidHandleException) {
+    bool DCCHandle::is_running() const {
         ScopeMutex lock(&dcc_mgr.get_mutex());
         check_handle();
         return dcc->is_running();
     }
 
-    bool DCCHandle::is_connected() const throw (DCCInvalidHandleException) {
+    bool DCCHandle::is_connected() const {
         ScopeMutex lock(&dcc_mgr.get_mutex());
         check_handle();
         return dcc->is_connected();
@@ -592,14 +592,14 @@ namespace Circada {
 
     DCCXferHandle::~DCCXferHandle() { }
 
-    const std::string& DCCXferHandle::get_filename() const throw (DCCInvalidHandleException) {
+    const std::string& DCCXferHandle::get_filename() const {
         ScopeMutex lock(&dcc_mgr.get_mutex());
         check_handle();
         const DCCXfer *dcc_xfer = static_cast<const DCCXfer *>(dcc);
         return dcc_xfer->get_filename();
     }
 
-    unsigned int DCCXferHandle::get_transferred_bytes() const throw (DCCInvalidHandleException) {
+    unsigned int DCCXferHandle::get_transferred_bytes() const {
         ScopeMutex lock(&dcc_mgr.get_mutex());
         check_handle();
         unsigned int sz = 0;
@@ -614,7 +614,7 @@ namespace Circada {
         return sz;
     }
 
-    unsigned int DCCXferHandle::get_filesize() const throw (DCCInvalidHandleException) {
+    unsigned int DCCXferHandle::get_filesize() const { 
         ScopeMutex lock(&dcc_mgr.get_mutex());
         check_handle();
         const DCCXfer *dcc_xfer = static_cast<const DCCXfer *>(dcc);

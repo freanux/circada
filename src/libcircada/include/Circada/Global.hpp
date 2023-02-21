@@ -22,7 +22,7 @@
 #define _CIRCADA_GLOBAL_HPP_
 
 #define PROJECT_NAME "Circada"
-#define PROJECT_VERSION "0.4.1"
+#define PROJECT_VERSION "0.4.2"
 #define QUIT_MESSAGE "Leaving " PROJECT_NAME " " PROJECT_VERSION
 
 #endif /* _CIRCADA_GLOBAL_HPP_ */

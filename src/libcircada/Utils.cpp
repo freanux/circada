@@ -198,7 +198,7 @@ namespace Circada {
         return (value.find_first_not_of("0123456789.") == std::string::npos);
     }
 
-    void create_directory(const std::string& directory) throw (UtilsException) {
+    void create_directory(const std::string& directory) {
         int rv = mkdir(directory.c_str(), S_IRWXU);
         if (rv && errno != EEXIST) {
             throw UtilsException(strerror(errno));

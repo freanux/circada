@@ -44,7 +44,7 @@ namespace Circada {
         virtual ~LineFetcher();
 
         void flush();
-        size_t fetch(Socket& socket, Lines& lines) throw (LineFetcherException);
+        size_t fetch(Socket& socket, Lines& lines);
 
     private:
         std::string data;

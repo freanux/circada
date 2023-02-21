@@ -34,7 +34,7 @@ namespace Circada {
         data.clear();
     }
 
-    size_t LineFetcher::fetch(Socket& socket, Lines& lines) throw (LineFetcherException) {
+    size_t LineFetcher::fetch(Socket& socket, Lines& lines) {
         size_t rlen, pos, cnt;
         char buffer[1024];
         std::string str;

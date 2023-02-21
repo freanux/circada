@@ -22,7 +22,7 @@
 
 namespace Circada {
 
-    SessionOptions::SessionOptions() throw (EnvironmentException)
+    SessionOptions::SessionOptions()
         : name(), server(), port(6667),
           nick(Environment::get_username()),
           alternative_nick(nick + "_"),

@@ -25,7 +25,7 @@
 #include <cstdlib>
 #include <algorithm>
 
-Application::Application(Configuration& config) throw (ApplicationException)
+Application::Application(Configuration& config)
     : IrcClient(config), config(config), nicklist_width(0), selected_window(0),
       entry_widget(draw_mtx), number_widget(draw_mtx), status_widget(windows),
       text_widget(status_widget), window_sequence(0), input_numbers(false),
@@ -74,7 +74,7 @@ Application::~Application() {
     }
 }
 
-void Application::run() throw (ApplicationException) {
+void Application::run() {
     time_t old_time = 0;
     running = true;
     while (running) {
@@ -401,7 +401,8 @@ void Application::update_input_infobar() {
         for (size_t i = 0; i < sz; i++) {
             ScreenWindow *sw = windows[i];
             const std::string *name = &sw->get_circada_window()->get_name();
-            sprintf(buf, "%lu", i + 1);
+            //sprintf(buf, "%lu", i + 1);
+            sprintf(buf, "%u", static_cast<int>(i + 1));
             if (selected_window == sw) {
                 s = " ";
                 s += buf;

@@ -31,7 +31,7 @@ namespace Circada {
 
     const char *Configuration::ConfigurationFile = "config";
 
-    Configuration::Configuration(const std::string& working_directory) throw (ConfigurationException) : modified(false) {
+    Configuration::Configuration(const std::string& working_directory) : modified(false) {
         try {
             this->working_directory = Environment::get_home_directory() + "/" + working_directory;
         } catch (const EnvironmentException& e) {
@@ -58,7 +58,7 @@ namespace Circada {
         return working_directory;
     }
 
-    void Configuration::load() throw (ConfigurationException) {
+    void Configuration::load() {
         ScopeMutex lock(&mtx);
 
         std::string filename = working_directory + "/";
@@ -81,7 +81,7 @@ namespace Circada {
         }
     }
 
-    void Configuration::save() throw (ConfigurationException) {
+    void Configuration::save() {
         ScopeMutex lock(&mtx);
 
         if (modified) {
@@ -101,12 +101,12 @@ namespace Circada {
         }
     }
 
-    void Configuration::set_value(const std::string& category, const std::string& key, const std::string& value) throw (ConfigurationException) {
+    void Configuration::set_value(const std::string& category, const std::string& key, const std::string& value) {
         ScopeMutex lock(&mtx);
         set_value_nolock(category, key, value);
     }
 
-    const std::string& Configuration::get_value(const std::string& category, const std::string& key) throw (ConfigurationException) {
+    const std::string& Configuration::get_value(const std::string& category, const std::string& key) {
         ScopeMutex lock(&mtx);
 
         Entries::iterator it = entries.find(category + "." + key);
@@ -117,7 +117,7 @@ namespace Circada {
         return it->second;
     }
 
-    const std::string& Configuration::get_value(const std::string& category, const std::string& key, const std::string& defaults) throw (ConfigurationException) {
+    const std::string& Configuration::get_value(const std::string& category, const std::string& key, const std::string& defaults) {
         ScopeMutex lock(&mtx);
 
         Entries::iterator it = entries.find(category + "." + key);
@@ -133,7 +133,7 @@ namespace Circada {
         return (atoi(value.c_str()) != 0);
     }
 
-    void Configuration::validation(const std::string& s) throw (ConfigurationException) {
+    void Configuration::validation(const std::string& s) {
         static std::string allowed_characters("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_");
 
         size_t sz = s.length();
@@ -144,7 +144,7 @@ namespace Circada {
         }
     }
 
-    void Configuration::set_value_nolock(const std::string& category, const std::string& key, const std::string& value) throw (ConfigurationException) {
+    void Configuration::set_value_nolock(const std::string& category, const std::string& key, const std::string& value) {
         validation(category);
         validation(key);
 

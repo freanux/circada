@@ -1,4 +1,4 @@
-AC_INIT([circada], [0.4.1], [pw@earthwave.ch])
+AC_INIT([circada], [0.4.2], [pw@earthwave.ch])
 
 AM_INIT_AUTOMAKE
 LT_INIT
@@ -13,6 +13,9 @@ CXXFLAGS="${CXXFLAGS} -pedantic"
 # --- check for header file ---
 AC_HEADER_DIRENT
 AC_HEADER_STDC
+
+# --- silent rules ---
+AM_SILENT_RULES([yes])
 
 # --- check for libraries ---
 AC_CHECK_LIB([pthread], [pthread_create], [], [missing_libraries="$missing_libraries libpthread"])

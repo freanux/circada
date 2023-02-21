@@ -46,24 +46,24 @@ namespace Circada {
         Socket();
         virtual ~Socket();
 
-        void set_tls(const std::string& ca_file) throw (SocketException);
+        void set_tls(const std::string& ca_file);
         void reset_tls();
-        void connect(const char *ip_address, unsigned short port) throw (SocketException);
-        bool activity(time_t sec, suseconds_t usec) throw (SocketException);
-        void listen(const char *address, unsigned short port, int backlog) throw (SocketException);
-        void listen(const char *address, unsigned short port) throw (SocketException);
-        void listen(unsigned short port, int backlog) throw (SocketException);
-        void listen(unsigned short port) throw (SocketException);
-        void accept(const Socket& socket) throw (SocketException);
+        void connect(const char *ip_address, unsigned short port);
+        bool activity(time_t sec, suseconds_t usec);
+        void listen(const char *address, unsigned short port, int backlog);
+        void listen(const char *address, unsigned short port);
+        void listen(unsigned short port, int backlog);
+        void listen(unsigned short port);
+        void accept(const Socket& socket);
         void close();
 
-        size_t send(const char *buffer, size_t size) throw (SocketException);
-        size_t send(const std::string& buffer) throw (SocketException);
-        size_t receive(void *buffer, size_t size) throw (SocketException);
+        size_t send(const char *buffer, size_t size);
+        size_t send(const std::string& buffer);
+        size_t receive(void *buffer, size_t size);
         bool get_error() const;
         bool is_connected() const;
-        unsigned short get_port() throw (SocketException);
-        unsigned long get_address() throw (SocketException);
+        unsigned short get_port();
+        unsigned long get_address();
 
     private:
         static const int DefaultBacklog;
@@ -77,7 +77,7 @@ namespace Circada {
         gnutls::client_session session;
         gnutls::certificate_credentials credentials;
 
-        void check_states() throw (SocketException);
+        void check_states();
     };
 
 } /* namespace Circada */

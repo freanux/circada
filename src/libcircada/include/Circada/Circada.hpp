@@ -48,31 +48,31 @@ namespace Circada {
         Window *get_application_window();
 
         /* create and destroy sessions with these functions. */
-        Session *create_session(const SessionOptions& options) throw (CircadaException);
-        void destroy_session(Session *s) throw (CircadaException);
+        Session *create_session(const SessionOptions& options);
+        void destroy_session(Session *s);
         size_t get_session_count();
 
         /* managing all dcc requests  */
         DCCHandle::List get_dcc_list();
-        void dcc_accept(DCCHandle dcc) throw (DCCInvalidHandleException, DCCOperationNotPermittedException);
-        void dcc_force(DCCHandle dcc) throw (DCCInvalidHandleException, DCCOperationNotPermittedException);
-        void dcc_decline(DCCHandle dcc) throw (DCCInvalidHandleException, DCCOperationNotPermittedException);
-        void dcc_abort(DCCHandle dcc) throw (DCCInvalidHandleException, DCCOperationNotPermittedException);
-        void dcc_send_msg(DCCHandle dcc, const std::string& msg) throw (DCCInvalidHandleException, DCCOperationNotPermittedException, SocketException);
-        DCCHandle get_dcc_handle_from_window(Window *w) throw (DCCOperationNotPermittedException);
-        Window *get_window_from_dcc_handle(DCCHandle dcc) throw (DCCInvalidHandleException, DCCOperationNotPermittedException);
-        DCCChatHandle get_chat_handle(DCCHandle dcc) throw (DCCOperationNotPermittedException);
-        DCCXferHandle get_xfer_handle(DCCHandle dcc) throw (DCCOperationNotPermittedException);
+        void dcc_accept(DCCHandle dcc);
+        void dcc_force(DCCHandle dcc);
+        void dcc_decline(DCCHandle dcc);
+        void dcc_abort(DCCHandle dcc);
+        void dcc_send_msg(DCCHandle dcc, const std::string& msg);
+        DCCHandle get_dcc_handle_from_window(Window *w);
+        Window *get_window_from_dcc_handle(DCCHandle dcc);
+        DCCChatHandle get_chat_handle(DCCHandle dcc);
+        DCCXferHandle get_xfer_handle(DCCHandle dcc);
 
         /* use suicide, to cut a connection. finally, the object will     */
         /* kill itself. this function acts like a fire and forget signal. */
         void suicide(Session *s);
 
         /* use this to query a nick/user */
-        Window *query(Session *s, const std::string& nick) throw (CircadaException);
+        Window *query(Session *s, const std::string& nick);
 
         /* use this to unquery a chat or close a dcc session */
-        void unquery(Window *w) throw (CircadaException);
+        void unquery(Window *w);
 
     protected:
         Mutex mtx;
@@ -81,7 +81,7 @@ namespace Circada {
         Configuration& config;
         Session::List sessions;
 
-        void destroy_session_nolock(Session *s) throw (CircadaException);
+        void destroy_session_nolock(Session *s);
     };
 
 } /* namespace Circada */

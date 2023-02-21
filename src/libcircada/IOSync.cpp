@@ -26,7 +26,7 @@
 
 namespace Circada {
 
-    IOSync::IOSync() throw (IOSyncException) {
+    IOSync::IOSync() {
         memset(signal_buffer, 0, sizeof(signal_buffer));
 
         int rv = pipe(pipefd);
@@ -40,17 +40,17 @@ namespace Circada {
         close(pipefd[1]);
     }
 
-    void IOSync::io_sync_set_non_blocking() throw (IOSyncException) {
+    void IOSync::io_sync_set_non_blocking() {
         int flags = fcntl(pipefd[0], F_GETFL);
         fcntl(pipefd[0], F_SETFL, flags | O_NONBLOCK);
     }
 
-    void IOSync::io_sync_set_blocking() throw (IOSyncException) {
+    void IOSync::io_sync_set_blocking() {
         int flags = fcntl(pipefd[0], F_GETFL);
         fcntl(pipefd[0], F_SETFL, flags & ~O_NONBLOCK);
     }
 
-    bool IOSync::io_sync_wait_for_event() throw (IOSyncException) {
+    bool IOSync::io_sync_wait_for_event() {
         if (read(pipefd[0], signal_buffer, sizeof(signal_buffer)) < 1) {
             if (errno == EAGAIN) return false;
             if (errno == EINTR) return false;
@@ -60,7 +60,7 @@ namespace Circada {
         return true;
     }
 
-    void IOSync::io_sync_signal_event() throw (IOSyncException) {
+    void IOSync::io_sync_signal_event() {
         write(pipefd[1], signal_buffer, sizeof(signal_buffer));
     }
 

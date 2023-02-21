@@ -37,15 +37,15 @@ namespace Circada {
 
     class Configuration {
     public:
-        Configuration(const std::string& working_directory) throw (ConfigurationException);
+        Configuration(const std::string& working_directory);
         virtual ~Configuration();
 
         const std::string& get_working_directory();
-        void load() throw (ConfigurationException);
-        void save() throw (ConfigurationException);
-        void set_value(const std::string& category, const std::string& key, const std::string& value) throw (ConfigurationException);
-        const std::string& get_value(const std::string& category, const std::string& key) throw (ConfigurationException);
-        const std::string& get_value(const std::string& category, const std::string& key, const std::string& defaults) throw (ConfigurationException);
+        void load();
+        void save();
+        void set_value(const std::string& category, const std::string& key, const std::string& value);
+        const std::string& get_value(const std::string& category, const std::string& key);
+        const std::string& get_value(const std::string& category, const std::string& key, const std::string& defaults);
         bool is_true(const std::string& value);
 
     private:
@@ -59,8 +59,8 @@ namespace Circada {
         Mutex mtx;
 
         void load_defaults();
-        void validation(const std::string& s) throw (ConfigurationException);
-        void set_value_nolock(const std::string& category, const std::string& key, const std::string& value) throw (ConfigurationException);
+        void validation(const std::string& s);
+        void set_value_nolock(const std::string& category, const std::string& key, const std::string& value);
     };
 
 } /* namespace Circada */

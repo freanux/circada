@@ -132,7 +132,7 @@ namespace Circada {
     /**************************************************************************
      * COMMAND IMPLEMENTATION
      **************************************************************************/
-    std::string Parser::cmd_std_none(const Session *s, const Window *w, const std::string& p) throw (ParserException) {
+    std::string Parser::cmd_std_none(const Session *s, const Window *w, const std::string& p) {
         if (p.length()) {
             throw ParserWrongArgumentsException();
         }
@@ -140,7 +140,7 @@ namespace Circada {
         return "";
     }
 
-    std::string Parser::cmd_std_1(const Session *s, const Window *w, const std::string& p) throw (ParserException) {
+    std::string Parser::cmd_std_1(const Session *s, const Window *w, const std::string& p) {
         TokenizedParams v;
         std::string output;
 
@@ -156,7 +156,7 @@ namespace Circada {
         return output;
     }
 
-    std::string Parser::cmd_std_1_colon_opt(const Session *s, const Window *w, const std::string& p) throw (ParserException) {
+    std::string Parser::cmd_std_1_colon_opt(const Session *s, const Window *w, const std::string& p) {
         TokenizedParams v;
         std::string output;
 
@@ -175,7 +175,7 @@ namespace Circada {
         return output;
     }
 
-    std::string Parser::cmd_std_1_colon_opt_colon(const Session *s, const Window *w, const std::string& p) throw (ParserException) {
+    std::string Parser::cmd_std_1_colon_opt_colon(const Session *s, const Window *w, const std::string& p) {
         TokenizedParams v;
         std::string output;
 
@@ -195,7 +195,7 @@ namespace Circada {
         return output;
     }
 
-    std::string Parser::cmd_std_2(const Session *s, const Window *w, const std::string& p) throw (ParserException) {
+    std::string Parser::cmd_std_2(const Session *s, const Window *w, const std::string& p) {
         TokenizedParams v;
         std::string output;
 
@@ -211,7 +211,7 @@ namespace Circada {
         return output;
     }
 
-    std::string Parser::cmd_std_2_opt(const Session *s, const Window *w, const std::string& p) throw (ParserException) {
+    std::string Parser::cmd_std_2_opt(const Session *s, const Window *w, const std::string& p) {
         TokenizedParams v;
         std::string output;
 
@@ -231,7 +231,7 @@ namespace Circada {
         return output;
     }
 
-    std::string Parser::cmd_std_2_colon(const Session *s, const Window *w, const std::string& p) throw (ParserException) {
+    std::string Parser::cmd_std_2_colon(const Session *s, const Window *w, const std::string& p) {
         TokenizedParams v;
         std::string output;
 
@@ -247,7 +247,7 @@ namespace Circada {
         return output;
     }
 
-    std::string Parser::cmd_std_2_colon_opt(const Session *s, const Window *w, const std::string& p) throw (ParserException) {
+    std::string Parser::cmd_std_2_colon_opt(const Session *s, const Window *w, const std::string& p) {
         TokenizedParams v;
         std::string output;
 
@@ -267,7 +267,7 @@ namespace Circada {
         return output;
     }
 
-    std::string Parser::cmd_part(const Session *s, const Window *w, const std::string& p) throw (ParserException) {
+    std::string Parser::cmd_part(const Session *s, const Window *w, const std::string& p) {
         TokenizedParams v;
         std::string output;
 
@@ -303,7 +303,7 @@ namespace Circada {
         return output;
     }
 
-    std::string Parser::cmd_partall(const Session *s, const Window *w, const std::string& p) throw (ParserException) {
+    std::string Parser::cmd_partall(const Session *s, const Window *w, const std::string& p) {
         TokenizedParams v;
         std::string output;
 
@@ -319,7 +319,7 @@ namespace Circada {
         return output;
     }
 
-    std::string Parser::cmd_me(const Session *s, const Window *w, const std::string& p) throw (ParserException) {
+    std::string Parser::cmd_me(const Session *s, const Window *w, const std::string& p) {
         TokenizedParams v;
         std::string output;
         switch (tokenize(1, p, v)) {
@@ -339,7 +339,7 @@ namespace Circada {
         return output;
     }
 
-    std::string Parser::cmd_ctcp(const Session *s, const Window *w, const std::string& p) throw (ParserException) {
+    std::string Parser::cmd_ctcp(const Session *s, const Window *w, const std::string& p) {
         TokenizedParams v;
         std::string output;
         switch (tokenize(2, p, v)) {
@@ -355,7 +355,7 @@ namespace Circada {
         return output;
     }
 
-    std::string Parser::cmd_ban(const Session *s, const Window *w, const std::string& p) throw (ParserException) {
+    std::string Parser::cmd_ban(const Session *s, const Window *w, const std::string& p) {
         TokenizedParams v;
         std::string output;
         switch (tokenize(1, p, v)) {
@@ -373,7 +373,7 @@ namespace Circada {
         return output;
     }
 
-    std::string Parser::cmd_unban(const Session *s, const Window *w, const std::string& p) throw (ParserException) {
+    std::string Parser::cmd_unban(const Session *s, const Window *w, const std::string& p) {
         TokenizedParams v;
         std::string output;
         switch (tokenize(1, p, v)) {
@@ -391,7 +391,7 @@ namespace Circada {
         return output;
     }
 
-    std::string Parser::cmd_voice(const Session *s, const Window *w, const std::string& p) throw (ParserException) {
+    std::string Parser::cmd_voice(const Session *s, const Window *w, const std::string& p) {
         TokenizedParams v;
         std::string output;
         switch (tokenize(1, p, v)) {
@@ -409,7 +409,7 @@ namespace Circada {
         return output;
     }
 
-    std::string Parser::cmd_devoice(const Session *s, const Window *w, const std::string& p) throw (ParserException) {
+    std::string Parser::cmd_devoice(const Session *s, const Window *w, const std::string& p) {
         TokenizedParams v;
         std::string output;
         switch (tokenize(1, p, v)) {

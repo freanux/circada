@@ -39,13 +39,13 @@ namespace Circada {
         IOSync& operator=(const IOSync& rhs);
 
     public:
-        IOSync() throw (IOSyncException);
+        IOSync() ;
         virtual ~IOSync();
 
-        void io_sync_set_non_blocking() throw (IOSyncException);
-        void io_sync_set_blocking() throw (IOSyncException);
-        bool io_sync_wait_for_event() throw (IOSyncException);
-        void io_sync_signal_event() throw (IOSyncException);
+        void io_sync_set_non_blocking();
+        void io_sync_set_blocking();
+        bool io_sync_wait_for_event();
+        void io_sync_signal_event();
 
     private:
         int pipefd[2];

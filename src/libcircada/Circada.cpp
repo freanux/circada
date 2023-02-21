@@ -42,7 +42,7 @@ namespace Circada {
         return iss->get_application_window();
     }
 
-    Session *IrcClient::create_session(const SessionOptions& options) throw (CircadaException) {
+    Session *IrcClient::create_session(const SessionOptions& options) {
         Session *s = 0;
 
         try {
@@ -57,7 +57,7 @@ namespace Circada {
         return s;
     }
 
-    void IrcClient::destroy_session(Session *s) throw (CircadaException) {
+    void IrcClient::destroy_session(Session *s) {
         ScopeMutex lock(&mtx);
         destroy_session_nolock(s);
     }
@@ -73,32 +73,32 @@ namespace Circada {
         return dcc_mgr->get_all_handles(0);
     }
 
-    void IrcClient::dcc_accept(DCCHandle dcc) throw (DCCInvalidHandleException, DCCOperationNotPermittedException) {
+    void IrcClient::dcc_accept(DCCHandle dcc) {
         DCCManager *dcc_mgr = static_cast<DCCManager *>(this);
         dcc_mgr->accept_dcc_handle(dcc, false);
     }
 
-    void IrcClient::dcc_force(DCCHandle dcc) throw (DCCInvalidHandleException, DCCOperationNotPermittedException) {
+    void IrcClient::dcc_force(DCCHandle dcc) {
         DCCManager *dcc_mgr = static_cast<DCCManager *>(this);
         dcc_mgr->accept_dcc_handle(dcc, true);
     }
 
-    void IrcClient::dcc_decline(DCCHandle dcc) throw (DCCInvalidHandleException, DCCOperationNotPermittedException) {
+    void IrcClient::dcc_decline(DCCHandle dcc) {
         DCCManager *dcc_mgr = static_cast<DCCManager *>(this);
         dcc_mgr->decline_dcc_handle(dcc);
     }
 
-    void IrcClient::dcc_abort(DCCHandle dcc) throw (DCCInvalidHandleException, DCCOperationNotPermittedException) {
+    void IrcClient::dcc_abort(DCCHandle dcc) {
         DCCManager *dcc_mgr = static_cast<DCCManager *>(this);
         dcc_mgr->abort_dcc_handle(dcc);
     }
 
-    void IrcClient::dcc_send_msg(DCCHandle dcc, const std::string& msg) throw (DCCInvalidHandleException, DCCOperationNotPermittedException, SocketException) {
+    void IrcClient::dcc_send_msg(DCCHandle dcc, const std::string& msg) {
         DCCManager *dcc_mgr = static_cast<DCCManager *>(this);
         dcc_mgr->send_dcc_msg(dcc, msg);
     }
 
-    DCCHandle IrcClient::get_dcc_handle_from_window(Window *w) throw (DCCOperationNotPermittedException) {
+    DCCHandle IrcClient::get_dcc_handle_from_window(Window *w) {
         SessionWindow *sw = static_cast<SessionWindow *>(w);
         if (!sw->is_dcc_window()) {
             throw DCCOperationNotPermittedException();
@@ -108,26 +108,26 @@ namespace Circada {
         return DCCHandle(*dcc_mgr, dcc);
     }
 
-    Window *IrcClient::get_window_from_dcc_handle(DCCHandle dcc) throw (DCCInvalidHandleException, DCCOperationNotPermittedException) {
+    Window *IrcClient::get_window_from_dcc_handle(DCCHandle dcc) {
         DCCManager *dcc_mgr = static_cast<DCCManager *>(this);
         return dcc_mgr->get_window_from_dcc_handle(dcc);
     }
 
-    DCCChatHandle IrcClient::get_chat_handle(DCCHandle dcc) throw (DCCOperationNotPermittedException) {
+    DCCChatHandle IrcClient::get_chat_handle(DCCHandle dcc) {
         if (dcc.get_type() != DCCTypeChat) {
             throw DCCOperationNotPermittedException();
         }
         return *static_cast<DCCChatHandle *>(&dcc);
     }
 
-    DCCXferHandle IrcClient::get_xfer_handle(DCCHandle dcc) throw (DCCOperationNotPermittedException) {
+    DCCXferHandle IrcClient::get_xfer_handle(DCCHandle dcc) {
         if (dcc.get_type() != DCCTypeXfer) {
             throw DCCOperationNotPermittedException();
         }
         return *static_cast<DCCXferHandle *>(&dcc);
     }
 
-    void IrcClient::destroy_session_nolock(Session *s) throw (CircadaException) {
+    void IrcClient::destroy_session_nolock(Session *s) {
         for (Session::List::iterator it = sessions.begin(); it != sessions.end(); it++) {
             if ((*it) == s) {
                 sessions.erase(it);
@@ -150,7 +150,7 @@ namespace Circada {
         }
     }
 
-    Window *IrcClient::query(Session *s, const std::string& nick) throw (CircadaException) {
+    Window *IrcClient::query(Session *s, const std::string& nick) {
         SessionWindow *w = 0;
         if (s) {
             if (!s->is_channel(nick) && !s->is_that_me(nick)) {
@@ -164,7 +164,7 @@ namespace Circada {
         return w;
     }
 
-    void IrcClient::unquery(Window *w) throw (CircadaException) {
+    void IrcClient::unquery(Window *w) {
         if (w) {
             SessionWindow *sw = static_cast<SessionWindow *>(w);
             if (sw->is_dcc_window()) {

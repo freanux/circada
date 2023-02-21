@@ -45,49 +45,49 @@ namespace Circada {
         /*                                                                    */
 
         /* irc events */
-        virtual void message(Session *s, Window *w, const Message& m) throw () { }
-        virtual void notice(Session *s, Window *w, const Message& m) throw () { }
-        virtual void noise(Session *s, Window *w, const Message& m) throw () { }
-        virtual void alert(Session* s, Window *w, const Window *from_w, const Message& m) throw () { }
-        virtual void ctcp_request(Session *s, Window *w, const Message& m) throw () { }
-        virtual void ctcp_unhandled_request(Session *s, Window *w, const Message& m) throw () { }
-        virtual void change_my_mode(Session *s, const std::string& mode) throw () { }
-        virtual void open_window(Session *s, Window *w) throw () { }
-        virtual void close_window(Session *s, Window *w) throw () { }
-        virtual void window_action(Session *s, Window *w) throw () { }
-        virtual void change_topic(Session *s, Window *w, const std::string& topic) throw () { }
-        virtual void change_name(Session *s, Window *w, const std::string& name) throw () { }
-        virtual void change_channel_mode(Session *s, Window *w, const std::string& mode) throw () { }
-        virtual void new_nicklist(Session *s, Window *w) throw () { }
-        virtual void add_nick(Session *s, Window *w, const std::string& nick) throw () { }
-        virtual void remove_nick(Session *s, Window *w, const std::string& nick) throw () { }
-        virtual void change_nick(Session *s, Window *w, const std::string& old_nick, const std::string& new_nick) throw () { }
-        virtual void change_my_nick(Session *s, const std::string& old_nick, const std::string& new_nick) throw () { }
-        virtual void change_nick_mode(Session *s, Window *w, const std::string& nick, const std::string& mode) throw () { }
-        virtual void away(Session *s) throw () { }
-        virtual void unaway(Session *s) throw () { }
-        virtual void lag_update(Session *s, double lag_in_s) throw () { }
-        virtual void connection_lost(Session *s, const std::string& reason) throw () { }
+        virtual void message(Session *s, Window *w, const Message& m) { }
+        virtual void notice(Session *s, Window *w, const Message& m) { }
+        virtual void noise(Session *s, Window *w, const Message& m) { }
+        virtual void alert(Session* s, Window *w, const Window *from_w, const Message& m) { }
+        virtual void ctcp_request(Session *s, Window *w, const Message& m) { }
+        virtual void ctcp_unhandled_request(Session *s, Window *w, const Message& m) { }
+        virtual void change_my_mode(Session *s, const std::string& mode) { }
+        virtual void open_window(Session *s, Window *w) { }
+        virtual void close_window(Session *s, Window *w) { }
+        virtual void window_action(Session *s, Window *w) { }
+        virtual void change_topic(Session *s, Window *w, const std::string& topic) { }
+        virtual void change_name(Session *s, Window *w, const std::string& name) { }
+        virtual void change_channel_mode(Session *s, Window *w, const std::string& mode) { }
+        virtual void new_nicklist(Session *s, Window *w) { }
+        virtual void add_nick(Session *s, Window *w, const std::string& nick) { }
+        virtual void remove_nick(Session *s, Window *w, const std::string& nick) { }
+        virtual void change_nick(Session *s, Window *w, const std::string& old_nick, const std::string& new_nick) { }
+        virtual void change_my_nick(Session *s, const std::string& old_nick, const std::string& new_nick) { }
+        virtual void change_nick_mode(Session *s, Window *w, const std::string& nick, const std::string& mode) { }
+        virtual void away(Session *s) { }
+        virtual void unaway(Session *s) { }
+        virtual void lag_update(Session *s, double lag_in_s) { }
+        virtual void connection_lost(Session *s, const std::string& reason) { }
 
         /* dcc events, during running irc connection */
-        virtual void dcc_offered_chat_timedout(Session *s, Window *w, const DCCChatHandle dcc, const std::string& reason) throw () { }
-        virtual void dcc_incoming_chat_request(Session *s, Window *w, const DCCChatHandle dcc) throw () { }
-        virtual void dcc_offered_xfer_timedout(Session *s, Window *w, const DCCXferHandle dcc, const std::string& reason) throw () { }
-        virtual void dcc_incoming_xfer_request(Session *s, Window *w, const DCCXferHandle dcc) throw () { }
-        virtual void dcc_unhandled_request(Session *s, Window *w, const std::string& dcc_request, const Message& m) throw () { }
-        virtual void dcc_unhandled_chat_request(Session *s, Window *w, const std::string& nick, const std::string& chat_request, const Message& m) throw () { }
+        virtual void dcc_offered_chat_timedout(Session *s, Window *w, const DCCChatHandle dcc, const std::string& reason) { }
+        virtual void dcc_incoming_chat_request(Session *s, Window *w, const DCCChatHandle dcc) { }
+        virtual void dcc_offered_xfer_timedout(Session *s, Window *w, const DCCXferHandle dcc, const std::string& reason) { }
+        virtual void dcc_incoming_xfer_request(Session *s, Window *w, const DCCXferHandle dcc) { }
+        virtual void dcc_unhandled_request(Session *s, Window *w, const std::string& dcc_request, const Message& m) { }
+        virtual void dcc_unhandled_chat_request(Session *s, Window *w, const std::string& nick, const std::string& chat_request, const Message& m) { }
 
         /* events of detached dccs */
-        virtual void dcc_chat_begins(Window *w, const DCCChatHandle dcc) throw () { }
-        virtual void dcc_chat_ended(Window *w, const DCCChatHandle dcc, const std::string& reason) throw () { }
-        virtual void dcc_chat_failed(Window *w, const DCCChatHandle dcc, const std::string& reason) throw () { }
-        virtual void dcc_message(Window *w, const DCCChatHandle dcc, const std::string& ctcp, const std::string& msg) throw () { }
+        virtual void dcc_chat_begins(Window *w, const DCCChatHandle dcc) { }
+        virtual void dcc_chat_ended(Window *w, const DCCChatHandle dcc, const std::string& reason) { }
+        virtual void dcc_chat_failed(Window *w, const DCCChatHandle dcc, const std::string& reason) { }
+        virtual void dcc_message(Window *w, const DCCChatHandle dcc, const std::string& ctcp, const std::string& msg) { }
 
-        virtual void dcc_xfer_begins(Window *w, const DCCXferHandle dcc) throw () { }
-        virtual void dcc_xfer_ended(Window *w, const DCCXferHandle dcc) throw () { }
-        virtual void dcc_xfer_failed(Window *w, const DCCXferHandle dcc, const std::string& reason) throw () { }
-        virtual void dcc_send_progress(Window *w, const DCCXferHandle dcc) throw () { }
-        virtual void dcc_receive_progress(Window *w, const DCCXferHandle dcc) throw () { }
+        virtual void dcc_xfer_begins(Window *w, const DCCXferHandle dcc) { }
+        virtual void dcc_xfer_ended(Window *w, const DCCXferHandle dcc) { }
+        virtual void dcc_xfer_failed(Window *w, const DCCXferHandle dcc, const std::string& reason) { }
+        virtual void dcc_send_progress(Window *w, const DCCXferHandle dcc) { }
+        virtual void dcc_receive_progress(Window *w, const DCCXferHandle dcc) { }
     };
 
 } /* namespace Circada */

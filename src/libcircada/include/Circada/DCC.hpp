@@ -89,7 +89,7 @@ namespace Circada {
         DCCDirection get_direction() const;
         void set_timeout(int s);
 
-        virtual void connect() throw (DCCException) = 0;
+        virtual void connect() = 0;
         void stop();
 
     protected:
@@ -113,7 +113,7 @@ namespace Circada {
         DCC(Session *s, DCCManager& mgr, DCCIO& io, DCCType type, const std::string& nick);
         virtual ~DCC();
 
-        void start() throw (DCCException);
+        void start();
         void stop();
         DCCIO& get_dccio() const;
         DCCType get_type() const;
@@ -142,7 +142,7 @@ namespace Circada {
         bool connected;
         bool will_be_killed;
 
-        virtual void process_or_idle() throw (DCCException) { }
+        virtual void process_or_idle() { }
         virtual void begin_handler() { }
         virtual void end_handler() { }
         virtual void thread();
@@ -150,11 +150,11 @@ namespace Circada {
 
     class DCCIn : public DCCIO {
     public:
-        DCCIn() throw (DCCException);
+        DCCIn();
         virtual ~DCCIn();
 
     protected:
-        virtual void connect() throw (DCCException);
+        virtual void connect();
 
     private:
         bool listening;
@@ -166,7 +166,7 @@ namespace Circada {
         virtual ~DCCOut();
 
     protected:
-        virtual void connect() throw (DCCException);
+        virtual void connect();
     };
 
     class DCCChat : public DCC {
@@ -174,12 +174,12 @@ namespace Circada {
         DCCChat(Session *s, DCCManager& mgr, DCCIO& io, const std::string& nick);
         virtual ~DCCChat();
 
-        void send(const std::string& msg) throw (DCCException);
+        void send(const std::string& msg);
 
     private:
         LineFetcher fetcher;
 
-        virtual void process_or_idle() throw (DCCException);
+        virtual void process_or_idle();
         virtual void begin_handler();
     };
 
@@ -233,7 +233,7 @@ namespace Circada {
         u32 total_sent;
         size_t total_size_read;
 
-        virtual void process_or_idle() throw (DCCException);
+        virtual void process_or_idle();
     };
 
     class DCCXferOut : public DCCXfer, public DCCOut {
@@ -245,7 +245,7 @@ namespace Circada {
         std::string part_filename;
         u32 last_acknowledged;
 
-        virtual void process_or_idle() throw (DCCException);
+        virtual void process_or_idle();
     };
 
     /**************************************************************************
@@ -264,7 +264,7 @@ namespace Circada {
         DCCManager& dcc_mgr;
         const DCC *dcc;
 
-        void check_handle() const throw (DCCInvalidHandleException);
+        void check_handle() const;
     };
 
     class DCCHandle : protected DCCHandleBase {
@@ -275,12 +275,12 @@ namespace Circada {
         DCCHandle operator=(DCCHandle rhs);
         virtual ~DCCHandle();
 
-        const std::string& get_his_nick() const throw (DCCInvalidHandleException);
-        const std::string& get_my_nick() const throw (DCCInvalidHandleException);
-        DCCType get_type() const throw (DCCInvalidHandleException);
-        DCCDirection get_direction() const throw (DCCInvalidHandleException);
-        bool is_running() const throw (DCCInvalidHandleException);
-        bool is_connected() const throw (DCCInvalidHandleException);
+        const std::string& get_his_nick() const;
+        const std::string& get_my_nick() const;
+        DCCType get_type() const;
+        DCCDirection get_direction() const;
+        bool is_running() const;
+        bool is_connected() const;
     };
 
     class DCCChatHandle : public DCCHandle {
@@ -294,9 +294,9 @@ namespace Circada {
         DCCXferHandle(DCCManager& dcc_mgr, const DCC *dcc);
         virtual ~DCCXferHandle();
 
-        const std::string& get_filename() const throw (DCCInvalidHandleException);
-        unsigned int get_transferred_bytes() const throw (DCCInvalidHandleException);
-        unsigned int get_filesize() const throw (DCCInvalidHandleException);
+        const std::string& get_filename() const;
+        unsigned int get_transferred_bytes() const;
+        unsigned int get_filesize() const;
     };
 
 } /* namespace Circada */

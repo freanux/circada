@@ -26,7 +26,7 @@
 
 namespace Circada {
 
-    std::string Environment::get_username() throw (EnvironmentException) {
+    std::string Environment::get_username() {
         struct passwd *pw;
         pw = getpwuid(geteuid());
         if (!pw) {
@@ -35,7 +35,7 @@ namespace Circada {
         return std::string(pw->pw_name);
     }
 
-    std::string Environment::get_home_directory() throw (EnvironmentException) {
+    std::string Environment::get_home_directory() {
         struct passwd *pw;
         pw = getpwuid(geteuid());
         if (!pw) {
@@ -44,7 +44,7 @@ namespace Circada {
         return std::string(pw->pw_dir);
     }
 
-    std::string Environment::get_uname() throw (EnvironmentException) {
+    std::string Environment::get_uname() {
         struct utsname ud;
         uname(&ud);
         return std::string(ud.sysname);

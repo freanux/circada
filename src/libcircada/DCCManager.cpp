@@ -32,7 +32,7 @@
 
 namespace Circada {
 
-    DCCManager::DCCManager(Configuration& config, Events& evt, WindowManager& win_mgr) throw (DCCManagerException)
+    DCCManager::DCCManager(Configuration& config, Events& evt, WindowManager& win_mgr)
         : config(config), evt(evt), win_mgr(win_mgr), destroying(false)
     {
         /* create transfer directory */
@@ -53,7 +53,7 @@ namespace Circada {
         }
     }
 
-    DCC *DCCManager::create_chat_in(Session *s, const std::string& nick) throw (DCCManagerException) {
+    DCC *DCCManager::create_chat_in(Session *s, const std::string& nick) {
         /* we are offering a chat, we create an incoming socket */
         DCCChatIn *dcc = 0;
         try {
@@ -70,7 +70,7 @@ namespace Circada {
         return dcc;
     }
 
-    DCC *DCCManager::create_xfer_in(Session *s, const std::string& nick, const std::string& filename, std::string& out_filename, u32& filesize) throw (DCCManagerException) {
+    DCC *DCCManager::create_xfer_in(Session *s, const std::string& nick, const std::string& filename, std::string& out_filename, u32& filesize) {
         /* we are offering a file, we create an incoming socket */
         DCCXferIn *dcc = 0;
         try {
@@ -88,7 +88,7 @@ namespace Circada {
         return dcc;
     }
 
-    DCC *DCCManager::create_chat_out(Session *s, const std::string& nick, unsigned long address, unsigned short port) throw (DCCManagerException) {
+    DCC *DCCManager::create_chat_out(Session *s, const std::string& nick, unsigned long address, unsigned short port) {
         /* we can connect to an offered socket */
         DCCChatOut *dcc = 0;
         try {
@@ -104,8 +104,7 @@ namespace Circada {
         return dcc;
     }
 
-    DCC *DCCManager::create_xfer_out(Session *s, const std::string& nick, const std::string& filename, u32 filesize, unsigned long address, unsigned short port) throw (DCCManagerException)
-    {
+    DCC *DCCManager::create_xfer_out(Session *s, const std::string& nick, const std::string& filename, u32 filesize, unsigned long address, unsigned short port) {
         /* we can connect to an offered socket */
         DCCXferOut *dcc = 0;
         try {
@@ -208,7 +207,7 @@ namespace Circada {
         return "~" + filename + ".part";
     }
 
-    bool DCCManager::set_resume_position(Session *s, unsigned short port, u32& startpos, DCC*& out_dcc) throw (DCCManagerException) {
+    bool DCCManager::set_resume_position(Session *s, unsigned short port, u32& startpos, DCC*& out_dcc) {
         ScopeMutex lock(&mtx);
 
         out_dcc = 0;
@@ -291,7 +290,7 @@ namespace Circada {
         return handles;
     }
 
-    void DCCManager::accept_dcc_handle(DCCHandle dcc, bool force) throw (DCCInvalidHandleException, DCCOperationNotPermittedException) {
+    void DCCManager::accept_dcc_handle(DCCHandle dcc, bool force) {
         ScopeMutex lock(&mtx);
         DCCHandleBase& base = *get_dcc_handle_base(&dcc);
         DCC *tmp_dcc = const_cast<DCC *>(base.get_handle());
@@ -348,7 +347,7 @@ namespace Circada {
         }
     }
 
-    void DCCManager::decline_dcc_handle(DCCHandle dcc) throw (DCCInvalidHandleException, DCCOperationNotPermittedException) {
+    void DCCManager::decline_dcc_handle(DCCHandle dcc) {
         ScopeMutex lock(&mtx);
         DCCHandleBase& base = *get_dcc_handle_base(&dcc);
         const DCC *tmp_dcc = base.get_handle();
@@ -361,7 +360,7 @@ namespace Circada {
         destroy_dcc_nolock(tmp_dcc);
     }
 
-    void DCCManager::abort_dcc_handle(DCCHandle dcc) throw (DCCInvalidHandleException) {
+    void DCCManager::abort_dcc_handle(DCCHandle dcc) {
         ScopeMutex lock(&mtx);
         DCCHandleBase& base = *get_dcc_handle_base(&dcc);
         const DCC *tmp_dcc = base.get_handle();
@@ -371,7 +370,7 @@ namespace Circada {
         destroy_dcc_nolock(tmp_dcc);
     }
 
-    void DCCManager::send_dcc_msg(DCCHandle dcc, const std::string& msg) throw (DCCInvalidHandleException, DCCOperationNotPermittedException, SocketException) {
+    void DCCManager::send_dcc_msg(DCCHandle dcc, const std::string& msg) {
         ScopeMutex lock(&mtx);
         DCCHandleBase& base = *get_dcc_handle_base(&dcc);
         const DCC *tmp_dcc = base.get_handle();
@@ -384,7 +383,7 @@ namespace Circada {
         tmp_dcc->get_dccio().get_socket().send(msg + "\n");
     }
 
-    Window *DCCManager::get_window_from_dcc_handle(DCCHandle dcc) throw (DCCInvalidHandleException, DCCOperationNotPermittedException) {
+    Window *DCCManager::get_window_from_dcc_handle(DCCHandle dcc) {
         DCCHandleBase& base = *get_dcc_handle_base(&dcc);
         const DCC *tmp_dcc = base.get_handle();
         return win_mgr.get_window(tmp_dcc, "");
@@ -394,7 +393,7 @@ namespace Circada {
         return config;
     }
 
-    void DCCManager::dcc_mgr_chat_begins(const DCC *dcc) throw () {
+    void DCCManager::dcc_mgr_chat_begins(const DCC *dcc) {
         SessionWindow *w = win_mgr.create_window(&evt, dcc, dcc->get_my_nick(), dcc->get_his_nick());
         detach_dcc_from_irc_server(dcc);
         std::string topic("DCC CHAT with " + dcc->get_his_nick());
@@ -403,7 +402,7 @@ namespace Circada {
         evt.dcc_chat_begins(w, DCCChatHandle(*this, dcc));
     }
 
-    void DCCManager::dcc_mgr_chat_ended(const DCC *dcc, const std::string& reason) throw () {
+    void DCCManager::dcc_mgr_chat_ended(const DCC *dcc, const std::string& reason) {
         if (!destroying) {
             SessionWindow *w = win_mgr.create_window(&evt, dcc, dcc->get_my_nick(), dcc->get_his_nick());
             win_mgr.detach_window(dcc);
@@ -414,7 +413,7 @@ namespace Circada {
         }
     }
 
-    void DCCManager::dcc_mgr_xfer_begins(const DCC *dcc) throw () {
+    void DCCManager::dcc_mgr_xfer_begins(const DCC *dcc) {
         SessionWindow *w = 0;
         if (config.is_true(config.get_value("", "dcc_xfer_in_window", "0"))) {
             w = win_mgr.create_window(&evt, dcc, dcc->get_my_nick(), dcc->get_his_nick());
@@ -428,7 +427,7 @@ namespace Circada {
         evt.dcc_xfer_begins(w, DCCXferHandle(*this, dcc));
     }
 
-    void DCCManager::dcc_mgr_xfer_ended(const DCC *dcc) throw () {
+    void DCCManager::dcc_mgr_xfer_ended(const DCC *dcc) {
         if (!destroying) {
             SessionWindow *w = 0;
             if (config.is_true(config.get_value("", "dcc_xfer_in_window", "0"))) {
@@ -442,12 +441,12 @@ namespace Circada {
         }
     }
 
-    void DCCManager::dcc_mgr_message(const DCC *dcc, const std::string& nick, const std::string& ctcp, const std::string& msg) throw () {
+    void DCCManager::dcc_mgr_message(const DCC *dcc, const std::string& nick, const std::string& ctcp, const std::string& msg) {
         SessionWindow *w = win_mgr.create_window(&evt, dcc, dcc->get_my_nick(), dcc->get_his_nick());
         evt.dcc_message(w, DCCChatHandle(*this, dcc), ctcp, msg);
     }
 
-    void DCCManager::dcc_mgr_send_progress(const DCC *dcc, u32 sent_bytes, u32 total_bytes) throw () {
+    void DCCManager::dcc_mgr_send_progress(const DCC *dcc, u32 sent_bytes, u32 total_bytes) {
         SessionWindow *w = 0;
         if (config.is_true(config.get_value("", "dcc_xfer_in_window", "0"))) {
             w = win_mgr.create_window(&evt, dcc, dcc->get_my_nick(), dcc->get_his_nick());
@@ -455,7 +454,7 @@ namespace Circada {
         evt.dcc_send_progress(w, DCCXferHandle(*this, dcc));
     }
 
-    void DCCManager::dcc_mgr_receive_progress(const DCC *dcc, u32 received_bytes, u32 total_bytes) throw () {
+    void DCCManager::dcc_mgr_receive_progress(const DCC *dcc, u32 received_bytes, u32 total_bytes) {
         SessionWindow *w = 0;
         if (config.is_true(config.get_value("", "dcc_xfer_in_window", "0"))) {
             w = win_mgr.create_window(&evt, dcc, dcc->get_my_nick(), dcc->get_his_nick());
@@ -463,7 +462,7 @@ namespace Circada {
         evt.dcc_receive_progress(w, DCCXferHandle(*this, dcc));
     }
 
-    void DCCManager::dcc_mgr_timedout(const DCC *dcc, const std::string& reason) throw () {
+    void DCCManager::dcc_mgr_timedout(const DCC *dcc, const std::string& reason) {
         if (!dcc->get_will_be_killed()) {
             Session *s = dcc->get_session();
             if (s) {
@@ -480,7 +479,7 @@ namespace Circada {
         }
     }
 
-    void DCCManager::dcc_mgr_failed(const DCC *dcc, const std::string& reason) throw () {
+    void DCCManager::dcc_mgr_failed(const DCC *dcc, const std::string& reason) {
         if (!destroying) {
             SessionWindow *w = win_mgr.get_window(dcc, dcc->get_his_nick());
             win_mgr.detach_window(dcc);
@@ -495,7 +494,7 @@ namespace Circada {
         }
     }
 
-    off_t DCCManager::get_filesize(const std::string& filename) throw (DCCManagerException) {
+    off_t DCCManager::get_filesize(const std::string& filename) {
         struct stat info;
         if (stat(filename.c_str(), &info) < 0) {
             throw DCCManagerException(strerror(errno));
@@ -504,7 +503,7 @@ namespace Circada {
         return info.st_size;
     }
 
-    void DCCManager::get_fileinfo(const std::string& filename, std::string& out_filename, u32& out_size) throw (DCCManagerException) {
+    void DCCManager::get_fileinfo(const std::string& filename, std::string& out_filename, u32& out_size) {
         off_t sz = get_filesize(filename);
         if (sz > static_cast<u32>(-1)) {
             throw DCCManagerException("File size too big (size > 4294967295 bytes).");

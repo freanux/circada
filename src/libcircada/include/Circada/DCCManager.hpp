@@ -39,13 +39,13 @@ namespace Circada {
 
     class DCCManager {
     public:
-        DCCManager(Configuration& config, Events& evt, WindowManager& win_mgr) throw (DCCManagerException);
+        DCCManager(Configuration& config, Events& evt, WindowManager& win_mgr);
         virtual ~DCCManager();
 
-        DCC *create_chat_in(Session *s, const std::string& nick) throw (DCCManagerException);
-        DCC *create_xfer_in(Session *s, const std::string& nick, const std::string& filename, std::string& out_filename, u32& filesize) throw (DCCManagerException);
-        DCC *create_chat_out(Session *s, const std::string& nick, unsigned long address, unsigned short port) throw (DCCManagerException);
-        DCC *create_xfer_out(Session *s, const std::string& nick, const std::string& filename, u32 filesize, unsigned long address, unsigned short port) throw (DCCManagerException);
+        DCC *create_chat_in(Session *s, const std::string& nick);
+        DCC *create_xfer_in(Session *s, const std::string& nick, const std::string& filename, std::string& out_filename, u32& filesize);
+        DCC *create_chat_out(Session *s, const std::string& nick, unsigned long address, unsigned short port);
+        DCC *create_xfer_out(Session *s, const std::string& nick, const std::string& filename, u32 filesize, unsigned long address, unsigned short port);
         void dcc_change_his_nick(Session *s, const std::string& old_nick, const std::string& new_nick);
         void dcc_change_my_nick(Session *s, const std::string& new_nick);
         void detach_dcc_from_irc_server(const DCC *dcc);
@@ -55,28 +55,28 @@ namespace Circada {
         DCC::List& get_dccs();
         std::string get_storage(const std::string& filename);
         std::string get_part_filename(const std::string& filename);
-        bool set_resume_position(Session *s, unsigned short port, u32& startpos, DCC*& out_dcc) throw (DCCManagerException);
+        bool set_resume_position(Session *s, unsigned short port, u32& startpos, DCC*& out_dcc);
         Mutex& get_mutex();
         bool is_handle_valid(const DCC *dcc);
         bool is_handle_valid_nolock(const DCC *dcc);
         DCCHandleBase *get_dcc_handle_base(DCCHandle *handle);
         DCCHandle::List get_all_handles(Session *s);
-        void accept_dcc_handle(DCCHandle dcc, bool force) throw (DCCInvalidHandleException, DCCOperationNotPermittedException);
-        void decline_dcc_handle(DCCHandle dcc) throw (DCCInvalidHandleException, DCCOperationNotPermittedException);
-        void abort_dcc_handle(DCCHandle dcc) throw (DCCInvalidHandleException);
-        void send_dcc_msg(DCCHandle dcc, const std::string& msg) throw (DCCInvalidHandleException, DCCOperationNotPermittedException, SocketException);
-        Window *get_window_from_dcc_handle(DCCHandle dcc) throw (DCCInvalidHandleException, DCCOperationNotPermittedException);
+        void accept_dcc_handle(DCCHandle dcc, bool force);
+        void decline_dcc_handle(DCCHandle dcc);
+        void abort_dcc_handle(DCCHandle dcc);
+        void send_dcc_msg(DCCHandle dcc, const std::string& msg);
+        Window *get_window_from_dcc_handle(DCCHandle dcc);
         Configuration& get_configuration();
 
-        void dcc_mgr_chat_begins(const DCC *dcc) throw ();
-        void dcc_mgr_chat_ended(const DCC *dcc, const std::string& reason) throw ();
-        void dcc_mgr_xfer_begins(const DCC *dcc) throw ();
-        void dcc_mgr_xfer_ended(const DCC *dcc) throw ();
-        void dcc_mgr_message(const DCC *dcc, const std::string& nick, const std::string& ctcp, const std::string& msg) throw ();
-        void dcc_mgr_send_progress(const DCC *dcc, u32 sent_bytes, u32 total_bytes) throw ();
-        void dcc_mgr_receive_progress(const DCC *dcc, u32 received_bytes, u32 total_bytes) throw ();
-        void dcc_mgr_timedout(const DCC *dcc, const std::string& reason) throw ();
-        void dcc_mgr_failed(const DCC *dcc, const std::string& reason) throw ();
+        void dcc_mgr_chat_begins(const DCC *dcc);
+        void dcc_mgr_chat_ended(const DCC *dcc, const std::string& reason);
+        void dcc_mgr_xfer_begins(const DCC *dcc);
+        void dcc_mgr_xfer_ended(const DCC *dcc);
+        void dcc_mgr_message(const DCC *dcc, const std::string& nick, const std::string& ctcp, const std::string& msg);
+        void dcc_mgr_send_progress(const DCC *dcc, u32 sent_bytes, u32 total_bytes);
+        void dcc_mgr_receive_progress(const DCC *dcc, u32 received_bytes, u32 total_bytes);
+        void dcc_mgr_timedout(const DCC *dcc, const std::string& reason);
+        void dcc_mgr_failed(const DCC *dcc, const std::string& reason);
 
     private:
         Configuration& config;
@@ -88,8 +88,8 @@ namespace Circada {
         DCC::List dccs;
         Mutex mtx;
 
-        off_t get_filesize(const std::string& filename) throw (DCCManagerException);
-        void get_fileinfo(const std::string& filename, std::string& out_filename, u32& out_size) throw (DCCManagerException);
+        off_t get_filesize(const std::string& filename);
+        void get_fileinfo(const std::string& filename, std::string& out_filename, u32& out_size);
         void reduce_filename(const std::string& filename, std::string& out_filename);
     };
 

@@ -49,11 +49,11 @@ namespace Circada {
 
     class SenderThread : private Thread, private IOSync {
     private:
-        SenderThread(const SenderThread& rhs) throw (SessionException);
+        SenderThread(const SenderThread& rhs);
         SenderThread& operator=(const SenderThread& rhs);
 
     public:
-        SenderThread(Socket *socket) throw (SessionException);
+        SenderThread(Socket *socket);
         virtual ~SenderThread();
 
         void pump(const std::string& data);
@@ -66,7 +66,7 @@ namespace Circada {
         Mutex mtx;
         Queue queue;
 
-        void send(const std::string& data) throw (SessionException);
+        void send(const std::string& data);
         virtual void thread();
     };
 
@@ -98,16 +98,16 @@ namespace Circada {
     public:
         typedef std::vector<Session *> List;
 
-        Session(Configuration& config, IrcServerSide& iss, const SessionOptions& options) throw (SessionException);
+        Session(Configuration& config, IrcServerSide& iss, const SessionOptions& options);
         virtual ~Session();
 
         /* use these functions to connect and disconnect                      */
-        void connect() throw (SessionException);
-        void disconnect() throw();
+        void connect();
+        void disconnect();
 
         /* runtime functions                                                  */
         /* use these to get some status, during an irc session                */
-        void send(const std::string& data) throw (SessionException);
+        void send(const std::string& data);
         bool is_that_me(const std::string& nick);
         bool is_channel(const std::string& name);
         std::string get_flags();
@@ -119,8 +119,8 @@ namespace Circada {
         double get_lag() const;
 
         /* managing dcc requests                                              */
-        DCCChatHandle dcc_chat_offer(const std::string& nick) throw (SessionException);
-        DCCXferHandle dcc_file_offer(const std::string& nick, const std::string& filename) throw (SessionException);
+        DCCChatHandle dcc_chat_offer(const std::string& nick);
+        DCCXferHandle dcc_file_offer(const std::string& nick, const std::string& filename);
         DCCHandle::List get_dcc_list();
 
     protected:
@@ -192,8 +192,8 @@ namespace Circada {
         bool away;
 
         virtual void thread();
-        void execute_injected() throw (SessionException, SocketException);
-        void execute(const Message& m) throw (SessionException, SocketException);
+        void execute_injected();
+        void execute(const Message& m);
         void inject(Message& m);
 
         bool set_capability(const std::string& cap, const Message& m, std::string& to_cap);
@@ -220,31 +220,31 @@ namespace Circada {
         void send_to_alert_window(SessionWindow *w, const Message& m);
 
         /* protocol */
-        void cmd_ping(const Message& m) throw (SessionException, SocketException);
-        void cmd_pong(const Message& m) throw (SessionException, SocketException);
-        void cmd_nick(const Message& m) throw (SessionException, SocketException);
-        void cmd_join(const Message& m) throw (SessionException, SocketException);
-        void cmd_part(const Message& m) throw (SessionException, SocketException);
-        void cmd_kick(const Message& m) throw (SessionException, SocketException);
-        void cmd_quit(const Message& m) throw (SessionException, SocketException);
-        void cmd_topic(const Message& m) throw (SessionException, SocketException);
-        void cmd_privmsg(const Message& m) throw (SessionException, SocketException);
-        void cmd_notice(const Message& m) throw (SessionException, SocketException);
-        void cmd_mode(const Message& m) throw (SessionException, SocketException);
-        void cmd_invite(const Message& m) throw (SessionException, SocketException);
+        void cmd_ping(const Message& m);
+        void cmd_pong(const Message& m);
+        void cmd_nick(const Message& m);
+        void cmd_join(const Message& m);
+        void cmd_part(const Message& m);
+        void cmd_kick(const Message& m);
+        void cmd_quit(const Message& m);
+        void cmd_topic(const Message& m);
+        void cmd_privmsg(const Message& m);
+        void cmd_notice(const Message& m);
+        void cmd_mode(const Message& m);
+        void cmd_invite(const Message& m);
 
-        void rpl_welcome(const Message& m) throw (SessionException, SocketException);
-        void rpl_protocol(const Message& m) throw (SessionException, SocketException);
-        void rpl_topic(const Message& m) throw (SessionException, SocketException);
-        void rpl_namreply(const Message& m) throw (SessionException, SocketException);
-        void rpl_endofnames(const Message& m) throw (SessionException, SocketException);
-        void rpl_channelmodeis(const Message& m) throw (SessionException, SocketException);
-        void rpl_nowaway(const Message& m) throw (SessionException, SocketException);
-        void rpl_unaway(const Message& m) throw (SessionException, SocketException);
+        void rpl_welcome(const Message& m);
+        void rpl_protocol(const Message& m);
+        void rpl_topic(const Message& m);
+        void rpl_namreply(const Message& m);
+        void rpl_endofnames(const Message& m);
+        void rpl_channelmodeis(const Message& m);
+        void rpl_nowaway(const Message& m);
+        void rpl_unaway(const Message& m);
 
-        void err_nicknameinuse(const Message& m) throw (SessionException, SocketException);
+        void err_nicknameinuse(const Message& m);
 
-        void int_day_change(const Message& m) throw (SessionException, SocketException);
+        void int_day_change(const Message& m);
     };
 
 } /* namespace Circada */
