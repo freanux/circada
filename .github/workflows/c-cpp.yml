@@ -1,0 +1,25 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: checkout
+      uses: actions/checkout@v3
+    - name: install packages
+      run: sudo apt-get install -y autoconf libgnutls28-dev libncurses5-dev
+    - name: create configuration files
+      run: autoreconf -i
+    - name: configure
+      run: ./configure
+    - name: make
+      run: make -j`nproc`
+    - name: install
+      run: sudo make install
