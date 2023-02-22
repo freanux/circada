@@ -17,6 +17,8 @@ jobs:
         update: true
         install: >-
           autotools
+    - name: create configuration files
+      run: autoreconf -i
     - name: configure
       run: ./configure
     - name: make
