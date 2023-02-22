@@ -16,7 +16,7 @@ jobs:
       with:
         update: true
         install: >-
-          autotools
+          autotools libgnutls28-dev
     - name: create configuration files
       run: autoreconf -i
     - name: configure
