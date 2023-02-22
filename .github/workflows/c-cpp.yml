@@ -14,7 +14,7 @@ jobs:
     - name: checkout
       uses: actions/checkout@v3
     - name: install packages
-      run: sudo apt-get install -y autotools libgnutls28-dev libncurses5-dev
+      run: sudo apt-get install -y autoconf libgnutls28-dev libncurses5-dev
     - name: create configuration files
       run: autoreconf -i
     - name: configure
