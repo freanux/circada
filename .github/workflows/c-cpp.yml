@@ -8,15 +8,13 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-      with:
-        update: true
-        install: >-
-          autotools libgnutls28-dev
+    - name: checkout
+      uses: actions/checkout@v3
+    - name: install packages
+      run: sudo apt-get install -y autotools libgnutls28-dev libncurses5-dev
     - name: create configuration files
       run: autoreconf -i
     - name: configure
