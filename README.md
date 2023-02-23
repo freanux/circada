@@ -85,9 +85,3 @@ int main(int argc, char *argv[]) {
     return 0;
 }
 ```
-
-## You need help?
-Circada help channel is hosted on freenode's channel #circada.
-
-## You want to contribute to Circada?
-If you are familiar with the IRC protocol and you have well-engineered knowledge in C++, or you want to help us writing help pages or supporting us in some other way, we appriciate your effort. Contact us on Circada's freenode channel and ask there.
