@@ -107,14 +107,7 @@ namespace Circada {
     }
 
     const std::string& Configuration::get_value(const std::string& category, const std::string& key) {
-        ScopeMutex lock(&mtx);
-
-        Entries::iterator it = entries.find(category + "." + key);
-        if (it == entries.end()) {
-            return empty_string;
-        }
-
-        return it->second;
+        return get_value(category, key, empty_string);
     }
 
     const std::string& Configuration::get_value(const std::string& category, const std::string& key, const std::string& defaults) {
@@ -122,7 +115,6 @@ namespace Circada {
 
         Entries::iterator it = entries.find(category + "." + key);
         if (it == entries.end()) {
-            //set_value_nolock(category, key, defaults);
             return defaults;
         }
 
@@ -131,6 +123,10 @@ namespace Circada {
 
     bool Configuration::is_true(const std::string& value) {
         return (atoi(value.c_str()) != 0);
+    }
+
+    const Configuration::Entries Configuration::get_entries() const {
+        return entries;
     }
 
     void Configuration::validation(const std::string& s) {

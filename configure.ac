@@ -1,4 +1,4 @@
-AC_INIT([circada], [0.4.2], [pw@earthwave.ch])
+AC_INIT([circada], [0.4.3], [pw@earthwave.ch])
 
 AM_INIT_AUTOMAKE
 LT_INIT

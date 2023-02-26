@@ -956,7 +956,14 @@ void Application::execute_get(const std::string& params) {
             print_line(sw, get_now(), e.what(), fmt.fmt_info_normal);
         }
     } else {
-        print_line(sw, get_now(), "Insufficient parameters.", fmt.fmt_info_normal);
+        /* list all entries */
+        const Configuration::Entries& entries = config.get_entries();
+        std::string timestamp(get_now());
+        print_line(sw, timestamp, "--- start of list ---", fmt.fmt_info_normal);
+        for (Configuration::Entries::const_iterator it = entries.begin(), end = entries.end(); it != end; ++it) {
+            print_line(sw, timestamp, it->first + "=" + it->second, fmt.fmt_info_normal);
+        }
+        print_line(sw, timestamp, "--- end of list ---", fmt.fmt_info_normal);
     }
     text_widget.refresh(sw);
     set_cursor();

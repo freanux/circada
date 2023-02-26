@@ -37,6 +37,8 @@ namespace Circada {
 
     class Configuration {
     public:
+        typedef std::map<std::string, std::string> Entries;
+
         Configuration(const std::string& working_directory);
         virtual ~Configuration();
 
@@ -47,10 +49,10 @@ namespace Circada {
         const std::string& get_value(const std::string& category, const std::string& key);
         const std::string& get_value(const std::string& category, const std::string& key, const std::string& defaults);
         bool is_true(const std::string& value);
+        const Entries get_entries() const;
 
     private:
         static const char *ConfigurationFile;
-        typedef std::map<std::string, std::string> Entries;
 
         bool modified;
         std::string working_directory;
