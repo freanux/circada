@@ -25,7 +25,6 @@
 
 #include <cstring>
 #include <cstdlib>
-#include <iostream>
 
 const int EntryTimeout = 500;
 
@@ -187,6 +186,8 @@ void EntryWidget::reset() {
 
 void EntryWidget::draw() {
     if (configured) {
+        curs_set(0);
+
         Circada::ScopeMutex lock(&draw_mtx);
         int pos;
 
@@ -240,6 +241,7 @@ void EntryWidget::draw() {
         /* refreshing label and input box */
         wrefresh(win_label);
         set_cursor();
+        curs_set(1);
     }
 }
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CodeLite_Workspace Name="Circada" Database="">
+<CodeLite_Workspace Name="Circada" Database="" Version="10000">
   <Project Name="circada" Path="circada/circada.project" Active="Yes"/>
   <Project Name="libcircada" Path="libcircada/libcircada.project" Active="No"/>
   <BuildMatrix>

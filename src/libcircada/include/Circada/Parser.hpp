@@ -26,7 +26,6 @@
 #include "Circada/Window.hpp"
 
 #include <string>
-#include <vector>
 
 namespace Circada  {
 

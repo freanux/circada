@@ -56,7 +56,7 @@ namespace Circada {
         virtual void close_window(Session *s, Window *w) { }
         virtual void window_action(Session *s, Window *w) { }
         virtual void change_topic(Session *s, Window *w, const std::string& topic) { }
-        virtual void change_name(Session *s, Window *w, const std::string& name) { }
+        virtual void change_name(Session *s, Window *w, const std::string& old_name, const std::string& new_name) { }
         virtual void change_channel_mode(Session *s, Window *w, const std::string& mode) { }
         virtual void new_nicklist(Session *s, Window *w) { }
         virtual void add_nick(Session *s, Window *w, const std::string& nick) { }

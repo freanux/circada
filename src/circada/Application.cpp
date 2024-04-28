@@ -25,6 +25,22 @@
 #include <cstdlib>
 #include <algorithm>
 
+namespace {
+
+    void fill_opt(const Configuration& config, const std::string& category, const std::string& key, std::string& into) {
+        const std::string& value = config.get_value(category, key);
+        if (value.length()) {
+            into = value;
+        } else {
+            const std::string& value = config.get_value("", key);
+            if (value.length()) {
+                into = value;
+            }
+        }
+    }
+
+}
+
 Application::Application(Configuration& config)
     : IrcClient(config), config(config), nicklist_width(0), selected_window(0),
       entry_widget(draw_mtx), number_widget(draw_mtx), status_widget(windows),
@@ -63,8 +79,12 @@ Application::Application(Configuration& config)
     /* resize all widgets */
     configure();
 
+    /* lua */
+    lua_setup();
+
     /* create application window */
     create_application_window(get_project_name(), get_project_name());
+
 }
 
 Application::~Application() {
@@ -75,6 +95,17 @@ Application::~Application() {
 }
 
 void Application::run() {
+    /* startup script lua */
+    try {
+        std::string lua_file = config.get_value("", "script");
+        if (lua_file.length()) {
+            lua.safe_script_file(lua_file);
+        }
+    } catch (const sol::error& e) {
+        lua_error(e);
+    }
+
+    /* loop */
     time_t old_time = 0;
     running = true;
     while (running) {
@@ -315,12 +346,11 @@ void Application::draw() {
 }
 
 void Application::parse_entry() {
+    std::string line = entry_widget.get_content();
+    entry_widget.reset();
     ScreenWindow *sw = text_widget.get_selected_window();
     Session *s = sw->get_circada_session();
     Window *w = sw->get_circada_window();
-    std::string line = entry_widget.get_content();
-
-    entry_widget.reset();
     try {
         bool external;
         std::string ctcp;
@@ -527,6 +557,8 @@ void Application::execute(const std::string& line) {
         execute_sort(params);
     } else if (is_equal(command.c_str(), "netsplits")) {
         execute_netsplits(params);
+    } else if (is_equal(command.c_str(), "lua")) {
+        execute_lua(params);
     }
 }
 
@@ -561,55 +593,14 @@ void Application::execute_connect(const std::string& params) {
             opts.server = config.get_value(p[0], "server", p[0]);
             opts.port = atoi(config.get_value(p[0], "port", "6667").c_str());
 
-            const std::string& nick = config.get_value(p[0], "nick");
-            if (nick.length()) {
-                opts.nick = nick;
-            } else {
-                const std::string& nick = config.get_value("", "nick");
-                if (nick.length()) {
-                    opts.nick = nick;
-                }
-            }
-
-            const std::string& alternative_nick = config.get_value(p[0], "alternative_nick");
-            if (alternative_nick.length()) {
-                opts.alternative_nick = alternative_nick;
-            } else {
-                const std::string& alternative_nick = config.get_value("", "alternative_nick");
-                if (alternative_nick.length()) {
-                    opts.alternative_nick = alternative_nick;
-                }
-            }
-
-            const std::string& user = config.get_value(p[0], "user");
-            if (user.length()) {
-                opts.user = user;
-            } else {
-                const std::string& user = config.get_value("", "user");
-                if (user.length()) {
-                    opts.user = user;
-                }
-            }
-
-            const std::string& real_name = config.get_value(p[0], "real_name");
-            if (real_name.length()) {
-                opts.real_name = real_name;
-            } else {
-                const std::string& real_name = config.get_value("", "real_name");
-                if (real_name.length()) {
-                    opts.real_name = real_name;
-                }
-            }
-
-            const std::string& ca_file = config.get_value(p[0], "ca_file");
-            if (ca_file.length()) {
-                opts.ca_file = ca_file;
-            } else {
-                const std::string& ca_file = config.get_value("", "ca_file");
-                if (ca_file.length()) {
-                    opts.ca_file = ca_file;
-                }
-            }
+            ::fill_opt(config, p[0], "nick", opts.nick);
+            ::fill_opt(config, p[0], "alternative_nick", opts.alternative_nick);
+            ::fill_opt(config, p[0], "user", opts.user);
+            ::fill_opt(config, p[0], "real_name", opts.real_name);
+            ::fill_opt(config, p[0], "ca_file", opts.ca_file);
+            ::fill_opt(config, p[0], "cert_file", opts.cert_file);
+            ::fill_opt(config, p[0], "key_file", opts.key_file);
+            ::fill_opt(config, p[0], "tls_priority", opts.tls_priority);
 
             Session *s = create_session(opts);
             s->connect();
@@ -996,6 +987,15 @@ void Application::execute_netsplits(const std::string& params) {
     set_cursor();
 }
 
+void Application::execute_lua(const std::string& params) {
+    try {
+        lua.script(params);
+    } catch (const sol::error& e) {
+        lua_error(e);
+    }
+    set_cursor();
+}
+
 void Application::print_line(ScreenWindow *w, const std::string& timestamp, const std::string& what, Format& format) {
     std::string line;
     std::string temp;
@@ -1136,4 +1136,243 @@ std::string Application::make_tree_nr(ScreenWindow::List::iterator& it) {
     num += ":";
 
     return num;
+}
+
+/* ---------------------------------------------------------------------------------- */
+
+Session *Application::lua_find_session_throw(Session *s) {
+    if (!find_session(s)) {
+        throw sol::error("Session not found");
+    }
+
+    return s;
+}
+
+void Application::lua_cmd_raw(Session *s, const std::string& params) {
+    lua_find_session_throw(s)->send(params);
+}
+
+void Application::lua_cmd_join(Session *s, const std::string& params) {
+    lua_cmd_raw(s, "JOIN " + params);
+}
+
+void Application::lua_cmd_part(Session *s, const std::string& params) {
+    lua_cmd_raw(s, "PART " + params);
+}
+
+void Application::lua_cmd_privmsg(Session *s, const std::string& dest, const std::string& msg) {
+    lua_cmd_raw(s, "PRIVMSG " + dest + " :" + msg);
+}
+
+void Application::lua_cmd_notice(Session *s, const std::string& dest, const std::string& msg) {
+    lua_cmd_raw(s, "NOTICE " + dest + " :" + msg);
+}
+
+void Application::lua_cmd_me(Session *s, const std::string& dest, const std::string& msg) {
+    lua_cmd_raw(s, "PRIVMSG " + dest + " :\x01" + "ACTION " + msg + "\x01");
+}
+
+void Application::lua_cmd_mode(Session *s, const std::string& dest, const std::string& params) {
+    lua_cmd_raw(s, "MODE " + dest + " " + params);
+}
+
+/* ---------------------------------------------------------------------------------- */
+
+sol::table Application::make_table_from_message(const Message& msg) {
+    sol::table t = lua.create_table("Message");
+
+    t["timestamp"] = msg.timestamp;
+    t["line"] = msg.line;
+    t["nick_with_prefix"] = msg.nick_with_prefix;
+    t["user_and_host"] = msg.user_and_host;
+    t["user"] = msg.user;
+    t["host"] = msg.host;
+    t["command"] = msg.command;
+    t["ctcp"] = msg.ctcp;
+    t["op_notices"] = msg.op_notices;
+
+    return t;
+}
+
+void Application::lua_on_connection_lost(Session *s, const std::string& reason) {
+    try {
+        lua["on_connection_lost"](s, reason);
+    } catch (const sol::error& e)  {
+        lua_error(e);
+    }
+}
+
+void Application::lua_on_message_arrived(Session *s, Window *w, const Message& msg) {
+    try {
+        lua["on_message_arrived"](s, w, msg);
+    } catch (const sol::error& e)  {
+        lua_error(e);
+    }
+}
+
+void Application::lua_on_my_mode_changed(Session *s, const std::string& mode) {
+    try {
+        lua["on_my_mode_changed"](s, mode);
+    } catch (const sol::error& e)  {
+        lua_error(e);
+    }
+}
+
+void Application::lua_on_window_opened(Session *s, Window *w) {
+    try {
+        lua["on_window_opened"](s, w);
+    } catch (const sol::error& e)  {
+        lua_error(e);
+    }
+}
+
+void Application::lua_on_window_closing(Session *s, Window *w) {
+    try {
+        lua["on_window_closing"](s, w);
+    } catch (const sol::error& e)  {
+        lua_error(e);
+    }
+}
+
+void Application::lua_on_topic_changed(Session *s, Window *w, const std::string& topic) {
+    try {
+        lua["on_topic_changed"](s, w, topic);
+    } catch (const sol::error& e)  {
+        lua_error(e);
+    }
+}
+
+void Application::lua_on_name_changed(Session *s, Window *w, const std::string& old_name, const std::string& new_name) {
+    try {
+        lua["on_name_changed"](s, w, old_name, new_name);
+    } catch (const sol::error& e)  {
+        lua_error(e);
+    }
+}
+
+void Application::lua_on_channel_mode_changed(Session *s, Window *w, const std::string& mode) {
+    try {
+        lua["on_channel_mode_changed"](s, w, mode);
+    } catch (const sol::error& e)  {
+        lua_error(e);
+    }
+}
+
+void Application::lua_on_new_nicklist(Session *s, Window *w) {
+    try {
+        lua["on_new_nicklist"](s, w);
+    } catch (const sol::error& e)  {
+        lua_error(e);
+    }
+}
+
+void Application::lua_on_nick_added(Session *s, Window *w, const std::string& nick) {
+    try {
+        lua["on_nick_added"](s, w, nick);
+    } catch (const sol::error& e)  {
+        lua_error(e);
+    }
+}
+
+void Application::lua_on_nick_removed(Session *s, Window *w, const std::string& nick) {
+    try {
+        lua["on_nick_removed"](s, w, nick);
+    } catch (const sol::error& e)  {
+        lua_error(e);
+    }
+}
+
+void Application::lua_on_nick_changed(Session *s, Window *w, const std::string& old_nick, const std::string& new_nick) {
+    try {
+        lua["on_nick_changed"](s, w, old_nick, new_nick);
+    } catch (const sol::error& e)  {
+        lua_error(e);
+    }
+}
+
+/* ---------------------------------------------------------------------------------- */
+
+void Application::lua_setup() {
+    lua.open_libraries(sol::lib::base, sol::lib::package, sol::lib::string, sol::lib::utf8, sol::lib::table, sol::lib::math);
+
+    // setup functions
+    lua["__prn"] = [&](const std::string& s) {
+        Window *w = get_application_window();
+        w->set_action(Circada::WindowActionChat);
+        print(get_window(w), s);
+        window_action(0, w);
+    };
+
+    lua["raw"]          = [&](Session *s, const std::string& a) { lua_cmd_raw(s, a); };
+    lua["join"]         = [&](Session *s, const std::string& a) { lua_cmd_join(s, a); };
+    lua["part"]         = [&](Session *s, const std::string& a) { lua_cmd_part(s, a); };
+    lua["msg"]          = [&](Session *s, const std::string& a, const std::string& b) { lua_cmd_privmsg(s, a, b); };
+    lua["notice"]       = [&](Session *s, const std::string& a, const std::string& b) { lua_cmd_notice(s, a, b); };
+    lua["me"]           = [&](Session *s, const std::string& a, const std::string& b) { lua_cmd_me(s, a, b); };
+    lua["mode"]         = [&](Session *s, const std::string& a, const std::string& b) { lua_cmd_mode(s, a, b); };
+
+    // override print(...)
+    lua.script(R"(
+        function print(...)
+            local arg = {...}
+            local s = ""
+            for a, b in ipairs(arg) do
+                s = s .. tostring(b)
+            end
+            __prn(s)
+        end
+    )");
+
+    // register types
+    lua.new_usertype<Message>("Message", sol::no_constructor,
+        "timestamp",        sol::readonly(&Message::timestamp),
+        "line",             sol::readonly(&Message::line),
+        "nick_with_prefix", sol::readonly(&Message::nick_with_prefix),
+        "user_and_host",    sol::readonly(&Message::user_and_host),
+        "user",             sol::readonly(&Message::user),
+        "host",             sol::readonly(&Message::host),
+        "command",          sol::readonly(&Message::command),
+        "ctcp",             sol::readonly(&Message::ctcp),
+        "op_notices",       sol::readonly(&Message::op_notices)
+    );
+
+    lua.new_usertype<Session>("Session", sol::no_constructor,
+        "is_that_me",       &Session::is_that_me,
+        "is_channel",       &Session::is_channel,
+        "get_flags",        &Session::get_flags,
+        "get_nick",         &Session::get_nick,
+        "get_server",       &Session::get_server,
+        "am_i_away",        &Session::am_i_away,
+        "get_nicklen",      &Session::get_nicklen,
+        "get_lag",          &Session::get_lag
+    );
+
+    lua.new_enum("WindowType", "APPLICATION", 0, "SERVER", 1, "CHANNEL", 2, "PRIVATE", 3, "DCC", 4, "ALERTS", 5);
+    lua.new_enum("WindowAction", "NONE", 0, "NOISE", 1, "CHAT", 2, "ALERT", 3);
+
+    lua.new_usertype<Window>("Window", sol::no_constructor,
+        "get_window_type",  &Window::get_window_type,
+        "get_name",         &Window::get_name,
+        "get_topic",        &Window::get_topic,
+        "get_flags",        &Window::get_flags,
+        "get_action",       &Window::get_action
+    );
+}
+
+void Application::lua_print(const char *s) {
+    Window *w = get_application_window();
+    w->set_action(Circada::WindowActionChat);
+    print(get_window(w), s);
+    window_action(0, w);
+}
+
+void Application::lua_error(const sol::error& e) {
+    lua_error(e.what());
+}
+
+void Application::lua_error(const char *s) {
+    Window *w = get_application_window();
+    w->set_action(Circada::WindowActionAlert);
+    print(get_window(w), s);
+    window_action(0, w);
 }

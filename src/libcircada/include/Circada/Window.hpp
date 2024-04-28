@@ -97,7 +97,6 @@ namespace Circada {
         const std::string& get_plain_name() const;
         bool set_topic(const std::string& topic, bool force);
         bool set_topic(const std::string& topic);
-        bool set_action(WindowAction action);
         void set_flags(const std::string& new_flags, bool new_set);
         void add_nick(const std::string& nick, bool no_sort);
         void change_nick(const std::string& old_nick, const std::string& new_nick);
@@ -119,6 +118,7 @@ namespace Circada {
         virtual const std::string& get_topic() const;
         virtual std::string get_flags();
         virtual WindowAction get_action();
+        virtual bool set_action(WindowAction action);
         virtual void reset_action();
 
         virtual Nick::List& get_nicks();

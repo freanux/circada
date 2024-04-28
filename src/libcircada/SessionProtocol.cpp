@@ -108,8 +108,9 @@ namespace Circada {
                 switch (w->get_window_type()) {
                     case WindowTypePrivate:
                         if (is_equal(w->get_name(), m.nick)) {
+                            std::string old_nick = w->get_name();
                             w->set_name(new_nick);
-                            iss.change_name(this, w, new_nick);
+                            iss.change_name(this, w, old_nick, new_nick);
                             std::string topic = new_nick + " (" + m.user_and_host + ")";
                             w->change_nick(m.nick, new_nick);
                             iss.change_nick(this, w, m.nick, new_nick);
@@ -314,8 +315,9 @@ namespace Circada {
 
                 /* nick case change? */
                 if (w && w->get_window_type() == WindowTypePrivate && !m.injected && w->get_name() != m.nick) {
+                    std::string old_nick = w->get_name();
                     w->set_name(m.nick);
-                    iss.change_name(this, w, m.nick);
+                    iss.change_name(this, w, old_nick, m.nick);
                 }
 
                 /* nick enters query? */
@@ -361,8 +363,9 @@ namespace Circada {
                     }
                     if (!unsecured_m.injected && w->get_name() != unsecured_m.nick) {
                         /* nick case change? */
+                        std::string old_nick = w->get_name();
                         w->set_name(unsecured_m.nick);
-                        iss.change_name(this, w, unsecured_m.nick);
+                        iss.change_name(this, w, old_nick, unsecured_m.nick);
                     }
                 }
                 send_notice_with_noise(w, unsecured_m, WindowActionAlert);

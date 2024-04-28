@@ -51,6 +51,8 @@ namespace Circada {
         Session *create_session(const SessionOptions& options);
         void destroy_session(Session *s);
         size_t get_session_count();
+        Session *find_session(const Session *s);
+        Session *find_session(const std::string& name);
 
         /* managing all dcc requests  */
         DCCHandle::List get_dcc_list();

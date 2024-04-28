@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CodeLite_Project Name="libcircada" InternalType="Library">
+<CodeLite_Project Name="libcircada" InternalType="Library" Version="11000">
   <Plugins>
     <Plugin Name="qmake">
       <![CDATA[00020001N0005Debug0000000000000001N0007Release000000000000]]>
@@ -93,6 +93,7 @@
     <GlobalSettings>
       <Compiler Options="-pedantic;-Wextra;-Wall;-Wno-unused-parameter" C_Options="-pedantic;-Wextra;-Wall;-Wno-unused-parameter" Assembler="">
         <IncludePath Value="../../src/libcircada/include"/>
+        <Preprocessor Value="GNUTLS_GNUTLSXX_NO_HEADERONLY"/>
       </Compiler>
       <Linker Options="">
         <LibraryPath Value="."/>

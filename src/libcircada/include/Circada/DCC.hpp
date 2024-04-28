@@ -17,6 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 #ifndef _CIRCADA_DCC_HPP_
 #define _CIRCADA_DCC_HPP_
 
@@ -25,7 +26,6 @@
 #include "Circada/Socket.hpp"
 #include "Circada/Thread.hpp"
 #include "Circada/LineFetcher.hpp"
-#include "Circada/Mutex.hpp"
 
 #include <vector>
 #include <string>
@@ -272,7 +272,7 @@ namespace Circada {
         typedef std::vector<DCCHandle> List;
 
         DCCHandle(DCCManager& dcc_mgr, const DCC *dcc);
-        DCCHandle operator=(DCCHandle rhs);
+        //DCCHandle operator=(DCCHandle rhs);
         virtual ~DCCHandle();
 
         const std::string& get_his_nick() const;

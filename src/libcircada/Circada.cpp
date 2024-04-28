@@ -37,6 +37,7 @@ namespace Circada {
         IrcServerSide *iss = static_cast<IrcServerSide *>(this);
         return iss->create_application_window(this, name, topic);
     }
+
     Window *IrcClient::get_application_window() {
         IrcServerSide *iss = static_cast<IrcServerSide *>(this);
         return iss->get_application_window();
@@ -66,6 +67,28 @@ namespace Circada {
         ScopeMutex lock(&mtx);
 
         return sessions.size();
+    }
+
+    Session *IrcClient::find_session(const Session *s) {
+        ScopeMutex lock(&mtx);
+        for (Session::List::iterator it = sessions.begin(); it != sessions.end(); it++) {
+            Session *ls = *it;
+            if (ls == s) {
+                return ls;
+            }
+        }
+        return 0;
+    }
+
+    Session *IrcClient::find_session(const std::string& name) {
+        ScopeMutex lock(&mtx);
+        for (Session::List::iterator it = sessions.begin(); it != sessions.end(); it++) {
+            Session *s = *it;
+            if (s->get_server() == name) {
+                return s;
+            }
+        }
+        return 0;
     }
 
     DCCHandle::List IrcClient::get_dcc_list() {

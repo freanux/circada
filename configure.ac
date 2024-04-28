@@ -1,4 +1,4 @@
-AC_INIT([circada], [0.4.3], [pw@earthwave.ch])
+AC_INIT([circada], [0.5.1], [pw@earthwave.ch])
 
 AM_INIT_AUTOMAKE
 LT_INIT
@@ -21,6 +21,7 @@ AM_SILENT_RULES([yes])
 AC_CHECK_LIB([pthread], [pthread_create], [], [missing_libraries="$missing_libraries libpthread"])
 AC_CHECK_LIB([ncursesw], [refresh], [], [missing_libraries="$missing_libraries libncursesw"])
 AC_CHECK_LIB([gnutls], [gnutls_global_init], [], [missing_libraries="$missing_libraries libgnutls"])
+AC_CHECK_LIB([lua], [luaL_newstate], [], [missing_libraries="$missing_libraries lua"])
 
 AC_CHECK_HEADER([gnutls/gnutls.h], [], [$missing_headers gnutls/gnutls.h])
 AC_CHECK_HEADER([gnutls/gnutlsxx.h], [], [$missing_headers gnutls/gnutlsxx.h])

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CodeLite_Project Name="circada" InternalType="Console">
+<CodeLite_Project Name="circada" InternalType="Console" Version="11000">
   <Plugins>
     <Plugin Name="qmake">
       <![CDATA[00020001N0005Debug0000000000000001N0007Release000000000000]]>
@@ -29,6 +29,11 @@
   <Description/>
   <Dependencies/>
   <VirtualDirectory Name="include">
+    <VirtualDirectory Name="sol">
+      <File Name="../../src/circada/include/sol/sol.hpp"/>
+      <File Name="../../src/circada/include/sol/forward.hpp"/>
+      <File Name="../../src/circada/include/sol/config.hpp"/>
+    </VirtualDirectory>
     <File Name="../../src/circada/include/Application.hpp"/>
     <File Name="../../src/circada/include/EntryWidget.hpp"/>
     <File Name="../../src/circada/include/Formatter.hpp"/>
@@ -65,9 +70,10 @@
   </Dependencies>
   <Settings Type="Executable">
     <GlobalSettings>
-      <Compiler Options="-pedantic;-Wextra;-Wall;-Wno-unused-parameter" C_Options="-pedantic;-Wextra;-Wall;-Wno-unused-parameter" Assembler="">
+      <Compiler Options="-pedantic;-Wextra;-Wall;-Wno-unused-parameter;-Wno-deprecated-declarations" C_Options="-pedantic;-Wextra;-Wall;-Wno-unused-parameter" Assembler="">
         <IncludePath Value="../../src/circada/include"/>
         <IncludePath Value="../../src/libcircada/include"/>
+        <Preprocessor Value="GNUTLS_GNUTLSXX_NO_HEADERONLY"/>
       </Compiler>
       <Linker Options="">
         <Library Value="circada"/>
@@ -75,6 +81,7 @@
         <Library Value="pthread"/>
         <Library Value="gnutls"/>
         <Library Value="gnutlsxx"/>
+        <Library Value="lua"/>
       </Linker>
       <ResourceCompiler Options=""/>
     </GlobalSettings>

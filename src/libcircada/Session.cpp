@@ -360,8 +360,8 @@ namespace Circada {
 
         try {
             /* socket and login */
-            if (options.ca_file.length()) {
-                socket.set_tls(options.ca_file);
+            if (options.ca_file.length() || options.cert_file.length() || options.key_file.length()) {
+                socket.set_tls(options.ca_file, options.cert_file, options.key_file, options.tls_priority);
             } else {
                 socket.reset_tls();
             }

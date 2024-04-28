@@ -46,7 +46,7 @@ namespace Circada {
         Socket();
         virtual ~Socket();
 
-        void set_tls(const std::string& ca_file);
+        void set_tls(const std::string& ca_file, const std::string& cert_file, const std::string& key_file, const std::string& priority);
         void reset_tls();
         void connect(const char *ip_address, unsigned short port);
         bool activity(time_t sec, suseconds_t usec);

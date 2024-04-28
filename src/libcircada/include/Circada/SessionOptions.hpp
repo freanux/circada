@@ -40,6 +40,9 @@ namespace Circada {
         std::string user;
         std::string real_name;
         std::string ca_file;
+        std::string cert_file;
+        std::string key_file;
+        std::string tls_priority;
         bool user_invisible;    /* try to request to be invisible    */
         bool receive_wallops;   /* try to request to receive wallops */
     };

@@ -22,17 +22,19 @@
 #define _APPLICATION_HPP_
 
 #include "ScreenWindow.hpp"
-#include "Terminal.hpp"
 #include "StatusWidget.hpp"
 #include "EntryWidget.hpp"
 #include "TextWidget.hpp"
 #include "NicklistWidget.hpp"
 #include "TreeViewWidget.hpp"
 #include "Formatter.hpp"
-
 #include <Circada/Circada.hpp>
 
 #include <vector>
+
+#define SOL_ALL_SAFETIES_ON 1
+#define SOL_PRINT_ERRORS 0
+#include "sol/sol.hpp"
 
 using namespace Circada;
 
@@ -87,6 +89,9 @@ private:
     /* loop */
     bool running;
 
+    /* lua */
+    sol::state lua;
+
     ScreenWindow *create_window(Session *s, Window *w);
     ScreenWindow *get_window(Window *w);
     ScreenWindow *get_window_nolock(Window *w);
@@ -123,6 +128,36 @@ private:
     void build_window_tree();
     std::string make_tree_nr(ScreenWindow::List::iterator& it);
 
+    /* lua */
+    Session *lua_find_session_throw(Session *s);
+    void lua_cmd_raw(Session *s, const std::string& params);
+    void lua_cmd_join(Session *s, const std::string& params);
+    void lua_cmd_part(Session *s, const std::string& params);
+    void lua_cmd_privmsg(Session *s, const std::string& dest, const std::string& msg);
+    void lua_cmd_notice(Session *s, const std::string& dest, const std::string& msg);
+    void lua_cmd_me(Session *s, const std::string& dest, const std::string& msg);
+    void lua_cmd_mode(Session *s, const std::string& dest, const std::string& params);
+
+    sol::table make_table_from_message(const Message& msg);
+
+    void lua_on_connection_lost(Session *s, const std::string& reason);
+    void lua_on_message_arrived(Session *s, Window *w, const Message& msg);
+    void lua_on_my_mode_changed(Session *s, const std::string& mode);
+    void lua_on_window_opened(Session *s, Window *w);
+    void lua_on_window_closing(Session *s, Window *w);
+    void lua_on_topic_changed(Session *s, Window *w, const std::string& topic);
+    void lua_on_name_changed(Session *s, Window *w, const std::string& old_name, const std::string& new_name);
+    void lua_on_channel_mode_changed(Session *s, Window *w, const std::string& mode);
+    void lua_on_new_nicklist(Session *s, Window *w);
+    void lua_on_nick_added(Session *s, Window *w, const std::string& nick);
+    void lua_on_nick_removed(Session *s, Window *w, const std::string& nick);
+    void lua_on_nick_changed(Session *s, Window *w, const std::string& old_nick, const std::string& new_nick);
+    void lua_setup();
+    void lua_print(const char *s);
+    void lua_error(const sol::error&);
+    void lua_error(const char *s);
+
+
     /* internal command interpreter */
     typedef std::vector<std::string> Params;
     void execute(const std::string& line);
@@ -139,6 +174,7 @@ private:
     void execute_get(const std::string& params);
     void execute_sort(const std::string& params);
     void execute_netsplits(const std::string& params);
+    void execute_lua(const std::string& params);
     void print_line(ScreenWindow *w, const std::string& timestamp, const std::string& what, Format& fmt);
     void print_line(ScreenWindow *w, const std::string& timestamp, const std::string& what);
 
@@ -154,7 +190,7 @@ private:
     virtual void close_window(Session *s, Window *w);
     virtual void window_action(Session *s, Window *w);
     virtual void change_topic(Session *s, Window *w, const std::string& topic);
-    virtual void change_name(Session *s, Window *w, const std::string& name);
+    virtual void change_name(Session *s, Window *w, const std::string& old_name, const std::string& new_name);
     virtual void change_channel_mode(Session *s, Window *w, const std::string& mode);
     virtual void new_nicklist(Session *s, Window *w);
     virtual void add_nick(Session *s, Window *w, const std::string& nick);

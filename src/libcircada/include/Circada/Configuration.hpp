@@ -46,8 +46,8 @@ namespace Circada {
         void load();
         void save();
         void set_value(const std::string& category, const std::string& key, const std::string& value);
-        const std::string& get_value(const std::string& category, const std::string& key);
-        const std::string& get_value(const std::string& category, const std::string& key, const std::string& defaults);
+        const std::string& get_value(const std::string& category, const std::string& key) const;
+        const std::string& get_value(const std::string& category, const std::string& key, const std::string& defaults) const;
         bool is_true(const std::string& value);
         const Entries get_entries() const;
 
@@ -58,7 +58,7 @@ namespace Circada {
         std::string working_directory;
         std::string empty_string;
         Entries entries;
-        Mutex mtx;
+        mutable Mutex mtx;
 
         void load_defaults();
         void validation(const std::string& s);

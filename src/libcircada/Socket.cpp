@@ -43,13 +43,22 @@ namespace Circada {
         }
     }
 
-    void Socket::set_tls(const std::string& ca_file) {
+    void Socket::set_tls(const std::string& ca_file, const std::string& cert_file, const std::string& key_file, const std::string& priority) {
         check_states();
         try {
             this->tls = true;
-            credentials.set_x509_trust_file(ca_file.c_str(), GNUTLS_X509_FMT_PEM);
+            if (ca_file.length()) {
+                credentials.set_x509_trust_file(ca_file.c_str(), GNUTLS_X509_FMT_PEM);
+            }
+            if (cert_file.length() || key_file.length()) {
+                credentials.set_x509_key_file(cert_file.c_str(), key_file.c_str(), GNUTLS_X509_FMT_PEM);
+            }
             session.set_credentials(credentials);
-            session.set_priority("NORMAL", 0);
+            if (priority.length()) {
+                session.set_priority(priority.c_str(), 0);
+            } else {
+                session.set_priority("NORMAL", 0);
+            }
         } catch (const std::exception& e) {
             this->tls = false;
             throw SocketException(e.what());

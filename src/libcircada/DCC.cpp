@@ -31,8 +31,6 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
-#include <iostream>
-
 namespace Circada {
 
     /*
@@ -544,9 +542,11 @@ namespace Circada {
 
     DCCHandle::~DCCHandle() { }
 
+    /*
     DCCHandle DCCHandle::operator=(DCCHandle rhs) {
         return rhs;
     }
+    */
 
     const std::string& DCCHandle::get_his_nick() const {
         ScopeMutex lock(&dcc_mgr.get_mutex());
@@ -614,7 +614,7 @@ namespace Circada {
         return sz;
     }
 
-    unsigned int DCCXferHandle::get_filesize() const { 
+    unsigned int DCCXferHandle::get_filesize() const {
         ScopeMutex lock(&dcc_mgr.get_mutex());
         check_handle();
         const DCCXfer *dcc_xfer = static_cast<const DCCXfer *>(dcc);

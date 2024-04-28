@@ -22,9 +22,6 @@
 #include "UTF8.hpp"
 #include "Utils.hpp"
 
-#include <cwchar>
-#include <cstdlib>
-
 /* NOTICES:
  * this chunk of code is a quick-and-dirty hack. it works, but it isn't
  * clearly legible. sorry for that :)
